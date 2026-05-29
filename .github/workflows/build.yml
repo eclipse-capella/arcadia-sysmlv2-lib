@@ -1,0 +1,35 @@
+name: Publish Maven Artifact
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers on any tag starting with 'v'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build
+        env:
+          USERNAME: ${{github.actor}}
+          PASSWORD: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          mvn -U -B -e clean verify --settings settings.xml
+      - name: Publish
+        env:
+          USERNAME: ${{github.actor}}
+          PASSWORD: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: mvn -B deploy --settings settings.xml
