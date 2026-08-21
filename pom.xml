@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.eclipse.arcadia</groupId>
@@ -13,13 +13,32 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <distributionManagement>
-    <repository>
-        <id>github</id>
-        <name>GitHub Packages</name>
-        <url>https://maven.pkg.github.com/obeo/arcadia-sysmlv2-lib</url>
-    </repository>
-</distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/obeo/arcadia-sysmlv2-lib</url>
+        </repository>
+    </distributionManagement>
+    
+    <build>
+        <resources>
+            <resource>
+                <directory>examples</directory>
+                <includes>
+                    <include>**/*.sysml</include>
+                </includes>
+                <targetPath>examples</targetPath>
+            </resource>
+            <resource>
+                <directory>lib</directory>
+                <includes>
+                    <include>**/*.sysml</include>
+                </includes>
+                <targetPath>lib</targetPath>
+            </resource>
+        </resources>
+    </build>
 
 </project>
