@@ -16,9 +16,9 @@
 
     <distributionManagement>
         <repository>
-            <id>github</id>
+            <id>github-arcadia</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/obeo/arcadia-sysmlv2-lib</url>
+            <url>https://maven.pkg.github.com/eclipse-capella/arcadia-sysmlv2-lib</url>
         </repository>
     </distributionManagement>
     

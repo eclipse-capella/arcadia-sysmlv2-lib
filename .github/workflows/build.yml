@@ -21,12 +21,14 @@ jobs:
         with:
           java-version: "21"
           distribution: "temurin"
+
       - name: Build
         env:
           USERNAME: ${{github.actor}}
           PASSWORD: ${{secrets.GITHUB_TOKEN}}
         run: |
           mvn -U -B -e clean verify --settings settings.xml
+
       - name: Publish
         env:
           USERNAME: ${{github.actor}}
