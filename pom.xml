@@ -6,7 +6,7 @@
 
     <groupId>org.eclipse.arcadia</groupId>
     <artifactId>arcadia-library</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.3-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -16,7 +16,7 @@
 
     <distributionManagement>
         <repository>
-            <id>github-arcadia</id>
+            <id>github</id>
             <name>GitHub Packages</name>
             <url>https://maven.pkg.github.com/eclipse-capella/arcadia-sysmlv2-lib</url>
         </repository>
