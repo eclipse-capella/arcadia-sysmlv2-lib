@@ -78,7 +78,7 @@ library package Arcadia {
 
 	flow def FunctionalExchange :> ArcadiaElement{
 	    private doc /* A  generic Arcadia Functional Exchange, used across all Arcadia engineering perspectives. */
-		ref item :> payload : ExchangeItem [*];
+		ref item :>> payload : ExchangeItem [*];
 		end source : Function;
 		end target : Function;
 	}

@@ -21,15 +21,14 @@ The Arcadia SysML v2 library provides an implementation of the Arcadia methodolo
 
 ## Key Concepts & Mappings
 
+The `Library extract` blocks are copies of `lib/arcadia.sysml`. The code snippets of the `Example` column and of the `Additional Information` paragraphs are abbreviated: names are given without their full path (for instance `'Capture Movement'` stands for `'Root Function'.'Capture Movement'`) and the lists of Exchange Items are shortened. The complete, validated reference is `examples/optical-mouse.sysml`.
+
 ### `ArcadiaElement` OccurrenceDefinition
 
 #### Library extract
 ```
     abstract occurrence def ArcadiaElement {
     	private doc /* Reusable structure shared by all Arcadia elements.*/ 
-        attribute description : String;
-		ref occurrence realizes : ArcadiaElement[*];
-		ref occurrence isRealizedBy : ArcadiaElement[*];
     }
 ```
 
@@ -44,8 +43,8 @@ The Arcadia SysML v2 library provides an implementation of the Arcadia methodolo
 | None | doc description /* */ | description | Full richtext description of an element (HTML) | Reusing SysML v2 concept, more information below | doc description /*Captures surface movement using optical detection.*/ | Richtext description in property views |
 | None | (Metadata Annotation) @StatusInfo | Progress Status | Used to manage the review status of model elements | Reusing SysML v2 concept - see below | @StatusInfo {status = StatusKind::tbd;} | Displayed as a dropdown box in the property view of any element |
 |  (not translated) | (not translated) | (Attribute) Review Text | Used to provide information related to reviews |  Field rarely used and not sufficient for review mgmt, hence not reproduced in v2 | N/A | N/A |
-| ref occurrence realizes : ArcadiaElement[*]; | None | Realization relationships between elements | Traceability information between Arcadia perspectives | key concept in Arcadia |  | mostly in the property view |
-| ref occurrence isRealizedBy : ArcadiaElement[*]; |None | None | inverse relationship to realizes | key concept in Arcadia | | mostly in the property view |
+| None (derived by tooling) | `Realization` allocations whose `realizing` end is this element | realizedXxx (derived references) | Elements of the previous engineering perspective realized by this element | Realization is a key concept in Arcadia. In Capella these references are derived from the owned realization objects, the same approach is used here: the link is stored once, as a `Realization` allocation (see `Realization` section) | see `Realization` section | property view ("Realized ..."), Related Elements |
+| None (derived by tooling) | `Realization` allocations whose `realized` end is this element | realizingXxx (derived references) | inverse navigation: elements of the next engineering perspective realizing this element | see above | see `Realization` section | property view ("Realizing ...") |
 
 #### Additional Information:
 - The richtext description field used in Capella is mapped to the doc feature by naming it 'doc description /* */' - there may be multiple doc strings attached to a given model element, the one used to store the richtext description should be named accordingly. Note: when migrating from Capella to v2, actual images needs to be taken into account
@@ -53,7 +52,7 @@ The Arcadia SysML v2 library provides an implementation of the Arcadia methodolo
 - At this stage, enums in SysML v2 libraries cannot be redefined. This may be addressed in a future version of the SysML v2 standard. So this means that if a project wants to define its own progress statuses, it would have to redefine its own enum of statuses
 - We use the abstract keyword here as this is a high level element. We won't use the abstract keyword on other elements (Component, Function) as this would prevent from using the semantic metadata for these elements. Note: for the moment, we do not have defined semantic metadata for all these elements, by choice. The notation would allow to write "#component part myComponent" instead of "part myComponent : Component". We consider that it does not bring a lot of value for the end user, and are not sure how tool will handle semantic metadata and when
 
-- TODO Open Point: Relations "realizes" and "isRealizedBy" may be specialized for each element so that the list is more strongly typed (Is there a generic way to do it since we are at the Definition level?) - Physical Nodes in Arcadia do not have these relationships (To be managed by tooling?)
+- The former `realizes` / `isRealizedBy` references have been replaced by `Realization` allocations (see the `Realization` section). The question of typing these relationships is answered there: one single generic allocation, typed by tooling rules rather than by library specializations. Physical Nodes in Arcadia do not have realization relationships: this is to be managed by tooling.
 
 ### `ArcadiaPackage` metadata
 
@@ -102,6 +101,8 @@ Not Applicable
 #### Additional Information:
 - In SysML v2, Packages are not based on the KerML concepts Classifier and Feature. Hence there are no Package Definition that we could define in the library and reuse in Capella models. As a consequence, it is up to the tooling to create the default package structure for a given Capella project. This structure is given in the file ArcadiaDefaultStructure.SysML
 - Moreover, as Capella promotes a Usage based modelling approach, we want to avoid having usages (Parts, Actions...) directly contained in packages (without Parts Definitions containing them): in SysML v2, a usage that is contained only by a package becomes a feature of Anything (with 0..* cardinality), we want to avoid this. As a consequence, our top level model element is an Occurrence Definition, serving as the contexts for the underlying elements. We keep the Arcadia Engineering perspectives as packages. This SysML v2 problem may be fixed in future releases
+- **Default realizations**: a new Capella project already contains the realization links between the root elements of consecutive perspectives (checked on a project created with Capella Desktop: Root System Function realizes Root Operational Activity, Root Logical Function realizes Root System Function, Root Physical Function realizes Root Logical Function, Logical System realizes System, Physical System realizes Logical System, and the EPBS System configuration item realizes Physical System). The default structure creates the same links as `Realization` allocations (see the `Realization` section): `'Root Function'` SA→OA, LA→SA, PA→LA, and `system` LA→SA, PA→LA, EPBS→PA. There is no `system` allocation in SA because there is no root component in OA in Capella. The EPBS `'Root Function'` of the file has no Capella counterpart and has no allocation. Consequence for tooling: the creation of a project must generate these allocations, so that the initial model is the same as in Capella Desktop.
+- Capella also creates realization links between the architectures themselves (for example System Analysis realizes Operational Analysis). They cannot be expressed with `Realization`, whose ends are features and not packages: not covered, to be discussed separately.
 - In line with our general rationale, all second level sub-packages have been standardized across all engineering perspectives (this may evolve in the future):
 ```
  		package Functions;
@@ -202,7 +203,7 @@ Not Applicable
 ```
     action def FunctionalChain :> ArcadiaElement  {
         private doc /*  A  generic Arcadia Functional Chain, used across all Arcadia engineering perspectives. */
-        ref flow involvedFunctionalExchanges: FunctionalExchange[*];
+        ref involvedFunctionalExchanges: FunctionalExchange[*];
         alias involvedFunctions for subactions;
     }
 ```
@@ -211,16 +212,17 @@ Not Applicable
 | Concept in v2 library | Concept in SysML v2 | Capella desktop implementation | Concept meaning | Rationale | Example | Representation |
 |-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
 | action def FunctionalChain :> ArcadiaElement | None | Operational Process / Functional Chain | A usage of the system in a given context. It is a logical organization of functions and functional exchanges to fulfil a Capability. | Reusing SysML v2 action def while adapting it to represent Arcadia Functional Chains, see below. | see below | Paths (exchanges) are highlighted with rotating colors |
-| ref flow involvedFunctionalExchanges: FunctionalExchange[*]; | None | involvedFunctionalExchanges | Functional Exchanges involved in the chain |  key relation for Functional chains | see previous line | see previous line |
+| ref involvedFunctionalExchanges: FunctionalExchange[*]; | None | involvedFunctionalExchanges | Functional Exchanges involved in the chain |  key relation for Functional chains | see previous line | see previous line |
 | None | Successions and Control Nodes | Pre-condition/Post-condition + Sequencing within Functional chains| Control flow semantics within Functional chains |  Reusing SysML v2 Control Flow concepts | succession first start then 'Root Function'.'Capture Movement'; | mostly edges for sequencing, Nodes for Control Nodes and property view for guards |
 | alias involvedFunctions for subactions; | perform | involvedFunctions | Functions involved in the chain | Reusing SysML v2 concept while renaming it for coherency with Arcadia concepts (subactions is returning all performed actions) | to be automatically calculated by the tooling | see previous line |
 
 #### Additional Information:
+- The reference to Functional Exchanges is declared with a plain `ref` typed by the flow definition, not `ref flow`: a flow usage must have exactly two ends, and `ref flow` without `from ... to ...` is rejected by the SysML v2 pilot implementation ("Cannot have more than two ends").
 - SysML v2 does not provide a native concept for Functional Chains. We represent them using action def to define scenario-level orchestrations of reusable functions and exchanges, preserving type-instance separation and traceability while aligning with Arcadia semantics. Behavior (KerML) concept may have been an option but it is unlikely this concept is well handled by other tools.
 - See this example of a Functional Chain:
 ```
 	action myChain : FunctionalChain {
-		ref flow :>> involvedFunctionalExchanges = (fe1, fe2);
+		ref :>> involvedFunctionalExchanges = (fe1, fe2);
 	   	perform f1;
 	   	perform f2;
 		perform f3;
@@ -243,7 +245,7 @@ Not Applicable
 ```
 	flow def FunctionalExchange :> ArcadiaElement{
 	    private doc /* A  generic Arcadia Functional Exchange, used across all Arcadia engineering perspectives. */
-		ref item :> payload : ExchangeItem [*];
+		ref item :>> payload : ExchangeItem [*];
 		end source : Function;
 		end target : Function;
 	}	
@@ -253,21 +255,19 @@ Not Applicable
 | Concept in v2 library | Concept in SysML v2 | Capella desktop implementation | Concept meaning | Rationale | Example | Representation |
 |-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
 | flow def FunctionalExchange :> ArcadiaElement | None | Functional Exchange | A possible interaction between a source function and a destination function, likely to transmit exchange items through their output and input ports, respectively | Reusing SysML v2 flow definition | see below | An edge between 2 Function Ports |
-| ref item :> payload : ExchangeItem [*] | None | exchangedItems | see first line | Reusing SysML v2 concept, while restricting it to Exchange Items | see below | in the property view of the exchange |
+| ref item :>> payload : ExchangeItem [*] | None | exchangedItems | see first line | Reusing SysML v2 concept (the standard `payload`), redefined to restrict it to Exchange Items: the payload of a Functional Exchange usage is typed `ExchangeItem` (with a plain `:>` subsetting it would stay typed `Anything`) | see below | in the property view of the exchange |
 | end source : Function | None | source | see first line | Reusing SysML v2 concept | see below | N/A |
 | end target : Function | None | target | see first line | Reusing SysML v2 concept | see below | N/A |
 
 #### Additional Information:
  - Usage Example:
 ```
-	// A Functional Exchange
-	flow 'Optical Data' : FunctionalExchange
-	from 'Capture Movement'.FOP1 to 'Transform Raw Optical Data'.FIP1;
-	// Binding the Exchange Item(s) to the flow
-	bind 'Optical Data'.payload = (rawOpticalDataX, rawOpticalDataY);
- ```
- - Note that the Flow Usage payload is a set of Exchange Item(s) as defined in the Component Definition. The binding of the Exchange Item (here rawOpticalData) is done in the last line, corresponding to the exchange items allocated to the functional exchange in Capella.
- - Note that the Flow Usage connects to the Function Usages payload (input and output parameters of the Actions, corresponding to the Function Ports in Capella), while the Flow Definition connects the Functions (Actions) as per the SysML v2 standard. 
+	// A Functional Exchange, with the Exchange Item(s) it carries
+	flow 'Optical Data' : FunctionalExchange of :>> payload = (rawOpticalDataX, rawOpticalDataY)
+		from 'Capture Movement'.FOP1 to 'Transform Raw Optical Data'.FIP2;
+```
+ - Note that the Flow Usage payload is a set of Exchange Item(s) as defined in the `Data` package of the model. They are set with `of :>> payload = (...)` after the flow name, or equivalently in the body of the flow with `:>> payload = (...);`; this corresponds to the exchange items allocated to the functional exchange in Capella (`exchangedItems`). A binding connector cannot be used for this: `bind` relates one feature to one feature, so the form `bind 'Optical Data'.payload = (rawOpticalDataX, rawOpticalDataY);` is rejected by the SysML v2 pilot implementation.
+ - Note that the Flow Usage connects the parameters (in and out) of the Function Usages, corresponding to the Function Ports in Capella (`from 'Capture Movement'.FOP1 to 'Transform Raw Optical Data'.FIP2`), while the Flow Definition connects the Functions (Actions) as per the SysML v2 standard.
  
  - TODO : Categories
 
@@ -276,11 +276,12 @@ Not Applicable
 #### Library extract
 ```
     interface def ComponentExchange :> ArcadiaElement {
-    	private doc /* A  generic Component Exchange, used across all Arcadia engineering perspectives.*/
+    	private doc /* A  generic Component Exchange, used across all Arcadia engineering perspectives.
+    	 * Functional Exchanges are allocated to a Component Exchange with ExchangeAllocation usages
+    	 * (see ExchangeAllocation); the list of allocated Functional Exchanges is derived by tooling. */
         end cp1 : ComponentPort;
         end cp2 : ComponentPort;
         ref item allocatedExchangeItems: ExchangeItem[*];
-        ref flow allocatedFunctionalExchanges: FunctionalExchange[*];
     }
 ```
 
@@ -291,7 +292,7 @@ Not Applicable
 | end cp1 : ComponentPort | None | sourcePort | see first line | Reusing SysML v2 concept | connect 'Optical Sensor Unit'.'Cable Connector' to 'Mouse Controller'.'Cable Connector' AND/OR flow 'Optical Sensor Unit'.'Cable Connector' to 'Mouse Controller'.'Cable Connector'; | N/A |
 | end cp2 : ComponentPort | None | targetPort | see first line | Reusing SysML v2 concept | see previous line | N/A |
 |  ref item allocatedExchangeItems: ExchangeItem[*] | None | conveyedInformations | see first line | Arcadia needed information |  ref item :>> allocatedExchangeItems = (Data::rawOpticalData);| in the property view of the exchange |
-| ref flow allocatedFunctionalExchanges: FunctionalExchange[*] | None | allocatedFunctionalExchanges | see first line | Arcadia needed information |  ref flow :>> allocatedFunctionalExchanges = ('Optical Data'); | in the property view of the exchange |
+| None (derived by tooling from the `ExchangeAllocation` usages) | the `ExchangeAllocation` usages whose `componentExchange` end is this interface | allocatedFunctionalExchanges (derived from the owned `ComponentExchangeFunctionalExchangeAllocation` objects) | Functional Exchanges allocated to this Component Exchange | Single source of truth: the allocation element (see `ExchangeAllocation`). In Capella this reference is also derived. A stored reference `ref flow` was also rejected by the pilot implementation | see `ExchangeAllocation` | in the property view of the exchange |
 
 #### Additional Information:
  - In Arcadia, they are called "Behavioral Exchange"
@@ -328,13 +329,16 @@ Not Applicable
 
  - TODO Open Point:  Port in SysML v2 do not have a direction. Its features (payload) have. We may define the port direction as a calculated attribute. Or we may use it as a verification mechanism. To be decided. However, when migrating back and forth from v2 to Capella, this may present a challenge as Exchange Items don't have a direction on Component Ports
  - TODO Open Point: Kind attribute? Provided Interface? Required Interface?
+ - TODO Open Point (to be challenged): `allocatedFunctionPorts` is a reference declared in the library (`ref item allocatedFunctionPorts: ExchangeItem [*]`), not a native SysML v2 relation. In Capella, the allocation of a function port to a component port is an independent object (`ComponentPortAllocation`); it cannot be fully derived from the allocations of Functional Exchanges to Component Exchanges, because a port can be allocated before any exchange exists. Candidates: keep the reference; a `bind` between the function parameter and the component port (the pattern used between ports in Annex A, not tested between an action parameter and a port); or an allocation element, as for exchanges and realizations. To be decided, consistently with the policy chosen for `Realization` and `ExchangeAllocation`.
 
 ### `ExchangeAllocation` Allocation Def
 
 #### Library extract
 ```
     allocation def ExchangeAllocation :> ArcadiaElement {
-	    private doc /* A  generic Arcadia Exchange Allocation, used across all Arcadia engineering perspectives. */
+	    private doc /* A  generic Arcadia Exchange Allocation, used across all Arcadia engineering perspectives.
+	     * An Exchange Allocation is owned by the Component Exchange it allocates to, and is written
+	     * 'allocation : ExchangeAllocation allocate <functional exchange> to self;'. */
         end functionalExchange : FunctionalExchange;
         end componentExchange : ComponentExchange;
     }
@@ -343,14 +347,51 @@ Not Applicable
 #### Mappings
 | Concept in v2 library | Concept in SysML v2 | Capella desktop implementation | Concept meaning | Rationale | Example | Representation |
 |-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
-|  allocation def ExchangeAllocation :> ArcadiaElement | None | allocatedFunctionalExchange reference on a Component Exchange | Part of how Arcadia/Capella manage Interface Engineering (Interface content is based on Functional content through these allocations) | Reusing SysML v2 allocation as it maps naturally to the allocation | 	allocation : ExchangeAllocation allocate 'Optical Data' to cable | in the property view of a component exchange |
+|  allocation def ExchangeAllocation :> ArcadiaElement | allocation def / allocation usage (`allocate ... to ...`) | `ComponentExchangeFunctionalExchangeAllocation`, an object contained by the Component Exchange (the `allocatedFunctionalExchanges` reference is derived from it) | Part of how Arcadia/Capella manage Interface Engineering (Interface content is based on Functional content through these allocations) | Reusing SysML v2 allocation as it maps naturally to the allocation. The allocation is owned by the Component Exchange, as in Capella where the allocation object is contained by the Component Exchange (see ownership below) | 	interface cable : ComponentExchange { ... allocation : ExchangeAllocation allocate 'Root Function'.'Optical Data' to self; } | in the property view of a component exchange |
 | end functionalExchange : FunctionalExchange | None | None | see first line | Reusing SysML v2 concept | see first line | see first line |
 | end componentExchange : ComponentExchange | None | None | see first line | Reusing SysML v2 concept | see first line | see first line |
 
 #### Additional Information:
- - TODO Open Point: should we use the Allocation concept for the isRealized relationships as it maps naturally to it?
- - TODO Open Point: Should we have these Allocation elements (ie is it going to be a good practice in v2) form component /functional exchange allocation, or should we just create a reference between the CE and the FE
- - TODO Open Point: We do not tell where these allocations elements should be stored, ideally under the component exchange end. Review other elements in the library to check where they are created
+ - **Ownership** (resolves the former open point on where to store the allocation elements): an Exchange Allocation is owned by the Component Exchange (the interface usage) it allocates to, and designates it with `self`: `allocation : ExchangeAllocation allocate <functional exchange> to self;`. This mirrors Capella, where the allocation object is contained by the Component Exchange, and it keeps the allocation next to the element it describes (diff/merge, copy/paste, deletion of the exchange). See the general ownership rule in the `Realization` section.
+ - Note: the SysML v2 Specification (Annex A, SimpleVehicleModel) writes the same allocation in the part that owns the interface, which is a possible alternative location. We prefer the Component Exchange as owner so that the owner is the same in all Arcadia allocations (the element that owns the trace in Capella).
+ - **Why a dedicated allocation def**: SysML v2 does have a native, generic allocation (`Allocations::Allocation`, whose two ends are typed `Anything`), so a Functional Exchange (a flow usage) can be allocated to a Component Exchange (an interface usage) with a plain `allocate`, as in Annex A. What SysML v2 does not have is a dedicated relation for this case, like `perform` (`Part::performedActions`) for the allocation of functions to components, which is why the library does not define anything for that one. `ExchangeAllocation` is a thin typing on top of the generic allocation: it types the ends (FunctionalExchange, ComponentExchange), makes it an `ArcadiaElement` and lets tools recognize an Arcadia Exchange Allocation among other allocations.
+ - **Allocation element rather than a reference** (resolves the former open point): Functional Exchanges are allocated to a Component Exchange with `ExchangeAllocation` usages only; the library no longer has an `allocatedFunctionalExchanges` reference on `ComponentExchange`, the list is derived by tooling from the allocations. Reasons: (1) single source of truth, the former example stored the same link twice (reference and allocation), which can become inconsistent; (2) it is the SysML v2 idiom, Annex A allocates a flow usage to an interface usage (`allocate ActionTree::providePower.generateToAmplify to engineToTransmissionInterface;`); (3) in Capella the link is an object contained by the Component Exchange and the reference is derived, so migration is one object to one allocation, and the allocation can carry a description and a status; (4) diff/merge: one identifiable element per allocation instead of a modified list; (5) same policy as for `Realization`. Impact on tooling: the "Allocated Functional Exchanges" of a Component Exchange must be computed from the allocations. Not verified: whether a derived list can be expressed natively in SysML v2 (it is computed by tooling here).
+ - **`self`**: the ownership convention uses `self` to designate the owner (see the `Realization` section).
+
+### `Realization` Allocation Def
+
+#### Library extract
+```
+    allocation def Realization :> ArcadiaElement {
+	    private doc /* A  generic Arcadia Realization, used across all Arcadia engineering perspectives and for all kinds of
+	     * Arcadia elements: an element (realizing) realizes an element of the previous engineering perspective (realized).
+	     * A Realization is owned by the realizing element, and is written
+	     * 'allocation : Realization allocate <realized element> to self;'.
+	     * The 'realizes' and 'is realized by' navigations are derived by tooling and are not stored. */
+        end realized : ArcadiaElement;
+        end realizing : ArcadiaElement;
+    }
+```
+
+#### Mappings
+| Concept in v2 library | Concept in SysML v2 | Capella desktop implementation | Concept meaning | Rationale | Example | Representation |
+|-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
+|  allocation def Realization :> ArcadiaElement | allocation def / allocation usage (`allocate ... to ...`) | The realization objects (`FunctionRealization`, `ComponentRealization`, `FunctionalExchangeRealization`, `ComponentExchangeRealization`, `PortRealization`, ... ), owned by the realizing element | Traceability between engineering perspectives: an element of a perspective realizes one or several elements of the previous perspective (SA realizes OA, LA realizes SA, PA realizes LA) | SysML v2 allocation is the natural way to relate an abstract architecture to a more concrete one (`LogicalToPhysical` pattern of the SysML v2 training and Annex A). See the reasons below | `action 'Capture Movement' : Function { ... allocation : Realization allocate SA::Functions::'Root Function'.'Move Cursor' to self; }` | property view of both elements (derived navigations), Related Elements, traceability matrix |
+| end realized : ArcadiaElement | end (source) | targetElement of the Capella realization object | the realized element (previous perspective) | Reusing SysML v2 concept | see first line | see first line |
+| end realizing : ArcadiaElement | end (target) | sourceElement of the Capella realization object | the realizing element (this perspective) | Reusing SysML v2 concept | see first line | see first line |
+
+#### Additional Information:
+- **Why allocation**: the references of the SysML v2 standard library and of the official examples converge on allocation for linking an abstract (e.g. logical) architecture to a more concrete one (training example `LogicalToPhysical`, Annex A SimpleVehicleModel, OOSEM v2 allocation of logical to physical components). An allocation is a first-class element: it can be named, documented, carry a status (it is an `ArcadiaElement`) and be navigated by tools, which a plain reference cannot. It migrates one-to-one from a Capella realization object. The other candidate, `dependency` with the standard `#refinement` metadata (used by the Airbus Apollo 11 model), was not retained: Apollo 11 models functions as definitions, between which an allocation is not possible, and a refinement is not exactly a realization.
+- **Why one single `Realization` (and not one per kind of element, as in Capella)**: Capella has more than twenty realization classes (one per kind of element) because its metamodel is typed by class. We do not reproduce this: (1) the library must stay light and contain only the concepts really needed; (2) each specialization would have to be known, created, displayed and migrated by the tooling (creation tools, property views, derived navigations, import/export), whereas a single concept is handled by a single code path; (3) the information carried by the specializations is redundant with the types of the two ends, so the consistency of the ends (a Function realizes a Function, a Component a Component, ...) is a rule checked by tooling (validation) rather than a library type. Note that the SysML v2 pilot implementation does not check the type conformance of allocation ends, so the validation rule is needed in any case. The mapping back to a Capella class is deduced from the type of the ends.
+- **Ownership** (general rule for all Arcadia allocations): the allocation is owned by the element that owns the corresponding trace in Capella: the realizing element for a Realization, the Component Exchange for an Exchange Allocation. The owner is designated by `self`. A usage cannot be targeted by name from inside itself, and `that` designates the featuring instance (the parent), not the element itself. Allocations are not placed directly in a package, in line with the library principle of not having usages directly in a package.
+- **Direction**: Arcadia says "the Logical Function *realizes* the System Function". SysML v2 writes `allocate <System Function> to <Logical Function>` (the abstract element is allocated to the concrete one), as in `LogicalToPhysical`. This is the opposite of the Capella trace (source = realizing element, target = realized element): migration tooling must swap the ends. Tool labels should keep the Arcadia vocabulary (Realized / Realizing).
+- **Derived navigations**: `realizes` / `isRealizedBy` are no longer stored (they were untyped references to any element). They are computed by tooling from the `Realization` allocations, as the `realizedXxx` / `realizingXxx` references are in Capella. A Capella realization has no name but it has a status and property values, which are kept as the allocation is an `ArcadiaElement`.
+- **Many-to-many**: a realizing element may have several `Realization` allocations (one per realized element) and an element may be realized by several elements (several allocations from different owners). See `Capture Movement` and `Transform Raw Optical Data` in the optical mouse example, both realizing the System Function `Move Cursor`.
+- **Impact on tooling (breaking change)**: models using `realizes` / `isRealizedBy` are no longer valid and must be migrated to `Realization` allocations. Tooling relying on the references (property views "Realized ..." / "Realizing ...", Related Elements, creation of realization links) must be reworked to read and create the allocations.
+- TODO To be validated by Weilkins: the convention `allocate <realized> to self`, where `self` designates the owner of the allocation. Why validation is needed: (1) an element cannot be designated by its name from inside itself (the pilot implementation answers "Must be an accessible feature"), so `self` is the only way to keep the allocation inside the element that owns the trace in Capella; (2) `self` as an allocation end appears in none of the official examples (Annex A, training, OOSEM v2, Apollo 11): the pilot implementation accepts it and resolves it to the `self` of the owner, but that reading is our interpretation; (3) tools (Capella for SysON, the Capella/SysML v2 bridge) have to interpret it, and its rendering in SysON has not been checked. Alternative if rejected: put the allocation in the parent element and designate the elements by name or feature chain (the Annex A way), at the cost of no longer storing the allocation in the element that owns it in Capella.
+- **Validation**: lib and example validate without error or warning with the SysML v2 pilot implementation 0.63.1.
+- Nested allocations (one allocation of a parent function containing the allocations of its children) are accepted by the pilot but are not used here: their semantics has not been verified.
+- Not covered here: the allocation of function ports to component ports (`allocatedFunctionPorts`, a reference today while Capella has an owned port allocation object), which remains open.
 
 ### `ExchangeItem` ItemDefinition
 

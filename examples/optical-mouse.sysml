@@ -87,12 +87,9 @@ occurrence def <SE> OpticalMouseModel {
 	   	    		allocation : Realization allocate SA::Functions::'Root Function'.'Move Cursor' to self;
 	   	    	}
 
-	   	    	// A Functional Exchange
-	   	    	flow 'Optical Data' : FunctionalExchange
+	   	    	// A Functional Exchange. Its payload is the Exchange Item(s) allocated to the exchange in Capella.
+	   	    	flow 'Optical Data' : FunctionalExchange of :>> payload = (rawOpticalDataX, rawOpticalDataY)
 	   	    		from 'Capture Movement'.FOP1 to 'Transform Raw Optical Data'.FIP2;
-
-	   	    	// Binding the Exchange Item(s) to the flow
-	   	    	//bind 'Optical Data'.payload = (rawOpticalDataX, rawOpticalDataY);
 
 
 	   	    	// A Functional Chain
