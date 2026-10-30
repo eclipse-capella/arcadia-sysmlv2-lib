@@ -44,7 +44,10 @@ occurrence def <SE> OpticalMouseModel {
 		Serves as a basis for the logical architecture. */
 		package Functions {
 			private import Data::*;
-			action 'Root Function' : Function;
+			action 'Root Function' : Function {
+				allocation : Realization allocate OA::Functions::'Root Function' to self;
+				action 'Move Cursor' : Function;
+			}
 		}
 		package Capabilities;
 		package Interfaces;
@@ -66,16 +69,22 @@ occurrence def <SE> OpticalMouseModel {
 			private import Data::*;
 
 			action 'Root Function' : Function {
+				allocation : Realization allocate SA::Functions::'Root Function' to self;
 	   	    	action 'Capture Movement' : Function {
 	            	@StatusInfo {status = StatusKind::tbd;}
 	   	    		//Corresponds to the description field in Capella
 	        		doc description /*Interpret raw optical data into motion vectors.*/
 	            	//Correspond to a Capella Function Output Port and the allocated Exchange Item(s) (binding rawOpticalData)
 	            	out FOP1 [0..*] : ExchangeItem = (rawOpticalDataX, rawOpticalDataY);
+	            	// Corresponds to a Capella Function Realization: this Logical Function realizes the System Function 'Move Cursor'.
+	            	// The Realization is owned by the realizing element, which is designated by 'self'.
+	            	allocation : Realization allocate SA::Functions::'Root Function'.'Move Cursor' to self;
 	        	}
 
 	   	    	action 'Transform Raw Optical Data' : Function {
 	   	    		in FIP2 [0..*] : ExchangeItem = (rawOpticalDataX, rawOpticalDataY);
+	   	    		// This Logical Function also realizes the System Function 'Move Cursor' (a System Function can be realized by several Logical Functions).
+	   	    		allocation : Realization allocate SA::Functions::'Root Function'.'Move Cursor' to self;
 	   	    	}
 
 	   	    	// A Functional Exchange
@@ -88,7 +97,7 @@ occurrence def <SE> OpticalMouseModel {
 
 	   	    	// A Functional Chain
 	   	    	action 'read movement' : FunctionalChain {
-	   	    		ref flow :>> involvedFunctionalExchanges = ('Optical Data');
+	   	    		ref :>> involvedFunctionalExchanges = ('Optical Data');
 	   	    		perform 'Root Function'.'Capture Movement';
 	   	    		perform 'Root Function'.'Transform Raw Optical Data';
 
@@ -127,6 +136,9 @@ occurrence def <SE> OpticalMouseModel {
 			}
 
 			part system : Component{
+				// Corresponds to a Capella Component Realization: the Logical system realizes the System Analysis system.
+				allocation : Realization allocate SA::Structure::system to self;
+
 				part 'Optical Sensor Unit' : Component {
 				    doc description /*Captures surface movement using optical detection.*/
 	                :>> isActor = false;
@@ -156,12 +168,10 @@ occurrence def <SE> OpticalMouseModel {
 					connect 'Optical Sensor Unit'.'Cable Connector' to 'Mouse Controller'.'Cable Connector' {
 					flow system.'Optical Sensor Unit'.'Cable Connector' to system.'Mouse Controller'.'Cable Connector';
 			        ref item :>> allocatedExchangeItems = (rawOpticalDataX, rawOpticalDataY);
-	        		ref action:>> allocatedFunctionalExchanges = ('Root Function'.'Optical Data');
+	        		// A Functional Exchange allocated to this Component Exchange (Capella: ComponentExchangeFunctionalExchangeAllocation).
+	        		// The allocation is owned by the Component Exchange, which is designated by 'self'.
+	        		allocation : ExchangeAllocation allocate 'Root Function'.'Optical Data' to self;
 					}
-
-				// A Fonctional Exchange allocated to a Component Exchange
-				allocation : ExchangeAllocation
-					allocate 'Root Function'.'Optical Data' to cable;
 			}
 		}
 
@@ -182,7 +192,9 @@ occurrence def <SE> OpticalMouseModel {
 		Supports integration, validation, and preparation for deployment. */
 		package Functions {
 			private import Data::*;
-			action 'Root Function' : Function;
+			action 'Root Function' : Function {
+				allocation : Realization allocate LA::Functions::'Root Function' to self;
+			}
 		}
 		package Capabilities;
 		package Interfaces;
@@ -191,6 +203,7 @@ occurrence def <SE> OpticalMouseModel {
 			private import Data::*;
 			private import Functions::*;
 			part system : Component{
+				allocation : Realization allocate LA::Structure::system to self;
 
 				part 'Optical Sensor Module' : Component {
 				    doc description /*Captures surface movement using optical detection.*/
@@ -217,7 +230,9 @@ occurrence def <SE> OpticalMouseModel {
 		package Structure {
 			private import Data::*;
 			private import Functions::*;
-			part system : Component;
+			part system : Component {
+				allocation : Realization allocate PA::Structure::system to self;
+			}
 		}
 		package Requirements;
 	}

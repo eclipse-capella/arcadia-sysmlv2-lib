@@ -22,8 +22,6 @@ library package Arcadia {
 
 	abstract occurrence def ArcadiaElement {
     	private doc /* Reusable structure shared by all Arcadia elements.*/
-		ref occurrence realizes : ArcadiaElement[*];
-		ref occurrence isRealizedBy : ArcadiaElement[*];
     }
 
     metadata def ArcadiaPackage {
@@ -59,11 +57,12 @@ library package Arcadia {
     }
 
     interface def ComponentExchange :> ArcadiaElement {
-    	private doc /* A  generic Component Exchange, used across all Arcadia engineering perspectives.*/
+    	private doc /* A  generic Component Exchange, used across all Arcadia engineering perspectives.
+    	 * Functional Exchanges are allocated to a Component Exchange with ExchangeAllocation usages
+    	 * (see ExchangeAllocation); the list of allocated Functional Exchanges is derived by tooling. */
         end cp1 : ComponentPort;
         end cp2 : ComponentPort;
         ref item allocatedExchangeItems: ExchangeItem[*];
-        ref flow allocatedFunctionalExchanges: FunctionalExchange[*];
     }
 
 	action def Function :> ArcadiaElement {
@@ -73,7 +72,7 @@ library package Arcadia {
 
     action def FunctionalChain :> ArcadiaElement  {
         private doc /*  A  generic Arcadia Functional Chain, used across all Arcadia engineering perspectives. */
-        ref flow involvedFunctionalExchanges: FunctionalExchange[*];
+        ref involvedFunctionalExchanges: FunctionalExchange[*];
         alias involvedFunctions for subactions;
     }
 
@@ -85,9 +84,21 @@ library package Arcadia {
 	}
 
     allocation def ExchangeAllocation :> ArcadiaElement {
-	    private doc /* A  generic Arcadia Exchange Allocation, used across all Arcadia engineering perspectives. */
+	    private doc /* A  generic Arcadia Exchange Allocation, used across all Arcadia engineering perspectives.
+	     * An Exchange Allocation is owned by the Component Exchange it allocates to, and is written
+	     * 'allocation : ExchangeAllocation allocate <functional exchange> to self;'. */
         end functionalExchange : FunctionalExchange;
         end componentExchange : ComponentExchange;
+    }
+
+    allocation def Realization :> ArcadiaElement {
+	    private doc /* A  generic Arcadia Realization, used across all Arcadia engineering perspectives and for all kinds of
+	     * Arcadia elements: an element (realizing) realizes an element of the previous engineering perspective (realized).
+	     * A Realization is owned by the realizing element, and is written
+	     * 'allocation : Realization allocate <realized element> to self;'.
+	     * The 'realizes' and 'is realized by' navigations are derived by tooling and are not stored. */
+        end realized : ArcadiaElement;
+        end realizing : ArcadiaElement;
     }
 
 	item def ExchangeItem :> ArcadiaElement{
