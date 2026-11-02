@@ -237,7 +237,7 @@ occurrence def <SE> OpticalMouseModel {
 			part system : Component{
 				allocation : Realization allocate LA::Structure::system to self;
 
-				part 'Optical Sensor Module' : Component {
+				part 'Optical Sensor Module' : BehaviorComponent {
 				    doc description /*Captures surface movement using optical detection.*/
 	                :>> isActor = false;
 	                :>> isHuman = false;
@@ -249,6 +249,25 @@ occurrence def <SE> OpticalMouseModel {
 	                	attribute 'Power' = 2.5 [W];
 	                }
 	            }
+
+				// Another Physical Behavior Component: embedded software.
+				part 'Mouse Firmware' : BehaviorComponent {
+				    doc description /*Embedded software interpreting the raw optical data into motion vectors.*/
+				}
+
+				// A Physical Node Component: it hosts the two Behavior Components, which are deployed on it (not contained in it).
+				// The Deployments are stored in the Node, which is designated by 'self'.
+				part 'Mouse PCB' : NodeComponent {
+				    doc description /*Printed circuit board hosting the mouse electronics and software.*/
+				    allocation : Deployment allocate system.'Optical Sensor Module' to self;
+				    allocation : Deployment allocate system.'Mouse Firmware' to self;
+				}
+
+				// Another Physical Node Component: the Node 'Mouse PCB' is deployed on it, instead of being contained in it.
+				part 'Mouse Casing' : NodeComponent {
+				    doc description /*Casing of the mouse, which hosts the printed circuit board.*/
+				    allocation : Deployment allocate system.'Mouse PCB' to self;
+				}
 	        }
 		}
 		package Requirements;

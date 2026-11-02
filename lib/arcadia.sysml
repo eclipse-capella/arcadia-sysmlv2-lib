@@ -47,6 +47,26 @@ library package Arcadia {
 		alias subComponents for subparts;
 	}
 
+	part def NodeComponent :> Component {
+		private doc /* A Physical Architecture component of Node nature: a physical platform that hosts deployed components,
+		 * Behavior Components or Node Components (see Deployment). The actors of the Physical Architecture are Node Components. */
+	}
+
+	part def BehaviorComponent :> Component {
+		private doc /* A Physical Architecture component of Behavior nature: it carries allocated functions and component exchanges,
+		 * and is deployed on a Node Component, not contained in it (see Deployment). */
+	}
+
+	allocation def Deployment :> ArcadiaElement {
+		private doc /* A generic Arcadia Deployment, used in the Physical Architecture: a component (deployedElement) is deployed on
+		 * another component (location), instead of being contained in it. Typically a Behavior Component or a Node Component
+		 * is deployed on a Node Component.
+		 * A Deployment is stored in the location component, and is written
+		 * 'allocation : Deployment allocate <deployed component> to self;'. */
+		end deployedElement : Component;
+		end location : Component;
+	}
+
     port def ComponentPort :> ArcadiaElement {
 		private doc /* A generic Arcadia Component Port, used across all Arcadia engineering perspectives. */
         attribute portDirection : FeatureDirectionKind;
