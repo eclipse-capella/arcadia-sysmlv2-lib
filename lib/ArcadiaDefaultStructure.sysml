@@ -30,7 +30,7 @@ occurrence def <My_Model_Short_Name> 'My Model Name' {
 		 */
 		package Functions {
 			private import Data::*;
-			action 'Root Function' : Function;
+			action 'Root Activity' : Function;
 		} // package Functions
 		package Capabilities {
 			private import Functions::*;
