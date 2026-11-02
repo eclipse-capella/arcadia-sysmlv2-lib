@@ -122,10 +122,6 @@ library package Arcadia {
 		private doc /* A generic Arcadia ExchangeItem, used across all Arcadia engineering perspectives. */
 	}
 
-	requirement def ArcadiaRequirement :> ArcadiaElement{
-    	private doc /* A generic Requirement, used across all Arcadia engineering perspectives.*/
-	}
-
 	occurrence def Capability :> ArcadiaElement {
 	    private doc /* A generic Arcadia Capability, used across all Arcadia engineering perspectives. */
 		ref action involvedFunctions: Function[*];

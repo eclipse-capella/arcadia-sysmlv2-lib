@@ -557,31 +557,40 @@ None: a Capella package is a plain SysML v2 package, wherever it sits in Capella
 
 - TODO Open Point: discuss which fields/relations needs to be brought in Capella. Discuss data modeling in v2
 
-### `ArcadiaRequirement` RequirementDefinition
+### Requirements
 
-#### Library extract
+The library has no requirement concept: Arcadia models use the native SysML v2 `requirement` as is, as there is no Arcadia specific need. As Capella does not have a Requirement concept per se, we have more or less a blank page for the SysML v2 target.
+
+#### Requirements Rules:
+
+- Requirements are stored in the `Requirements` package of each engineering perspective (see the default model structure above) and have their own hierarchy.
+- In SysML v2, IDs are stored in the short name field and the requirement statement (the "shall" statement) in the `doc` of the requirement. The optional status uses the standard `@StatusInfo` metadata (`ModelingMetadata`). Example:
 
 ```
-	requirement def ArcadiaRequirement :> ArcadiaElement{
-    	private doc /* A generic Requirement, used across all Arcadia engineering perspectives.*/
+	requirement <'R1.1'> Optical {
+		doc /* The mouse should capture movement using optical detection */
 	}
 ```
 
-#### Mappings
+- To organize a large number of requirements, requirements can be nested in other requirements and `Requirements` packages can contain sub-packages. Nesting is only a way to organize requirements: it is not a trace.
+- A requirement can be linked to any element of an Arcadia model (function, component, exchange, capability, scenario...) with a `satisfy`. The `satisfy` is owned by the satisfying element. Example, in a component:
 
-| Concept in v2 library                                | Concept in SysML v2 | Capella desktop implementation | Concept meaning                                                                                                  | Rationale                                    | Example                                                                                                                 | Representation |
-| ---------------------------------------------------- | ------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------- |
-| requirement def ArcadiaRequirement :> ArcadiaElement | None                | None                           | A textual requirement is an unformalised description of an expectation on the system or solution to be delivered | Reusing SysML v2 natural concept (see below) | requirement <'R1.1'> Optical : ArcadiaRequirement {doc /_ The mouse should capture movement using optical detection _/} | a Node         |
+```
+	satisfy Requirements::'Movement Capture'.Optical;
+```
 
-#### Additional Information:
+The `subject` of a requirement is not used for this purpose: a requirement has a single `subject`, which is a typed parameter bound to the satisfying element by the `satisfy`, whereas a requirement can be satisfied by several elements. The satisfying element has to be a feature (a usage), which is the case for all the elements of an Arcadia model in this library: a requirement cannot be satisfied by a package or by a definition.
 
-- Historically, Requirements were not in Capella (although there was a legacy concept removed in Capella 7.0) but made available through the Requirements Viewpoint. As Requirement is a first class citizen element in SysML v2, we are adding the concept in the library.
-- In SysML v2, IDs are stored in the short name field
+- A trace between requirements (for instance a system requirement and the logical requirements derived from it) uses the standard derivation connection of the SysML v2 `RequirementDerivation` library. It goes from the derived requirement to the original one. Example:
 
-- TODO Open Point: Do we really want to have this ArcadiaRequirement Concept? Probably to be removed
-- TODO Open Point: discuss how to manage the doc attribute generally shown as hosting the shall statement in v2 with the fact that we use the doc attribute for the description. Should we give it a specific name? or use an attribute? or use a constraint and then the doc ?
-- TODO Open Point: discuss Requirements Allocation (currently reusing allocation) + what is the direction of the allocation
-- TODO Open Point: Review data model in the Req viewpoint/add-on, integrate the ID in the table
+```
+	#derivation connection {
+		end #original ::> SA::Requirements::'Cursor Control';
+		end #derive ::> 'Movement Capture';
+	}
+```
+
+- The other SysML v2 requirement features (`subject` typing, `concern`, `stakeholder`, `frame`, `actor`, constraints, `verify`) are valid SysML v2 but are not part of the Arcadia concepts: they are not described here and not graphically represented in Capella diagrams.
 
 ### `Capability` OccurrenceDefinition
 
