@@ -17,6 +17,7 @@ occurrence def <SE> OpticalMouseModel {
 	private import SI::kg;
 	private import SI::W;
 	private import ModelingMetadata::*;
+	private import RequirementDerivation::*;
 	private import KerML::FeatureDirectionKind;
 
 	package <OA> 'Operational Analysis' {
@@ -58,7 +59,11 @@ occurrence def <SE> OpticalMouseModel {
 			private import Functions::*;
 			part system : Component;
 		}
-		package Requirements;
+		package Requirements {
+			requirement <'SR1'> 'Cursor Control' {
+				doc /* The user shall be able to move the cursor on the screen by moving the mouse. */
+			}
+		}
 	}
 
 	package <LA> 'Logical Architecture' {
@@ -208,11 +213,18 @@ occurrence def <SE> OpticalMouseModel {
 		}
 
 		package Requirements {
-			//R1.1 is the ID of the requirement
-			requirement <'R1.1'> Optical : ArcadiaRequirement {
-				doc /*
-				 * The mouse should capture movement using optical detection
-				 */
+			// 'R1' and 'R1.1' are the IDs (short names) of the requirements.
+			// Nesting only organizes the requirements, it is not a trace.
+			requirement <'R1'> 'Movement Capture' {
+				doc /* The mouse shall capture the movement of the user. */
+				requirement <'R1.1'> Optical {
+					doc /* The mouse should capture movement using optical detection */
+				}
+			}
+			// A derivation is a trace between requirements, here from the system analysis to the logical architecture
+			#derivation connection {
+				end #original ::> SA::Requirements::'Cursor Control';
+				end #derive ::> 'Movement Capture';
 			}
 		}
 	}
@@ -239,6 +251,8 @@ occurrence def <SE> OpticalMouseModel {
 
 				part 'Optical Sensor Module' : BehaviorComponent {
 				    doc description /*Captures surface movement using optical detection.*/
+	                // The Optical Sensor Module satisfies the requirement; the satisfy is owned by the satisfying element
+	                satisfy LA::Requirements::'Movement Capture'.Optical;
 	                :>> isActor = false;
 	                :>> isHuman = false;
 	                //A Property Value in a model created in SysML v2 carries its unit. The description of a property value is a doc.
