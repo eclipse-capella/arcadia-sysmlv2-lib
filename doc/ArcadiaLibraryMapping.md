@@ -121,6 +121,35 @@ Not Applicable
 - the Functions and Structure packages have by default a root action and part (except the Structure package of OA: Capella has no root component in OA). It is up to the tooling to prevent creating actions at the same level, or parts (unless they are Actors).
 - The Top level element of the model "occurrence def <My_Model_Short_Name> 'My Model Name' {" has a shortname, as this may be useful for referencing elements with their namespaces across models. Nevertheless, while the short names of Arcadia engineering perspectives are hardcoded (OA/SA/LA...), it is not the case for the top level element: this would lead to duplicate short names, ie namespaces conflict resolutions. The name and short name of the top level model element has to be given by the user when creating a Capella project
 
+### Capella Packages (`*Pkg`) (no library concept)
+
+#### Library extract
+```
+None: a Capella package is a plain SysML v2 package, wherever it sits in Capella: nested in the second-level package that matches its content (Functions, Capabilities, Interfaces, Data, Structure, Requirements), in another package, in a function or in a component.
+```
+
+#### Mappings
+| Concept in v2 library | Concept in SysML v2 | Capella desktop implementation | Concept meaning | Rationale | Example | Representation |
+|-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
+| None | package | Operational Activity Pkg / System Function Pkg / Logical Function Pkg / Physical Function Pkg (FunctionPkg) | Organizes functions; can be owned by a package or by a function | See below | package 'Power Management' { action 'Manage Power' : Function; } | A folder node in the model explorer tree |
+| None | package | Operational Capability Pkg / Capability Pkg / Capability Realization Pkg / Mission Pkg | Organizes capabilities and missions | See below | package 'Maintenance'; | Same as above |
+| None | package | Interface Pkg | Organizes interfaces and exchange items | See below | package 'User Interfaces'; | Same as above |
+| None | package | Data Pkg | Organizes classes, data types, collections, units, signals and messages | See below | package 'Status Data' { item batteryLevel : ExchangeItem; } | Same as above |
+| None | package | Entity Pkg / System Component Pkg / Logical Component Pkg / Physical Component Pkg | Organizes components and actors; can be owned by a package or by a component | See below | package 'External Actors' { part technician : Component { :>> isActor = true; } } | Same as above |
+
+#### Additional Information:
+- In the Capella metamodel, all these packages are Structures mapped to UML Packages: pure organizational elements, which can contain sub-packages of the same kind. The native SysML v2 equivalent is the package, so no library concept is needed.
+- The kind of a Capella package is not stored in the SysML v2 model. Tooling may display all packages identically (one folder representation), which is simpler and faster. What a package can contain follows from where it is: the second-level package in which it is nested, or the function or component that owns it. Tooling can restrict its content accordingly, as already done for `Functions` and `Structure`.
+- In Capella, functions own function packages and components own component packages (`OperationalActivity`, `SystemFunction`, `LogicalFunction`, `PhysicalFunction`, `SystemComponent`, `LogicalComponent`, `PhysicalComponent`; see the Capella metamodel). The same native package is used: it is nested in the body of the action or of the part (checked with the SysML v2 pilot implementation 0.63.1). See `'Motion Filtering'` and `'Mechanical Parts'` in the example.
+- The Capella rule that Data, Interface and Mission packages can only be created under other packages is not enforced in Capella for SysON: for simplicity and homogeneity, any package can be created where a package is allowed.
+- Description, status and the other fields of a Capella element are rarely used on these packages. A SysML v2 package cannot be specialized, so no dedicated element can be defined in the library (the same limitation applies to the packages of the engineering perspectives). If these fields are needed, a model can carry a `doc description /* ... */` and the standard `@StatusInfo` metadata on any package, and the tooling can cover them.
+- Choosing the plain package limits what is put in the library and keeps the models as close as possible to a classical use of SysML v2. This choice can be revisited later, but it is not expected to be.
+- A package is not annotated with `ArcadiaPackage`: its engineering perspective is given by the closest enclosing package annotated with `ArcadiaPackage` (same principle as for components).
+- Capella packages that are not mapped: Role Pkg (roles are not mapped, see "Allocated Roles" below), Concept Pkg (operational concepts are not in the library), Configuration Item Pkg (EPBS), Generic Pkg and Property Value Pkg.
+- Elements contained in a package are, for functions, components and capabilities, usages directly owned by a package, which is the situation the default structure tries to avoid (see "default model structure" above). This is accepted here, as it is the usual SysML v2 practice (OMG training, Annex A, Apollo 11); it is a limitation of the SysML v2 specification rather than a modeling choice of this library.
+- A package nested in an action or a part does not make its elements features of that action or part: checked with the pilot, `'Filter Noise'` in `'Root Function'::'Motion Filtering'` has no featuring type, unlike a sub-action declared directly in `'Root Function'`. The nesting is a namespace (`'Root Function'::'Motion Filtering'::'Filter Noise'`). In Capella the functions of a function package of a function are its sub-functions (derived `subFunctions` of the metamodel: functions owned directly, plus those owned by its packages and sub-packages), so the tooling derives the sub-functions the same way: direct sub-actions, plus the actions of its nested packages. The same applies to the components of a component package: the sub-components of a component are the usages it owns directly plus those owned by its packages and sub-packages. In Capella, the derived `subLogicalComponents` and `subPhysicalComponents` only consider the parts owned directly by the component, whereas the component breakdown of the Semantic Browser also goes through component packages; this library follows the latter.
+- TODO: ask Thales whether the description and status fields of Capella packages are really used (owner: Obeo, with Thales).
+
 ### `Component` PartDefinition
 
 #### Library extract
