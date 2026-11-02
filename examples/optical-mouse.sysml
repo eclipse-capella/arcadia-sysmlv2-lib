@@ -100,7 +100,17 @@ occurrence def <SE> OpticalMouseModel {
 	   	    		succession first 'Root Function'.'Capture Movement' then 'Root Function'.'Transform Raw Optical Data';
 	   	    		succession first 'Root Function'.'Transform Raw Optical Data' then done;
 	   	    	}
+
+	   	    	// A Capella Function Package owned by a function: a package nested in the action
+	   	    	package 'Motion Filtering' {
+	   	    		action 'Filter Noise' : Function;
+	   	    	}
 	   	    }
+
+			// A Capella Function Package: a plain nested package
+			package 'Power Management' {
+				action 'Manage Power' : Function;
+			}
     	}
 
 		package Capabilities {
@@ -117,15 +127,30 @@ occurrence def <SE> OpticalMouseModel {
 				ref part :>> involvedComponents = (system.'Optical Sensor Unit', system.'Mouse Controller');
 			}
 
+			// A Capella Capability Package
+			package 'Maintenance';
 		}
-		package Interfaces;
+		// A Capella Interface Package
+		package Interfaces {
+			package 'User Interfaces';
+		}
 		package Data {
    	    	item rawOpticalDataX: ExchangeItem;
    	    	item rawOpticalDataY: ExchangeItem;
+			// A Capella Data Package
+			package 'Status Data' {
+				item batteryLevel : ExchangeItem;
+			}
 		}
 		package Structure {
 			private import Functions::*;
 			private import Data::*;
+			// A Capella Component Package (here for actors)
+			package 'External Actors' {
+				part technician : Component {
+					:>> isActor = true;
+				}
+			}
 			part computerUser : Component {
 				:>> isActor = true;
 			}
@@ -148,6 +173,10 @@ occurrence def <SE> OpticalMouseModel {
 
 				part 'Mouse Controller' : Component {
 	                doc description /*Manages mouse peripherals*/
+	                // A Capella Component Package owned by a component: a package nested in the part
+	                package 'Mechanical Parts' {
+	                	part 'Mouse Casing' : Component;
+	                }
 	                :>> isActor = false;
 	                :>> isHuman = false;
 	                perform 'Root Function'.'Transform Raw Optical Data';
