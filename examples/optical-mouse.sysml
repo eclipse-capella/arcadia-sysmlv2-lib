@@ -13,6 +13,9 @@
 occurrence def <SE> OpticalMouseModel {
 	metadata ArcadiaPackage {engineeringPerspective = ArcadiaEngineeringPerspective::SystemEngineering;}
     private import Arcadia::*;
+	private import ScalarValues::Integer;
+	private import SI::kg;
+	private import SI::W;
 	private import ModelingMetadata::*;
 	private import KerML::FeatureDirectionKind;
 
@@ -77,6 +80,11 @@ occurrence def <SE> OpticalMouseModel {
 	            	// Corresponds to a Capella Function Realization: this Logical Function realizes the System Function 'Move Cursor'.
 	            	// The Realization is owned by the realizing element, which is designated by 'self'.
 	            	allocation : Realization allocate SA::Functions::'Root Function'.'Move Cursor' to self;
+	            	//Corresponds to a Capella Property Value Group and its Property Values (native Capella property values have no unit)
+	            	attribute 'Safety' {
+	            		attribute 'Safety Class' : Integer = 2;
+	            		attribute 'Certified' : Boolean = false;
+	            	}
 	        	}
 
 	   	    	action 'Transform Raw Optical Data' : Function {
@@ -233,6 +241,13 @@ occurrence def <SE> OpticalMouseModel {
 				    doc description /*Captures surface movement using optical detection.*/
 	                :>> isActor = false;
 	                :>> isHuman = false;
+	                //A Property Value in a model created in SysML v2 carries its unit. The description of a property value is a doc.
+	                attribute 'Mass' = 0.4 [kg] {
+	                	doc description /*Mass of the module without cable.*/
+	                }
+	                attribute 'Budget' {
+	                	attribute 'Power' = 2.5 [W];
+	                }
 	            }
 	        }
 		}
