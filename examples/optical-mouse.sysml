@@ -102,17 +102,9 @@ occurrence def <SE> OpticalMouseModel {
 	   	    	flow 'Optical Data' : FunctionalExchange of :>> payload = (rawOpticalDataX, rawOpticalDataY)
 	   	    		from 'Capture Movement'.FOP1 to 'Transform Raw Optical Data'.FIP2;
 
+	   	    	// Binding the Exchange Item(s) to the flow
+	   	    	//bind 'Optical Data'.payload = (rawOpticalDataX, rawOpticalDataY);
 
-	   	    	// A Functional Chain
-	   	    	action 'read movement' : FunctionalChain {
-	   	    		ref :>> involvedFunctionalExchanges = ('Optical Data');
-	   	    		perform 'Root Function'.'Capture Movement';
-	   	    		perform 'Root Function'.'Transform Raw Optical Data';
-
-	   	    		succession first start then 'Root Function'.'Capture Movement';
-	   	    		succession first 'Root Function'.'Capture Movement' then 'Root Function'.'Transform Raw Optical Data';
-	   	    		succession first 'Root Function'.'Transform Raw Optical Data' then done;
-	   	    	}
 
 	   	    	// A Capella Function Package owned by a function: a package nested in the action
 	   	    	package 'Motion Filtering' {
@@ -131,8 +123,20 @@ occurrence def <SE> OpticalMouseModel {
 			private import Structure::*;
 			occurrence 'Move Cursor on Screen' : Capability  {
 				ref action :>> involvedFunctions = ('Root Function'.'Capture Movement', 'Root Function'.'Transform Raw Optical Data');
-				ref action :>> involvedFunctionalChains = ('Root Function'.'read movement');
 				ref part :>> involvedComponents = (system.'Optical Sensor Unit', system.'Mouse Controller');
+
+				// A Functional Chain owned by the Capability (as in Capella, where a Functional Chain can be owned
+				// by a Function or by a Capability). A chain owned by the Capability is involved by construction:
+				// involvedFunctionalChains only lists the chains owned elsewhere.
+				action 'read movement' : FunctionalChain {
+					ref flow :>> involvedFunctionalExchanges = ('Root Function'.'Optical Data');
+					perform 'Root Function'.'Capture Movement';
+					perform 'Root Function'.'Transform Raw Optical Data';
+
+					succession first start then 'Root Function'.'Capture Movement';
+					succession first 'Root Function'.'Capture Movement' then 'Root Function'.'Transform Raw Optical Data';
+					succession first 'Root Function'.'Transform Raw Optical Data' then done;
+				}
 			}
 
 			occurrence 'Provide Interface to User' : Mission  {
