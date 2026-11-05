@@ -68,13 +68,13 @@ library package Arcadia {
 
 	action def Function :> ArcadiaElement {
 	    private doc /* A  generic Arcadia Function, used across all Arcadia engineering perspectives. */
-        alias subFunctions for subactions;
     }
 
     action def FunctionalChain :> ArcadiaElement  {
         private doc /*  A  generic Arcadia Functional Chain, used across all Arcadia engineering perspectives. */
         ref flow involvedFunctionalExchanges: FunctionalExchange[*];
-        alias involvedFunctions for subactions;
+        perform action involvedFunctions: Function[*];
+        perform action referencedFunctionalChains: FunctionalChain[*];
     }
 
 	flow def FunctionalExchange :> ArcadiaElement{
