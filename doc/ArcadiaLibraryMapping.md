@@ -230,6 +230,7 @@ Not Applicable
 	}	
 ```
 - We do not migrate the "Pre/Post conditions" fields on Functional Chains. This is rarely used.
+- Ownership: as in Capella, a `FunctionalChain` action usage is owned either by a `Function` action usage or by a `Capability` occurrence usage (see the Capability section). The example above shows a chain owned by a Function; `optical-mouse.sysml` shows a chain owned by a Capability.
 
 - TODO Open Point : in Capella, Functional Chains have trace objects that point to the actual Functions/Exchanges, and this is particularly useful to model control flow. Evaluate whether the current solution is satisfactory (using successions). In the same spirit, Allocation between Component and Functions are Trace. Do we need it? Especially in the context of doing difference/merge of models to make these more explicit to users.
 - TODO Open Point : "Functional chain involvement Link" in Capella has an "Exchange Context" property. Similar to what is on Scenarios (Control Flow), used to specify values, for example. Evaluate how we should migrate that depending on our target with Functional Chains and Scenarios.
@@ -409,11 +410,25 @@ Not Applicable
 |-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
 | occurrence def Capability :> ArcadiaElement | None | Capability | Ability required from the system, to provide a service that supports the achievement of a mission.| Arcadia Capabilities are represented as a dedicated SysML v2 concept to preserve their role as abstract, reusable system abilities that are independent of specific behaviors, scenarios, or structural realizations. | occurrence 'Move Cursor on Screen' : Capability | a rounded Node |
 | ref action involvedFunctions: Function[*] | None | involvedFunctions | Functions involved for realizing the capability | Arcadia needed information | ref action :>> involvedFunctions = ('Capture Movement', 'Transform Raw Optical Data') | in the property view |
-| ref action involvedFunctionalChains: FunctionalChain[*] | None | involvedFunctionalChains | Functional Chains involved for realizing the capability | Arcadia needed information | ref action :>> involvedFunctionalChains = ('read movement') | in the property view |
+| ref action involvedFunctionalChains: FunctionalChain[*] | None | involvedFunctionalChains (Involved Functional Chains / Involved Operational Processes) | Functional Chains owned elsewhere (in a Function or in another Capability) and involved in the capability. The Functional Chains owned by the Capability (see below) are involved by construction and are not repeated here. | Arcadia needed information; the full list of involved chains (owned + referenced) is derived by tooling, as `involvedFunctions` is for Functional Chains | ref action :>> involvedFunctionalChains = ('Root Function'.'read movement') | in the property view |
 | ref part involvedComponents: Component[*] | None | involvedComponents | Components involved for realizing the capability | Arcadia needed information | ref part :>> involvedComponents = ('Optical Sensor Unit', 'Mouse Controller') | edges |
 
 #### Additional Information:
 - Capabilities at the LA/PA level are not widely used. Nevertheless, one may not have modeled SA and OA, so it is needed. Generally LA/PA Capabilities are identical to the ones defined at the SA layer
+- **Functional Chains owned by a Capability.** In Capella a Functional Chain (or an Operational Process) is owned either by a Function or by a Capability (`AbstractFunctionalChainContainer`); a chain created from a diagram contextualised on a Capability, or created directly under a Capability, is owned by that Capability and Capella adds the corresponding involvement automatically. The same structure is kept in SysML v2: a `FunctionalChain` action usage may be owned by a `Function` or by a `Capability` occurrence usage (an occurrence usage may own action usages; this is also how a SysML v2 `use case` owns its sub-actions). Nothing is added to the library for this. A chain owned by the Capability is involved by construction; `involvedFunctionalChains` only references the chains owned elsewhere, so that the information is stored once. Example:
+```
+	occurrence 'Move Cursor on Screen' : Capability {
+		// chain owned by the capability: involved by construction
+		action 'read movement' : FunctionalChain {
+			ref flow :>> involvedFunctionalExchanges = ('Root Function'.'Optical Data');
+			perform 'Root Function'.'Capture Movement';
+			perform 'Root Function'.'Transform Raw Optical Data';
+		}
+		// chain owned by a Function (or by another Capability): referenced
+		ref action :>> involvedFunctionalChains = ('Root Function'.'diagnostic chain');
+	}
+```
+- Migration from Capella: a Functional Chain owned by a Capability becomes an action usage owned by the Capability occurrence; the Capella involvement from that Capability to its own chain is not migrated (it is implied by the ownership); an involvement to a chain owned elsewhere becomes an entry of `involvedFunctionalChains`. In the Capella reference model (In-Flight Entertainment System), 31 of the 37 Functional Chains are owned by Capabilities, each with the corresponding involvement; the other 6 (Operational Processes of the Operational Analysis, test chains of the Physical Architecture) are owned by Functions and involved by no Capability.
 - TODO Open Point: Pre and Post Conditions? Inheritance? extends and includes relationships?
 	
 ###  `Mission` OccurrenceDefinition
