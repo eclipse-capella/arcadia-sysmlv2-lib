@@ -31,7 +31,6 @@ occurrence def <SE> OpticalMouseModel {
 		package Structure {
 			private import Data::*;
 			private import Functions::*;
-			part system : Component;
 		}
 		package Requirements;
 	}
