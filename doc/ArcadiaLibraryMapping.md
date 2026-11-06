@@ -275,17 +275,15 @@ None: a Capella package is a plain SysML v2 package, wherever it sits in Capella
 
 ```
 	action def Function :> ArcadiaElement {
-	    private doc /* A generic Arcadia Function, used across all Arcadia engineering perspectives. */
-        alias subFunctions for subactions;
+	    private doc /* A  generic Arcadia Function, used across all Arcadia engineering perspectives. */
     }
 ```
 
 #### Mappings
-
-| Concept in v2 library                 | Concept in SysML v2       | Capella desktop implementation                                                | Concept meaning                                                                                                                          | Rationale                                                                      | Example                                       | Representation                                                                                                      |
-| ------------------------------------- | ------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| action def Function :> ArcadiaElement | None                      | Operational Activity / System Function / Logical Function / Physical Function | An action, an operation, or a service, performed by the system or one of its components, or also by an actor interacting with the system | Reusing SysML v2 concept, Functions are Actions Definitions by essence.        | action 'Capture Movement' : Function          | Represented as Green nodes                                                                                          |
-| alias subFunctions for subactions     | (relationship) subactions | Contained Functions (specialized by layer)                                    | list of functions contained directly (1 level)                                                                                           | Reusing SysML v2 concept while renaming it for coherency with Arcadia concepts | to be automatically calculated by the tooling | Sub-Functions are displayed as Nodes in Nodes in a LDFB and as a read-only list in the property view of a component |
+| Concept in v2 library | Concept in SysML v2 | Capella desktop implementation | Concept meaning | Rationale | Example | Representation |
+|-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
+| action def Function :> ArcadiaElement | None | Operational Activity / System Function / Logical Function / Physical Function | An action, an operation, or a service, performed by the system or one of its components, or also by an actor interacting with the system | Reusing SysML v2 concept, Functions are Actions Definitions by essence. | action 'Capture Movement' : Function | Represented as Green nodes |
+| None | action usages typed Function, nested in the Function | Contained Functions (specialized by layer) |  list of functions contained directly (1 level) | Native SysML v2 containment. No alias is defined: `subactions` is the list of all the composite actions, it also contains the Functional Chains and the Functional Exchanges owned by the Function (a flow usage is an action usage), so it is not the list of sub-functions | to be automatically calculated by the tooling: the action usages typed Function owned by the Function | Sub-Functions are displayed as Nodes in Nodes in a LDFB and as a read-only list in the property view of a component |
 
 #### Additional Information:
 
@@ -324,20 +322,21 @@ None: a Capella package is a plain SysML v2 package, wherever it sits in Capella
 
 ```
     action def FunctionalChain :> ArcadiaElement  {
-        private doc /* A generic Arcadia Functional Chain, used across all Arcadia engineering perspectives. */
+        private doc /*  A  generic Arcadia Functional Chain, used across all Arcadia engineering perspectives. */
         ref involvedFunctionalExchanges: FunctionalExchange[*];
-        alias involvedFunctions for subactions;
+        perform action involvedFunctions: Function[*];
+        perform action referencedFunctionalChains: FunctionalChain[*];
     }
 ```
 
 #### Mappings
-
-| Concept in v2 library                                   | Concept in SysML v2           | Capella desktop implementation                                     | Concept meaning                                                                                                                      | Rationale                                                                                                                      | Example                                                         | Representation                                                                    |
-| ------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| action def FunctionalChain :> ArcadiaElement            | None                          | Operational Process / Functional Chain                             | A usage of the system in a given context. It is a logical organization of functions and functional exchanges to fulfil a Capability. | Reusing SysML v2 action def while adapting it to represent Arcadia Functional Chains, see below.                               | see below                                                       | Paths (exchanges) are highlighted with rotating colors                            |
-| ref involvedFunctionalExchanges: FunctionalExchange[*]; | None                          | involvedFunctionalExchanges                                        | Functional Exchanges involved in the chain                                                                                           | key relation for Functional chains                                                                                             | see previous line                                               | see previous line                                                                 |
-| None                                                    | Successions and Control Nodes | Pre-condition/Post-condition + Sequencing within Functional chains | Control flow semantics within Functional chains                                                                                      | Reusing SysML v2 Control Flow concepts                                                                                         | succession first start then 'Root Function'.'Capture Movement'; | mostly edges for sequencing, Nodes for Control Nodes and property view for guards |
-| alias involvedFunctions for subactions;                 | perform                       | involvedFunctions                                                  | Functions involved in the chain                                                                                                      | Reusing SysML v2 concept while renaming it for coherency with Arcadia concepts (subactions is returning all performed actions) | to be automatically calculated by the tooling                   | see previous line                                                                 |
+| Concept in v2 library | Concept in SysML v2 | Capella desktop implementation | Concept meaning | Rationale | Example | Representation |
+|-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
+| action def FunctionalChain :> ArcadiaElement | None | Operational Process / Functional Chain | A usage of the system in a given context. It is a logical organization of functions and functional exchanges to fulfil a Capability. | Reusing SysML v2 action def while adapting it to represent Arcadia Functional Chains, see below. | see below | Paths (exchanges) are highlighted with rotating colors |
+| ref involvedFunctionalExchanges: FunctionalExchange[*]; | None | involvedFunctionalExchanges | Functional Exchanges involved in the chain |  key relation for Functional chains | see previous line | see previous line |
+| None | Successions and Control Nodes | Pre-condition/Post-condition + Sequencing within Functional chains| Control flow semantics within Functional chains |  Reusing SysML v2 Control Flow concepts | succession first start then 'Root Function'.'Capture Movement'; | mostly edges for sequencing, Nodes for Control Nodes and property view for guards |
+| perform action involvedFunctions: Function[*]; | perform | involvedFunctions | Functions involved in the chain | Reusing the SysML v2 `perform` (a reference to an existing Function). The library declares the role and each `perform` of a Function states it, so the list of involved Functions is stored in the model and tools do not have to work it out from the types of the performed actions. `subactions` cannot be used: it contains the owned composite actions, not the performed ones | perform 'Root Function'.'Capture Movement' :> involvedFunctions; | Functions are displayed as nodes of the chain, in the sequence |
+| perform action referencedFunctionalChains: FunctionalChain[*]; | perform | FunctionalChainReference (referencedFunctionalChain) | Functional Chains referenced by the chain, each one being a step of its sequence | Same mechanism as for the Functions: a `perform` of the referenced chain, with the role. See Composite Functional Chains below | perform 'Root Function'.'read movement' :> referencedFunctionalChains; | A node of the chain, that can be folded or unfolded |
 
 #### Additional Information:
 
@@ -348,9 +347,9 @@ None: a Capella package is a plain SysML v2 package, wherever it sits in Capella
 ```
 	action myChain : FunctionalChain {
 		ref :>> involvedFunctionalExchanges = (fe1, fe2);
-	   	perform f1;
-	   	perform f2;
-		perform f3;
+	   	perform f1 :> involvedFunctions;
+	   	perform f2 :> involvedFunctions;
+		perform f3 :> involvedFunctions;
 		succession first start then f1;
 	   	succession first f1 then f2;
 	   	succession first f3 then done;
@@ -358,11 +357,32 @@ None: a Capella package is a plain SysML v2 package, wherever it sits in Capella
 ```
 
 - We do not migrate the "Pre/Post conditions" fields on Functional Chains. This is rarely used.
+- Involved Functions and referenced Functional Chains: a chain does not own the Functions it involves, it `perform`s them. A `perform` is a reference to the performed action, not a composite sub-action, so it is not in `subactions`. The library therefore declares two roles, `involvedFunctions` and `referencedFunctionalChains`, that each `perform` of the chain states with `:>`. The Function or the chain is stored once, in the `perform`; the list of involved Functions (or of referenced chains) of a chain is directly available in the model. Tools check that the role matches the type of the performed action (a Function for `involvedFunctions`, a Functional Chain for `referencedFunctionalChains`); a `perform` without role is valid SysML v2 but is not listed.
+- `involvedFunctions` and `involvedFunctionalExchanges` of a chain are local to the chain, as in Capella. The flattened content of a composite chain (all the Functions and exchanges, first and last functions...) is calculated by the tooling by following the references.
+
+#### Composite Functional Chains
+In Capella a Functional Chain can reference other Functional Chains (Functional Chain Reference). A reference is an involvement like the one of a Function: a step of the sequence of the chain, linked to its predecessors and successors, which can be the first or the last one. An involvement link can also end on a Function that is inside the referenced chain, typically to assemble two chains by an exchange between a function of each one, or through a function that belongs to both.
+
+In SysML v2 the reference is a `perform` of the referenced chain (the same performance, not a copy of it), with the role `referencedFunctionalChains`. It is ordered with successions like a Function. A link ending inside the referenced chain is a succession whose end is a feature chain through the referenced chain. The exchange carried by such a link is listed in `involvedFunctionalExchanges` of the composite chain, which owns the link. Example (see the optical-mouse example):
+```
+	action 'move pointer' : FunctionalChain {
+		ref flow :>> involvedFunctionalExchanges = ('Motion Data');
+		perform 'Root Function'.'read movement' :> referencedFunctionalChains;
+		perform 'Root Function'.'Update Pointer Position' :> involvedFunctions;
+
+		succession first start then 'Root Function'.'read movement';
+		succession first 'Root Function'.'read movement'.'Transform Raw Optical Data' then 'Root Function'.'Update Pointer Position';
+		succession first 'Root Function'.'Update Pointer Position' then done;
+	}
+```
+- Migration from Capella: a Functional Chain Reference becomes a `perform` of the referenced chain with the role `referencedFunctionalChains`; an involvement link whose source or target is a reference, or a function inside a referenced chain, becomes a succession, whose end is a feature chain through the referenced chain when it is inside it; the exchange of the link is added to `involvedFunctionalExchanges` of the composite chain.
+- A link between two involvements of the same Function (two chains assembled through a function that belongs to both) gives no succession: the two chains perform the same Function, hence the same performance, so the junction is already expressed. TODO to be validated by Weilkiens.
+- A chain must not reference itself, directly or through other chains (Capella validation rule). This is not checked by SysML v2 tools, it is up to the Arcadia tooling to prevent it.
+- TODO Open Point: a chain referencing the same chain several times is not handled (SysML v2 would use a multiplicity on the `perform`). It does not occur in the Capella reference model (In-Flight Entertainment System: 5 references, none of them repeated in the same chain); to be studied if needed.
 
 - TODO Open Point : in Capella, Functional Chains have trace objects that point to the actual Functions/Exchanges, and this is particularly useful to model control flow. Evaluate whether the current solution is satisfactory (using successions). In the same spirit, Allocation between Component and Functions are Trace. Do we need it? Especially in the context of doing difference/merge of models to make these more explicit to users.
 - TODO Open Point : "Functional chain involvement Link" in Capella has an "Exchange Context" property. Similar to what is on Scenarios (Control Flow), used to specify values, for example. Evaluate how we should migrate that depending on our target with Functional Chains and Scenarios.
-- TODO : Manage the fact that Function Chains can reference Function Chains
-- TODO Open Point: Functional Chains in Capella have a field Kind (SIMPLE, COMPOSITE, FRAGMENT) - rarely used?
+- TODO Open Point: Functional Chains in Capella have a field Kind (SIMPLE, COMPOSITE, FRAGMENT). It can be edited by the user but it is not set or used by Capella itself (in particular a chain that references other chains is not set to COMPOSITE automatically), and none of the 37 chains of the Capella reference model (In-Flight Entertainment System) sets it. Probably rarely used, to be confirmed on other models before deciding not to migrate it.
 - TODO Open Point: Functional Chains in Capella have a field "EnactedFunctionalBlocks" (expert/semantic view). We should add in the library a derived relationship involvedComponents that calculate the components involved in a Functional chain (useful for the semantic browser for instance)
 
 ### `Functional Exchange` FlowDefinition

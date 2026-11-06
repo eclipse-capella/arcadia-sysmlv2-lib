@@ -94,6 +94,12 @@ occurrence def <SE> OpticalMouseModel {
 
 	   	    	action 'Transform Raw Optical Data' : Function {
 	   	    		in FIP2 [0..*] : ExchangeItem = (rawOpticalDataX, rawOpticalDataY);
+
+	   	    		out FOP3 [0..*] : ExchangeItem = (motionVector);
+	   	    	}
+
+	   	    	action 'Update Pointer Position' : Function {
+	   	    		in FIP4 [0..*] : ExchangeItem = (motionVector);
 	   	    		// This Logical Function also realizes the System Function 'Move Cursor' (a System Function can be realized by several Logical Functions).
 	   	    		allocation : Realization allocate SA::Functions::'Root Function'.'Move Cursor' to self;
 	   	    	}
@@ -102,18 +108,36 @@ occurrence def <SE> OpticalMouseModel {
 	   	    	flow 'Optical Data' : FunctionalExchange of :>> payload = (rawOpticalDataX, rawOpticalDataY)
 	   	    		from 'Capture Movement'.FOP1 to 'Transform Raw Optical Data'.FIP2;
 
+	   	    	flow 'Motion Data' : FunctionalExchange
+	   	    		from 'Transform Raw Optical Data'.FOP3 to 'Update Pointer Position'.FIP4;
+
+	   	    	// Binding the Exchange Item(s) to the flow
+	   	    	//bind 'Optical Data'.payload = (rawOpticalDataX, rawOpticalDataY);
+
 
 	   	    	// A Functional Chain
 	   	    	action 'read movement' : FunctionalChain {
 	   	    		ref :>> involvedFunctionalExchanges = ('Optical Data');
-	   	    		perform 'Root Function'.'Capture Movement';
-	   	    		perform 'Root Function'.'Transform Raw Optical Data';
+	   	    		perform 'Root Function'.'Capture Movement' :> involvedFunctions;
+	   	    		perform 'Root Function'.'Transform Raw Optical Data' :> involvedFunctions;
 
 	   	    		succession first start then 'Root Function'.'Capture Movement';
 	   	    		succession first 'Root Function'.'Capture Movement' then 'Root Function'.'Transform Raw Optical Data';
 	   	    		succession first 'Root Function'.'Transform Raw Optical Data' then done;
 	   	    	}
 
+	   	    	// A composite Functional Chain: it references the chain above as a step of its sequence, and is assembled with
+	   	    	// 'Update Pointer Position' by the exchange 'Motion Data', which starts from a function inside the referenced chain
+	   	    	action 'move pointer' : FunctionalChain {
+	   	    		ref flow :>> involvedFunctionalExchanges = ('Motion Data');
+	   	    		perform 'Root Function'.'read movement' :> referencedFunctionalChains;
+	   	    		perform 'Root Function'.'Update Pointer Position' :> involvedFunctions;
+
+	   	    		succession first start then 'Root Function'.'read movement';
+	   	    		succession first 'Root Function'.'read movement'.'Transform Raw Optical Data' then 'Root Function'.'Update Pointer Position';
+	   	    		succession first 'Root Function'.'Update Pointer Position' then done;
+            }
+            
 	   	    	// A Capella Function Package owned by a function: a package nested in the action
 	   	    	package 'Motion Filtering' {
 	   	    		action 'Filter Noise' : Function;
@@ -124,7 +148,7 @@ occurrence def <SE> OpticalMouseModel {
 			package 'Power Management' {
 				action 'Manage Power' : Function;
 			}
-    	}
+    }
 
 		package Capabilities {
 			private import Functions::*;
@@ -148,9 +172,11 @@ occurrence def <SE> OpticalMouseModel {
 			package 'User Interfaces';
 		}
 		package Data {
-   	    	item rawOpticalDataX: ExchangeItem;
-   	    	item rawOpticalDataY: ExchangeItem;
-			// A Capella Data Package
+   	  item rawOpticalDataX: ExchangeItem;
+   	  item rawOpticalDataY: ExchangeItem;
+   	  item motionVector: ExchangeItem;
+			
+      // A Capella Data Package
 			package 'Status Data' {
 				item batteryLevel : ExchangeItem;
 			}
