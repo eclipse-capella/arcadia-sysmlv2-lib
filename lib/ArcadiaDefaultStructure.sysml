@@ -17,7 +17,6 @@ occurrence def <My_Model_Short_Name> 'My Model Name' {
 		engineeringPerspective = ArcadiaEngineeringPerspective::SystemEngineering;
 	}
 	private import Arcadia::*;
-	private import ScalarValues::Boolean;
 	private import ModelingMetadata::*;
 	private import KerML::FeatureDirectionKind;
 	

@@ -17,7 +17,7 @@ The Arcadia SysML v2 library provides an implementation of the Arcadia methodolo
 - We acknowledge that this approach may make migration from Capella (Desktop) models to SysML v2 models more challenging. However, enabling such automated migration remains within our scope.
 - We do not aim to support the full detailed and technical Capella Desktop metamodel. Based on more than 15 years of Capella usage worldwide, we focus on the concepts that are actually used by the community.
 - We choose to rely on generic concepts (Functions, Components, Ports) rather than engineering-perspective–specific concepts (e.g., Logical Functions, Physical Functions) in order to facilitate tooling implementation and reuse, such as moving or copying functions from one engineering perspective to another.
-- the EPBS engineering perspective is currently out of scope.
+- the EPBS engineering perspective has not been worked on yet: only its place in the default model structure exists, and it is expected to be covered later.
 
 ## Key Concepts & Mappings
 
@@ -37,8 +37,8 @@ The `Library extract` blocks are copies of `lib/arcadia.sysml`. The code snippet
 |-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
 | abstract occurrence def ArcadiaElement | N/A | Complex inheritance hierarchy | N/A | Top level abstract element for reuse among all elements | part def Component :> ArcadiaElement | N/A |
 |  (not translated) | (not translated) | (Attribute) summary | short description of an element | Field rarely used, hence not reproduced in v2 | N/A | N/A |
-|  (not translated) | (not translated) | (Attribute) Visible in Documentation | self expl. | Legacy field, hence not reproduced in v2 | N/A | N/A |
-|  (not translated) | (not translated) | (Attribute) Visible for Traceability | self expl. | Legacy field, hence not reproduced in v2 | N/A | N/A |
+|  (not translated) | (not translated) | (Attribute) Visible in Documentation | self explanatory | Legacy field, hence not reproduced in v2 | N/A | N/A |
+|  (not translated) | (not translated) | (Attribute) Visible for Traceability | self explanatory | Legacy field, hence not reproduced in v2 | N/A | N/A |
 | None | name | name | name of an element | Reusing SysML v2 concept | N/A | Label typically displayed on nodes and edges on diagrams, name field in the property views |
 | None | doc description /* */ | description | Full richtext description of an element (HTML) | Reusing SysML v2 concept, more information below | doc description /*Captures surface movement using optical detection.*/ | Richtext description in property views |
 | None | (Metadata Annotation) @StatusInfo | Progress Status | Used to manage the review status of model elements | Reusing SysML v2 concept - see below | @StatusInfo {status = StatusKind::tbd;} | Displayed as a dropdown box in the property view of any element |
@@ -59,14 +59,14 @@ The `Library extract` blocks are copies of `lib/arcadia.sysml`. The code snippet
 #### Library extract
 ```
     metadata def ArcadiaPackage {
-		private doc /* Used to annotate Top Level elements in an Arcadia model */
+		private doc /* Used to annotate the top-level element of an Arcadia model and its engineering perspective packages (OA, SA, LA, PA, EPBS) */
 		:> annotatedElement : SysML::Package;
 		:> annotatedElement : SysML::OccurrenceDefinition;
 		enum engineeringPerspective : ArcadiaEngineeringPerspective;
      }
 	
 	enum def ArcadiaEngineeringPerspective :> String { 
-    	/*private*/ doc /* flag to indicate which engineering perspective you're in.*/
+    	private doc /* flag to indicate which engineering perspective you're in.*/
        	enum OperationalAnalysis = "Operational Analysis";
        	enum SystemAnalysis = "System Analysis";
        	enum LogicalArchitecture = "Logical Architecture";
@@ -80,7 +80,7 @@ The `Library extract` blocks are copies of `lib/arcadia.sysml`. The code snippet
 #### Mappings
 | Concept in v2 library | Concept in SysML v2 | Capella desktop implementation | Concept meaning | Rationale | Example | Representation |
 |-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
-| metadata def ArcadiaPackage | None | N/A | annotate top level elements with the Arcadia perspectives | see overall library rationale | metadata ArcadiaPackage {engineeringPerspective = ArcadiaEngineeringPerspective::LogicalArchitecture;} |N/A|
+| metadata def ArcadiaPackage | None | N/A | annotate the top-level element of the model and the packages of the engineering perspectives (OA, SA, LA, PA, EPBS) with the Arcadia perspective; not used on the other packages | see overall library rationale | metadata ArcadiaPackage {engineeringPerspective = ArcadiaEngineeringPerspective::LogicalArchitecture;} |N/A|
 |enum def ArcadiaEngineeringPerspective :> String |N/A| N/A |List of Arcadia engineering perspectives, see below.| see overall library rationale | see above | N/A |
 
 #### Additional Information:
@@ -159,7 +159,7 @@ Not Applicable
 #### Library extract
 ```
 	action def Function :> ArcadiaElement {
-	    private doc /* A  generic Arcadia Function, used across all Arcadia engineering perspectives. */
+	    private doc /* A generic Arcadia Function, used across all Arcadia engineering perspectives. */
         alias subFunctions for subactions;
     }
 ```
@@ -202,7 +202,7 @@ Not Applicable
 #### Library extract
 ```
     action def FunctionalChain :> ArcadiaElement  {
-        private doc /*  A  generic Arcadia Functional Chain, used across all Arcadia engineering perspectives. */
+        private doc /* A generic Arcadia Functional Chain, used across all Arcadia engineering perspectives. */
         ref involvedFunctionalExchanges: FunctionalExchange[*];
         alias involvedFunctions for subactions;
     }
@@ -244,7 +244,7 @@ Not Applicable
 #### Library extract
 ```
 	flow def FunctionalExchange :> ArcadiaElement{
-	    private doc /* A  generic Arcadia Functional Exchange, used across all Arcadia engineering perspectives. */
+	    private doc /* A generic Arcadia Functional Exchange, used across all Arcadia engineering perspectives. */
 		ref item :>> payload : ExchangeItem [*];
 		end source : Function;
 		end target : Function;
@@ -276,7 +276,7 @@ Not Applicable
 #### Library extract
 ```
     interface def ComponentExchange :> ArcadiaElement {
-    	private doc /* A  generic Component Exchange, used across all Arcadia engineering perspectives.
+    	private doc /* A generic Component Exchange, used across all Arcadia engineering perspectives.
     	 * Functional Exchanges are allocated to a Component Exchange with ExchangeAllocation usages
     	 * (see ExchangeAllocation); the list of allocated Functional Exchanges is derived by tooling. */
         end cp1 : ComponentPort;
@@ -288,7 +288,7 @@ Not Applicable
 #### Mappings
 | Concept in v2 library | Concept in SysML v2 | Capella desktop implementation | Concept meaning | Rationale | Example | Representation |
 |-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
-| interface def ComponentExchange :> ArcadiaElement | None | (OA) Communication Mean, Component Exchange (see below) | A possible interaction between a source behavioural component and a destination behavioural component, likely to transmit exchange items via their ports | Reusing SysML v2 Interface definition | interface cable : ComponentExchange | An edge between 2 Component Ports |
+| interface def ComponentExchange :> ArcadiaElement | None | (OA) Communication Mean, Component Exchange (see below) | A possible interaction between a source behavioral component and a destination behavioral component, likely to transmit exchange items via their ports | Reusing SysML v2 Interface definition | interface cable : ComponentExchange | An edge between 2 Component Ports |
 | end cp1 : ComponentPort | None | sourcePort | see first line | Reusing SysML v2 concept | connect 'Optical Sensor Unit'.'Cable Connector' to 'Mouse Controller'.'Cable Connector' AND/OR flow 'Optical Sensor Unit'.'Cable Connector' to 'Mouse Controller'.'Cable Connector'; | N/A |
 | end cp2 : ComponentPort | None | targetPort | see first line | Reusing SysML v2 concept | see previous line | N/A |
 |  ref item allocatedExchangeItems: ExchangeItem[*] | None | conveyedInformations | see first line | Arcadia needed information |  ref item :>> allocatedExchangeItems = (Data::rawOpticalData);| in the property view of the exchange |
@@ -307,7 +307,7 @@ Not Applicable
 #### Library extract
 ```
 	port def ComponentPort :> ArcadiaElement {
-		private doc /* A  generic Arcadia Component Port, used across all Arcadia engineering perspectives. */
+		private doc /* A generic Arcadia Component Port, used across all Arcadia engineering perspectives. */
         attribute portDirection : FeatureDirectionKind;
 		ref item allocatedFunctionPorts: ExchangeItem [*];
     }
@@ -316,7 +316,7 @@ Not Applicable
 #### Mappings
 | Concept in v2 library | Concept in SysML v2 | Capella desktop implementation | Concept meaning | Rationale | Example | Representation |
 |-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
-|  port def ComponentPort :> ArcadiaElement | None | Component Port (see below) | A place of interaction for the component to which it is attached to other components or actors in its environment | Reusing SysML v2 Port definition | 	Port 'Cable Connector' : ComponentPort | A port on a Node |
+|  port def ComponentPort :> ArcadiaElement | None | Component Port (see below) | A place of interaction for the component to which it is attached to other components or actors in its environment | Reusing SysML v2 Port definition | 	port 'Cable Connector' : ComponentPort | A port on a Node |
 | attribute portDirection : FeatureDirectionKind | None | direction | see first line | Reusing SysML v2 concept | :>> portDirection = FeatureDirectionKind::'in'; | Change of icon (arrow) |
 | None | Reusing in and out features | conveyedInformations | see first line | Reusing SysML v2 concept | see below | property view |
 |  ref item allocatedFunctionPorts: ExchangeItem [*] | None | allocatedPort | In Capella, we allocate function ports to components ports | Arcadia needed information | ref item :>> allocatedFunctionPorts = ('Capture Movement'.FOP1); | a dashed edge between the 2 ports |
@@ -337,7 +337,7 @@ Not Applicable
 #### Library extract
 ```
     allocation def ExchangeAllocation :> ArcadiaElement {
-	    private doc /* A  generic Arcadia Exchange Allocation, used across all Arcadia engineering perspectives.
+	    private doc /* A generic Arcadia Exchange Allocation, used across all Arcadia engineering perspectives.
 	     * An Exchange Allocation is owned by the Component Exchange it allocates to, and is written
 	     * 'allocation : ExchangeAllocation allocate <functional exchange> to self;'. */
         end functionalExchange : FunctionalExchange;
@@ -364,7 +364,7 @@ Not Applicable
 #### Library extract
 ```
     allocation def Realization :> ArcadiaElement {
-	    private doc /* A  generic Arcadia Realization, used across all Arcadia engineering perspectives and for all kinds of
+	    private doc /* A generic Arcadia Realization, used across all Arcadia engineering perspectives and for all kinds of
 	     * Arcadia elements: an element (realizing) realizes an element of the previous engineering perspective (realized).
 	     * A Realization is owned by the realizing element, and is written
 	     * 'allocation : Realization allocate <realized element> to self;'.
@@ -399,7 +399,7 @@ Not Applicable
 #### Library extract
 ```
 	item def ExchangeItem :> ArcadiaElement{
-		private doc /* A  generic Arcadia ExchangeItem, used across all Arcadia engineering perspectives. */
+		private doc /* A generic Arcadia ExchangeItem, used across all Arcadia engineering perspectives. */
 	}
 ```
 
@@ -416,7 +416,7 @@ Not Applicable
 #### Library extract
 ```
 	requirement def ArcadiaRequirement :> ArcadiaElement{
-    	private doc /* A  generic Requirement, used across all Arcadia engineering perspectives.*/		
+    	private doc /* A generic Requirement, used across all Arcadia engineering perspectives.*/		
 	}
 ```
 
@@ -439,7 +439,7 @@ Not Applicable
 #### Library extract
 ```
 	occurrence def Capability :> ArcadiaElement {
-	    private doc /* A  generic Arcadia Capability, used across all Arcadia engineering perspectives. */
+	    private doc /* A generic Arcadia Capability, used across all Arcadia engineering perspectives. */
 		ref action involvedFunctions: Function[*];
 		ref action involvedFunctionalChains: FunctionalChain[*];
 		ref part involvedComponents: Component[*];
@@ -463,7 +463,7 @@ Not Applicable
 #### Library extract
 ```
  	occurrence def Mission :> ArcadiaElement {
-	    private doc /* A  generic Arcadia Mission, used across all Arcadia engineering perspectives. */
+	    private doc /* A generic Arcadia Mission, used across all Arcadia engineering perspectives. */
 		ref part involvedComponents: Component[*];
 		ref occurrence exploitedCapabilities: Capability[*];
 	}
