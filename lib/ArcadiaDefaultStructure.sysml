@@ -10,12 +10,13 @@
  *     Obeo and Thales Global Services - initial implementation
  */
 
+// The root functions and root components are created with the Realization allocations that Capella creates by default
+// between consecutive perspectives (see doc/ArcadiaLibraryMapping.md).
 occurrence def <My_Model_Short_Name> 'My Model Name' {
 	metadata ArcadiaPackage {
 		engineeringPerspective = ArcadiaEngineeringPerspective::SystemEngineering;
 	}
 	private import Arcadia::*;
-	private import ScalarValues::Boolean;
 	private import ModelingMetadata::*;
 	private import KerML::FeatureDirectionKind;
 	
@@ -56,7 +57,9 @@ occurrence def <My_Model_Short_Name> 'My Model Name' {
 		 */
 		package Functions {
 			private import Data::*;
-			action 'Root Function' : Function;
+			action 'Root Function' : Function {
+				allocation : Realization allocate OA::Functions::'Root Function' to self;
+			}
 		} // package Functions
 		package Capabilities {
 			private import Functions::*;
@@ -83,7 +86,9 @@ occurrence def <My_Model_Short_Name> 'My Model Name' {
 		 */
 		package Functions {
 			private import Data::*;
-			action 'Root Function' : Function;
+			action 'Root Function' : Function {
+				allocation : Realization allocate SA::Functions::'Root Function' to self;
+			}
 		} // package Functions
 		package Capabilities {
 			private import Functions::*;
@@ -94,7 +99,9 @@ occurrence def <My_Model_Short_Name> 'My Model Name' {
 		package Structure {
 			private import Data::*;
 			private import Functions::*;
-			part system : Component;
+			part system : Component {
+				allocation : Realization allocate SA::Structure::system to self;
+			}
 		} // package Structure
 		package Requirements;
 	} // package <LA> 'Logical Architecture'
@@ -110,7 +117,9 @@ occurrence def <My_Model_Short_Name> 'My Model Name' {
 		 */
 		package Functions {
 			private import Data::*;
-			action 'Root Function' : Function;
+			action 'Root Function' : Function {
+				allocation : Realization allocate LA::Functions::'Root Function' to self;
+			}
 		} // package Functions
 		package Capabilities {
 			private import Functions::*;
@@ -121,7 +130,9 @@ occurrence def <My_Model_Short_Name> 'My Model Name' {
 		package Structure {
 			private import Data::*;
 			private import Functions::*;
-			part system : Component;
+			part system : Component {
+				allocation : Realization allocate LA::Structure::system to self;
+			}
 		} // package Structure
 		package Requirements;
 	} // package <PA> 'Physical Architecture'
@@ -146,7 +157,9 @@ occurrence def <My_Model_Short_Name> 'My Model Name' {
 		package Structure {
 			private import Data::*;
 			private import Functions::*;
-			part system : Component;
+			part system : Component {
+				allocation : Realization allocate PA::Structure::system to self;
+			}
 		} // package Structure
 		package Requirements;
 	} // package <EPBS> 'EPBS Architecture'
