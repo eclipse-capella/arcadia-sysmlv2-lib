@@ -13,7 +13,6 @@
 occurrence def <SE> OpticalMouseModel {
 	metadata ArcadiaPackage {engineeringPerspective = ArcadiaEngineeringPerspective::SystemEngineering;}
     private import Arcadia::*;
-    private import ScalarValues::Boolean;
 	private import ModelingMetadata::*;
 	private import KerML::FeatureDirectionKind;
 
@@ -160,7 +159,7 @@ occurrence def <SE> OpticalMouseModel {
 	                }
 			 	}
 
-				// An interface between 2 compoenents Ports
+				// An interface between 2 components Ports
 				interface cable : ComponentExchange
 					connect 'Optical Sensor Unit'.'Cable Connector' to 'Mouse Controller'.'Cable Connector' {
 					flow system.'Optical Sensor Unit'.'Cable Connector' to system.'Mouse Controller'.'Cable Connector';
