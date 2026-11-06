@@ -13,8 +13,11 @@
 occurrence def <SE> OpticalMouseModel {
 	metadata ArcadiaPackage {engineeringPerspective = ArcadiaEngineeringPerspective::SystemEngineering;}
     private import Arcadia::*;
-    private import ScalarValues::Boolean;
+	private import ScalarValues::Integer;
+	private import SI::kg;
+	private import SI::W;
 	private import ModelingMetadata::*;
+	private import RequirementDerivation::*;
 	private import KerML::FeatureDirectionKind;
 
 	package <OA> 'Operational Analysis' {
@@ -32,7 +35,6 @@ occurrence def <SE> OpticalMouseModel {
 		package Structure {
 			private import Data::*;
 			private import Functions::*;
-			part system : Component;
 		}
 		package Requirements;
 	}
@@ -44,7 +46,10 @@ occurrence def <SE> OpticalMouseModel {
 		Serves as a basis for the logical architecture. */
 		package Functions {
 			private import Data::*;
-			action 'Root Function' : Function;
+			action 'Root Function' : Function {
+				allocation : Realization allocate OA::Functions::'Root Function' to self;
+				action 'Move Cursor' : Function;
+			}
 		}
 		package Capabilities;
 		package Interfaces;
@@ -54,7 +59,11 @@ occurrence def <SE> OpticalMouseModel {
 			private import Functions::*;
 			part system : Component;
 		}
-		package Requirements;
+		package Requirements {
+			requirement <'SR1'> 'Cursor Control' {
+				doc /* The user shall be able to move the cursor on the screen by moving the mouse. */
+			}
+		}
 	}
 
 	package <LA> 'Logical Architecture' {
@@ -66,26 +75,42 @@ occurrence def <SE> OpticalMouseModel {
 			private import Data::*;
 
 			action 'Root Function' : Function {
+				allocation : Realization allocate SA::Functions::'Root Function' to self;
 	   	    	action 'Capture Movement' : Function {
 	            	@StatusInfo {status = StatusKind::tbd;}
 	   	    		//Corresponds to the description field in Capella
 	        		doc description /*Interpret raw optical data into motion vectors.*/
 	            	//Correspond to a Capella Function Output Port and the allocated Exchange Item(s) (binding rawOpticalData)
 	            	out FOP1 [0..*] : ExchangeItem = (rawOpticalDataX, rawOpticalDataY);
+	            	// Corresponds to a Capella Function Realization: this Logical Function realizes the System Function 'Move Cursor'.
+	            	// The Realization is owned by the realizing element, which is designated by 'self'.
+	            	allocation : Realization allocate SA::Functions::'Root Function'.'Move Cursor' to self;
+	            	//Corresponds to a Capella Property Value Group and its Property Values (native Capella property values have no unit)
+	            	attribute 'Safety' {
+	            		attribute 'Safety Class' : Integer = 2;
+	            		attribute 'Certified' : Boolean = false;
+	            	}
 	        	}
 
 	   	    	action 'Transform Raw Optical Data' : Function {
 	   	    		in FIP2 [0..*] : ExchangeItem = (rawOpticalDataX, rawOpticalDataY);
+	   	    		// This Logical Function also realizes the System Function 'Move Cursor' (a System Function can be realized by several Logical Functions).
+	   	    		allocation : Realization allocate SA::Functions::'Root Function'.'Move Cursor' to self;
 	   	    	}
 
-	   	    	// A Functional Exchange
-	   	    	flow 'Optical Data' : FunctionalExchange
+	   	    	// A Functional Exchange. Its payload is the Exchange Item(s) allocated to the exchange in Capella.
+	   	    	flow 'Optical Data' : FunctionalExchange of :>> payload = (rawOpticalDataX, rawOpticalDataY)
 	   	    		from 'Capture Movement'.FOP1 to 'Transform Raw Optical Data'.FIP2;
 
 	   	    	// Binding the Exchange Item(s) to the flow
 	   	    	//bind 'Optical Data'.payload = (rawOpticalDataX, rawOpticalDataY);
 
 	   	    }
+
+			// A Capella Function Package: a plain nested package
+			package 'Power Management' {
+				action 'Manage Power' : Function;
+			}
     	}
 
 		package Capabilities {
@@ -114,20 +139,38 @@ occurrence def <SE> OpticalMouseModel {
 				ref part :>> involvedComponents = (system.'Optical Sensor Unit', system.'Mouse Controller');
 			}
 
+			// A Capella Capability Package
+			package 'Maintenance';
 		}
-		package Interfaces;
+		// A Capella Interface Package
+		package Interfaces {
+			package 'User Interfaces';
+		}
 		package Data {
    	    	item rawOpticalDataX: ExchangeItem;
    	    	item rawOpticalDataY: ExchangeItem;
+			// A Capella Data Package
+			package 'Status Data' {
+				item batteryLevel : ExchangeItem;
+			}
 		}
 		package Structure {
 			private import Functions::*;
 			private import Data::*;
+			// A Capella Component Package (here for actors)
+			package 'External Actors' {
+				part technician : Component {
+					:>> isActor = true;
+				}
+			}
 			part computerUser : Component {
 				:>> isActor = true;
 			}
 
 			part system : Component{
+				// Corresponds to a Capella Component Realization: the Logical system realizes the System Analysis system.
+				allocation : Realization allocate SA::Structure::system to self;
+
 				part 'Optical Sensor Unit' : Component {
 				    doc description /*Captures surface movement using optical detection.*/
 	                :>> isActor = false;
@@ -142,6 +185,10 @@ occurrence def <SE> OpticalMouseModel {
 
 				part 'Mouse Controller' : Component {
 	                doc description /*Manages mouse peripherals*/
+	                // A Capella Component Package owned by a component: a package nested in the part
+	                package 'Mechanical Parts' {
+	                	part 'Mouse Casing' : Component;
+	                }
 	                :>> isActor = false;
 	                :>> isHuman = false;
 	                perform 'Root Function'.'Transform Raw Optical Data';
@@ -152,26 +199,31 @@ occurrence def <SE> OpticalMouseModel {
 	                }
 			 	}
 
-				// An interface between 2 compoenents Ports
+				// An interface between 2 components Ports
 				interface cable : ComponentExchange
 					connect 'Optical Sensor Unit'.'Cable Connector' to 'Mouse Controller'.'Cable Connector' {
 					flow system.'Optical Sensor Unit'.'Cable Connector' to system.'Mouse Controller'.'Cable Connector';
 			        ref item :>> allocatedExchangeItems = (rawOpticalDataX, rawOpticalDataY);
-	        		ref action:>> allocatedFunctionalExchanges = ('Root Function'.'Optical Data');
+	        		// A Functional Exchange allocated to this Component Exchange (Capella: ComponentExchangeFunctionalExchangeAllocation).
+	        		// The allocation is owned by the Component Exchange, which is designated by 'self'.
+	        		allocation : ExchangeAllocation allocate 'Root Function'.'Optical Data' to self;
 					}
-
-				// A Fonctional Exchange allocated to a Component Exchange
-				allocation : ExchangeAllocation
-					allocate 'Root Function'.'Optical Data' to cable;
 			}
 		}
 
 		package Requirements {
-			//R1.1 is the ID of the requirement
-			requirement <'R1.1'> Optical : ArcadiaRequirement {
-				doc /*
-				 * The mouse should capture movement using optical detection
-				 */
+			// 'R1' and 'R1.1' are the IDs (short names) of the requirements.
+			// Nesting only organizes the requirements, it is not a trace.
+			requirement <'R1'> 'Movement Capture' {
+				doc /* The mouse shall capture the movement of the user. */
+				requirement <'R1.1'> Optical {
+					doc /* The mouse should capture movement using optical detection */
+				}
+			}
+			// A derivation is a trace between requirements, here from the system analysis to the logical architecture
+			#derivation connection {
+				end #original ::> SA::Requirements::'Cursor Control';
+				end #derive ::> 'Movement Capture';
 			}
 		}
 	}
@@ -183,7 +235,9 @@ occurrence def <SE> OpticalMouseModel {
 		Supports integration, validation, and preparation for deployment. */
 		package Functions {
 			private import Data::*;
-			action 'Root Function' : Function;
+			action 'Root Function' : Function {
+				allocation : Realization allocate LA::Functions::'Root Function' to self;
+			}
 		}
 		package Capabilities;
 		package Interfaces;
@@ -192,12 +246,41 @@ occurrence def <SE> OpticalMouseModel {
 			private import Data::*;
 			private import Functions::*;
 			part system : Component{
+				allocation : Realization allocate LA::Structure::system to self;
 
-				part 'Optical Sensor Module' : Component {
+				part 'Optical Sensor Module' : BehaviorComponent {
 				    doc description /*Captures surface movement using optical detection.*/
+	                // The Optical Sensor Module satisfies the requirement; the satisfy is owned by the satisfying element
+	                satisfy LA::Requirements::'Movement Capture'.Optical;
 	                :>> isActor = false;
 	                :>> isHuman = false;
+	                //A Property Value in a model created in SysML v2 carries its unit. The description of a property value is a doc.
+	                attribute 'Mass' = 0.4 [kg] {
+	                	doc description /*Mass of the module without cable.*/
+	                }
+	                attribute 'Budget' {
+	                	attribute 'Power' = 2.5 [W];
+	                }
 	            }
+
+				// Another Physical Behavior Component: embedded software.
+				part 'Mouse Firmware' : BehaviorComponent {
+				    doc description /*Embedded software interpreting the raw optical data into motion vectors.*/
+				}
+
+				// A Physical Node Component: it hosts the two Behavior Components, which are deployed on it (not contained in it).
+				// The Deployments are stored in the Node, which is designated by 'self'.
+				part 'Mouse PCB' : NodeComponent {
+				    doc description /*Printed circuit board hosting the mouse electronics and software.*/
+				    allocation : Deployment allocate system.'Optical Sensor Module' to self;
+				    allocation : Deployment allocate system.'Mouse Firmware' to self;
+				}
+
+				// Another Physical Node Component: the Node 'Mouse PCB' is deployed on it, instead of being contained in it.
+				part 'Mouse Casing' : NodeComponent {
+				    doc description /*Casing of the mouse, which hosts the printed circuit board.*/
+				    allocation : Deployment allocate system.'Mouse PCB' to self;
+				}
 	        }
 		}
 		package Requirements;
@@ -218,7 +301,9 @@ occurrence def <SE> OpticalMouseModel {
 		package Structure {
 			private import Data::*;
 			private import Functions::*;
-			part system : Component;
+			part system : Component {
+				allocation : Realization allocate PA::Structure::system to self;
+			}
 		}
 		package Requirements;
 	}
