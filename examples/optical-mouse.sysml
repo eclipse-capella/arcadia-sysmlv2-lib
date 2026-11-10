@@ -120,26 +120,15 @@ occurrence def <SE> OpticalMouseModel {
 	   	    		action 'Filter Noise' : Function;
 				}
 				
-	   	    	// A Functional Chain
-	   	    	action 'read movement' : FunctionalChain {
-	   	    		ref flow :>> involvedFunctionalExchanges = ('Optical Data');
-	   	    		perform 'Root Function'.'Capture Movement' :> involvedFunctions;
-	   	    		perform 'Root Function'.'Transform Raw Optical Data' :> involvedFunctions;
-
-	   	    		succession first start then 'Root Function'.'Capture Movement';
-	   	    		succession first 'Root Function'.'Capture Movement' then 'Root Function'.'Transform Raw Optical Data';
-	   	    		succession first 'Root Function'.'Transform Raw Optical Data' then done;
-	   	    	}
-
-	   	    	// A composite Functional Chain: it references the chain above as a step of its sequence, and is assembled with
+	   	    	// A composite Functional Chain: it references the chain 'read movement' owned by the Capability 'Move Cursor on Screen' as a step of its sequence, and is assembled with
 	   	    	// 'Update Pointer Position' by the exchange 'Motion Data', which starts from a function inside the referenced chain
 	   	    	action 'move pointer' : FunctionalChain {
 	   	    		ref flow :>> involvedFunctionalExchanges = ('Motion Data');
-	   	    		perform 'Root Function'.'read movement' :> referencedFunctionalChains;
+	   	    		perform Capabilities::'Move Cursor on Screen'.'read movement' :> referencedFunctionalChains;
 	   	    		perform 'Root Function'.'Update Pointer Position' :> involvedFunctions;
 
-	   	    		succession first start then 'Root Function'.'read movement';
-	   	    		succession first 'Root Function'.'read movement'.'Transform Raw Optical Data' then 'Root Function'.'Update Pointer Position';
+	   	    		succession first start then Capabilities::'Move Cursor on Screen'.'read movement';
+	   	    		succession first Capabilities::'Move Cursor on Screen'.'read movement'.'Transform Raw Optical Data' then 'Root Function'.'Update Pointer Position';
 	   	    		succession first 'Root Function'.'Update Pointer Position' then done;
 	   	    	}
 	   	    }
@@ -162,8 +151,8 @@ occurrence def <SE> OpticalMouseModel {
 				// involvedFunctionalChains only lists the chains owned elsewhere.
 				action 'read movement' : FunctionalChain {
 					ref flow :>> involvedFunctionalExchanges = ('Root Function'.'Optical Data');
-					perform 'Root Function'.'Capture Movement';
-					perform 'Root Function'.'Transform Raw Optical Data';
+					perform 'Root Function'.'Capture Movement' :> involvedFunctions;
+					perform 'Root Function'.'Transform Raw Optical Data' :> involvedFunctions;
 
 					succession first start then 'Root Function'.'Capture Movement';
 					succession first 'Root Function'.'Capture Movement' then 'Root Function'.'Transform Raw Optical Data';
