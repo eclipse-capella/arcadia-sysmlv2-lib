@@ -336,7 +336,7 @@ None: a Capella package is a plain SysML v2 package, wherever it sits in Capella
 | ref involvedFunctionalExchanges: FunctionalExchange[*]; | None | involvedFunctionalExchanges | Functional Exchanges involved in the chain |  key relation for Functional chains | see previous line | see previous line |
 | None | Successions and Control Nodes | Pre-condition/Post-condition + Sequencing within Functional chains| Control flow semantics within Functional chains |  Reusing SysML v2 Control Flow concepts | succession first start then 'Root Function'.'Capture Movement'; | mostly edges for sequencing, Nodes for Control Nodes and property view for guards |
 | perform action involvedFunctions: Function[*]; | perform | involvedFunctions | Functions involved in the chain | Reusing the SysML v2 `perform` (a reference to an existing Function). The library declares the role and each `perform` of a Function states it, so the list of involved Functions is stored in the model and tools do not have to work it out from the types of the performed actions. `subactions` cannot be used: it contains the owned composite actions, not the performed ones | perform 'Root Function'.'Capture Movement' :> involvedFunctions; | Functions are displayed as nodes of the chain, in the sequence |
-| perform action referencedFunctionalChains: FunctionalChain[*]; | perform | FunctionalChainReference (referencedFunctionalChain) | Functional Chains referenced by the chain, each one being a step of its sequence | Same mechanism as for the Functions: a `perform` of the referenced chain, with the role. See Composite Functional Chains below | perform 'Root Function'.'read movement' :> referencedFunctionalChains; | A node of the chain, that can be folded or unfolded |
+| perform action referencedFunctionalChains: FunctionalChain[*]; | perform | FunctionalChainReference (referencedFunctionalChain) | Functional Chains referenced by the chain, each one being a step of its sequence | Same mechanism as for the Functions: a `perform` of the referenced chain, with the role. See Composite Functional Chains below | perform Capabilities::'Move Cursor on Screen'.'read movement' :> referencedFunctionalChains; | A node of the chain, that can be folded or unfolded |
 
 #### Additional Information:
 
@@ -367,11 +367,11 @@ In SysML v2 the reference is a `perform` of the referenced chain (the same perfo
 ```
 	action 'move pointer' : FunctionalChain {
 		ref :>> involvedFunctionalExchanges = ('Motion Data');
-		perform 'Root Function'.'read movement' :> referencedFunctionalChains;
+		perform Capabilities::'Move Cursor on Screen'.'read movement' :> referencedFunctionalChains;
 		perform 'Root Function'.'Update Pointer Position' :> involvedFunctions;
 
-		succession first start then 'Root Function'.'read movement';
-		succession first 'Root Function'.'read movement'.'Transform Raw Optical Data' then 'Root Function'.'Update Pointer Position';
+		succession first start then Capabilities::'Move Cursor on Screen'.'read movement';
+		succession first Capabilities::'Move Cursor on Screen'.'read movement'.'Transform Raw Optical Data' then 'Root Function'.'Update Pointer Position';
 		succession first 'Root Function'.'Update Pointer Position' then done;
 	}
 ```
@@ -630,7 +630,7 @@ The `subject` of a requirement is not used for this purpose: a requirement has a
 |-----------------------|---------------------|--------------------------------|-----------------|-----------|---------|---------|
 | occurrence def Capability :> ArcadiaElement | None | Capability | Ability required from the system, to provide a service that supports the achievement of a mission.| Arcadia Capabilities are represented as a dedicated SysML v2 concept to preserve their role as abstract, reusable system abilities that are independent of specific behaviors, scenarios, or structural realizations. | occurrence 'Move Cursor on Screen' : Capability | a rounded Node |
 | ref action involvedFunctions: Function[*] | None | involvedFunctions | Functions involved for realizing the capability | Arcadia needed information | ref action :>> involvedFunctions = ('Capture Movement', 'Transform Raw Optical Data') | in the property view |
-| ref action involvedFunctionalChains: FunctionalChain[*] | None | involvedFunctionalChains (Involved Functional Chains / Involved Operational Processes) | Functional Chains owned elsewhere (in a Function or in another Capability) and involved in the capability. The Functional Chains owned by the Capability (see below) are involved by construction and are not repeated here. | Arcadia needed information; the full list of involved chains (owned + referenced) is derived by tooling, as `involvedFunctions` is for Functional Chains | ref action :>> involvedFunctionalChains = ('Root Function'.'read movement') | in the property view |
+| ref action involvedFunctionalChains: FunctionalChain[*] | None | involvedFunctionalChains (Involved Functional Chains / Involved Operational Processes) | Functional Chains owned elsewhere (in a Function or in another Capability) and involved in the capability. The Functional Chains owned by the Capability (see below) are involved by construction and are not repeated here. | Arcadia needed information; the full list of involved chains (owned + referenced) is derived by tooling, as `involvedFunctions` is for Functional Chains | ref action :>> involvedFunctionalChains = ('Root Function'.'diagnostic chain') | in the property view |
 | ref part involvedComponents: Component[*] | None | involvedComponents | Components involved for realizing the capability | Arcadia needed information | ref part :>> involvedComponents = ('Optical Sensor Unit', 'Mouse Controller') | edges |
 
 #### Additional Information:
@@ -642,8 +642,8 @@ The `subject` of a requirement is not used for this purpose: a requirement has a
 		// chain owned by the capability: involved by construction
 		action 'read movement' : FunctionalChain {
 			ref flow :>> involvedFunctionalExchanges = ('Root Function'.'Optical Data');
-			perform 'Root Function'.'Capture Movement';
-			perform 'Root Function'.'Transform Raw Optical Data';
+			perform 'Root Function'.'Capture Movement' :> involvedFunctions;
+			perform 'Root Function'.'Transform Raw Optical Data' :> involvedFunctions;
 		}
 		// chain owned by a Function (or by another Capability): referenced
 		ref action :>> involvedFunctionalChains = ('Root Function'.'diagnostic chain');
