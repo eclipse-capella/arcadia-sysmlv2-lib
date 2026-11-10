@@ -342,6 +342,13 @@ None: a Capella package is a plain SysML v2 package, wherever it sits in Capella
 
 - The reference to Functional Exchanges is declared with a plain `ref` typed by the flow definition, not `ref flow`: a flow usage must have exactly two ends, and `ref flow` without `from ... to ...` is rejected by the SysML v2 pilot implementation ("Cannot have more than two ends").
 - SysML v2 does not provide a native concept for Functional Chains. We represent them using action def to define scenario-level orchestrations of reusable functions and exchanges, preserving type-instance separation and traceability while aligning with Arcadia semantics. Behavior (KerML) concept may have been an option but it is unlikely this concept is well handled by other tools.
+- A Functional Chain can have no involvement at all (an "empty" chain). It is valid in Capella, where it is typically a placeholder opened to be refined later (in the In-Flight Entertainment System sample, 15 of the 37 chains are empty, all owned by Capabilities or CapabilityRealizations); Capella only reports it as a validation warning ("is empty"). It is represented like any other chain: an action usage typed `FunctionalChain` with no `perform` and no succession, owned by a Function or by a Capability.
+
+```
+	action 'stop movement' : FunctionalChain;
+```
+
+- Migration: empty chains are migrated, not skipped. Tooling may report an empty chain as a warning, as Capella does.
 - See this example of a Functional Chain:
 
 ```
