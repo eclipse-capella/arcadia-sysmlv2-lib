@@ -115,6 +115,9 @@ occurrence def <SE> OpticalMouseModel {
 	   	    	//bind 'Optical Data'.payload = (rawOpticalDataX, rawOpticalDataY);
 
 
+	   	    	// An empty Functional Chain: no involvement (a placeholder, to be refined later)
+	   	    	action 'stop movement' : FunctionalChain;
+
 	   	    	// A Capella Function Package owned by a function: a package nested in the action
 	   	    	package 'Motion Filtering' {
 	   	    		action 'Filter Noise' : Function;
