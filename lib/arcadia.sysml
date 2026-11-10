@@ -12,7 +12,7 @@
  */
 
 library package Arcadia {
-    private doc /* Version 0.0.3 */
+    private doc /* Version 0.0.5 */
     private import ScalarValues::Boolean;
     private import ScalarValues::String;
 	private import KerML::FeatureDirectionKind;
