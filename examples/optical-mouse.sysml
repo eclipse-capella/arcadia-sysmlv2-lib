@@ -14,6 +14,7 @@ occurrence def <SE> OpticalMouseModel {
 	metadata ArcadiaPackage {engineeringPerspective = ArcadiaEngineeringPerspective::SystemEngineering;}
     private import Arcadia::*;
 	private import ScalarValues::Integer;
+	private import ScalarValues::Boolean;
 	private import SI::kg;
 	private import SI::W;
 	private import ModelingMetadata::*;
