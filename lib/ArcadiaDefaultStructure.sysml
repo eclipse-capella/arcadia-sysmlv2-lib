@@ -58,7 +58,7 @@ occurrence def <My_Model_Short_Name> 'My Model Name' {
 		package Functions {
 			private import Data::*;
 			action 'Root Function' : Function {
-				allocation : Realization allocate OA::Functions::'Root Function' to self;
+				allocation : Realization allocate OA::Functions::'Root Activity' to self;
 			}
 		} // package Functions
 		package Capabilities {
