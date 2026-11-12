@@ -89,7 +89,7 @@ Contributions are welcome. Typical contributions include:
 - clarification of documentation
 - extensions of the library
 
-Please open an issue or submit a pull request.
+Please open an issue or submit a pull request. Contributions should be compliant with the [contribution guidelines](./CONTRIBUTING.md).
 
 ## 📜 License
 
