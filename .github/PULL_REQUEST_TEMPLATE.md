@@ -2,4 +2,4 @@
 
 ## Check version bump need
 
-- [ ] Have you taken into account the [CONTRIBUTING.md](https://github.com/eclipse-capella/capella-for-syson/blob/master/CONTRIBUTING.md) file content about semantic versioning ?
+- [ ] Have you taken into account the [semantic versioning rules CONTRIBUTING.md](https://github.com/eclipse-capella/arcadia-sysmlv2-lib/blob/adi/sem_versioning_rules/CONTRIBUTING.md#versioning-rules) ?
