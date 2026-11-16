@@ -34,7 +34,7 @@ library package Arcadia {
        	enum SystemAnalysis = "System Analysis";
        	enum LogicalArchitecture = "Logical Architecture";
        	enum PhysicalArchitecture = "Physical Architecture";
-       	enum EPBS = "EPBS Physical Architecture";
+       	enum EPBS = "EPBS Architecture";
       	enum Generic = "Generic";
        	enum SystemEngineering = "System Engineering";
   	}
