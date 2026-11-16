@@ -28,7 +28,7 @@ occurrence def <SE> OpticalMouseModel {
 		Serves as the foundation for deriving system-level requirements. */
 		package Functions {
 			private import Data::*;
-			action 'Root Function' : Function;
+			action 'Root Activity' : Function;
 		}
 		package Capabilities;
 		package Interfaces;
@@ -48,7 +48,7 @@ occurrence def <SE> OpticalMouseModel {
 		package Functions {
 			private import Data::*;
 			action 'Root Function' : Function {
-				allocation : Realization allocate OA::Functions::'Root Function' to self;
+				allocation : Realization allocate OA::Functions::'Root Activity' to self;
 				action 'Move Cursor' : Function;
 			}
 		}
@@ -126,7 +126,7 @@ occurrence def <SE> OpticalMouseModel {
 	   	    	// A composite Functional Chain: it references the chain 'read movement' owned by the Capability 'Move Cursor on Screen' as a step of its sequence, and is assembled with
 	   	    	// 'Update Pointer Position' by the exchange 'Motion Data', which starts from a function inside the referenced chain
 	   	    	action 'move pointer' : FunctionalChain {
-	   	    		ref flow :>> involvedFunctionalExchanges = ('Motion Data');
+	   	    		ref :>> involvedFunctionalExchanges = ('Motion Data');
 	   	    		perform Capabilities::'Move Cursor on Screen'.'read movement' :> referencedFunctionalChains;
 	   	    		perform 'Root Function'.'Update Pointer Position' :> involvedFunctions;
 
@@ -153,7 +153,7 @@ occurrence def <SE> OpticalMouseModel {
 				// by a Function or by a Capability). A chain owned by the Capability is involved by construction:
 				// involvedFunctionalChains only lists the chains owned elsewhere.
 				action 'read movement' : FunctionalChain {
-					ref flow :>> involvedFunctionalExchanges = ('Root Function'.'Optical Data');
+					ref :>> involvedFunctionalExchanges = ('Root Function'.'Optical Data');
 					perform 'Root Function'.'Capture Movement' :> involvedFunctions;
 					perform 'Root Function'.'Transform Raw Optical Data' :> involvedFunctions;
 
