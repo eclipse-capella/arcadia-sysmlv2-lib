@@ -30,18 +30,18 @@ In Capella, the engineering perspective of an element is given by the class of t
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| PKGM-01 | Engineering perspective of a part of the model | class of the architecture (rows below) | Library | `metadata def ArcadiaPackage`, with `engineeringPerspective : ArcadiaEngineeringPerspective` | States which engineering perspective a package belongs to | P3: the perspectives are essential to Arcadia and a SysML v2 package cannot be typed. P6: this annotation is what allows generic concepts (one `Component`, one `Function`) |
-| PKGM-02 | Operational Analysis | `oa::OperationalAnalysis` | Library | `ArcadiaEngineeringPerspective::OperationalAnalysis` | The Operational Analysis perspective | Same as PKGM-01 |
-| PKGM-03 | System Analysis | `ctx::SystemAnalysis` | Library | `ArcadiaEngineeringPerspective::SystemAnalysis` | The System Analysis perspective | Same as PKGM-01 |
-| PKGM-04 | Logical Architecture | `la::LogicalArchitecture` | Library | `ArcadiaEngineeringPerspective::LogicalArchitecture` | The Logical Architecture perspective | Same as PKGM-01 |
-| PKGM-05 | Physical Architecture | `pa::PhysicalArchitecture` | Library | `ArcadiaEngineeringPerspective::PhysicalArchitecture` | The Physical Architecture perspective | Same as PKGM-01 |
-| PKGM-06 | EPBS Architecture | `epbs::EPBSArchitecture` | Library | `ArcadiaEngineeringPerspective::EPBS` | The EPBS perspective (see OP-EPBS) | Same as PKGM-01 |
-| PKGM-07 | System Engineering (root of the model) | `capellamodeller::SystemEngineering` | Library | `ArcadiaEngineeringPerspective::SystemEngineering`, on the top-level element of the model | The root that contains the engineering perspectives | Same as PKGM-01 |
-| PKGM-08 | (no Capella counterpart) | none | Library | `ArcadiaEngineeringPerspective::Generic` | A package whose perspective is not specified | Allows models or parts of models outside the five perspectives |
+| <a id="pkgm-01"></a>PKGM-01 | Engineering perspective of a part of the model | class of the architecture (rows below) | Library | `metadata def ArcadiaPackage`, with `engineeringPerspective : ArcadiaEngineeringPerspective` | States which engineering perspective a package belongs to | P3: the perspectives are essential to Arcadia and a SysML v2 package cannot be typed. P6: this annotation is what allows generic concepts (one `Component`, one `Function`) |
+| <a id="pkgm-02"></a>PKGM-02 | Operational Analysis | `oa::OperationalAnalysis` | Library | `ArcadiaEngineeringPerspective::OperationalAnalysis` | The Operational Analysis perspective | Same as [PKGM-01](#pkgm-01) |
+| <a id="pkgm-03"></a>PKGM-03 | System Analysis | `ctx::SystemAnalysis` | Library | `ArcadiaEngineeringPerspective::SystemAnalysis` | The System Analysis perspective | Same as [PKGM-01](#pkgm-01) |
+| <a id="pkgm-04"></a>PKGM-04 | Logical Architecture | `la::LogicalArchitecture` | Library | `ArcadiaEngineeringPerspective::LogicalArchitecture` | The Logical Architecture perspective | Same as [PKGM-01](#pkgm-01) |
+| <a id="pkgm-05"></a>PKGM-05 | Physical Architecture | `pa::PhysicalArchitecture` | Library | `ArcadiaEngineeringPerspective::PhysicalArchitecture` | The Physical Architecture perspective | Same as [PKGM-01](#pkgm-01) |
+| <a id="pkgm-06"></a>PKGM-06 | EPBS Architecture | `epbs::EPBSArchitecture` | Library | `ArcadiaEngineeringPerspective::EPBS` | The EPBS perspective (see [OP-EPBS](../ArcadiaLibraryMapping.md#op-epbs)) | Same as [PKGM-01](#pkgm-01) |
+| <a id="pkgm-07"></a>PKGM-07 | System Engineering (root of the model) | `capellamodeller::SystemEngineering` | Library | `ArcadiaEngineeringPerspective::SystemEngineering`, on the top-level element of the model | The root that contains the engineering perspectives | Same as [PKGM-01](#pkgm-01) |
+| <a id="pkgm-08"></a>PKGM-08 | (no Capella counterpart) | none | Library | `ArcadiaEngineeringPerspective::Generic` | A package whose perspective is not specified | Allows models or parts of models outside the five perspectives |
 
 ## Example
 
-From `examples/concepts/arcadia-package.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/arcadia-package.sysml`](../../examples/concepts/arcadia-package.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 // PKGM-01, PKGM-07: the top-level element of the model
@@ -78,4 +78,4 @@ occurrence def <MOUSE> 'Optical Mouse' {
 
 ## Open points
 
-OP-EPBS (see the open points register).
+[OP-EPBS](../ArcadiaLibraryMapping.md#op-epbs) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

@@ -10,21 +10,21 @@ None. A Capella package is a plain SysML v2 package, wherever it sits in Capella
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| PKG-01 | Function packages (Operational Activity Pkg, System Function Pkg, Logical Function Pkg, Physical Function Pkg) | `oa::OperationalActivityPkg`, `ctx::SystemFunctionPkg`, `la::LogicalFunctionPkg`, `pa::PhysicalFunctionPkg` (all `fa::FunctionPkg`); owned by a package or by a function (`ownedOperationalActivityPkgs`, `ownedSystemFunctionPkgs`, `ownedLogicalFunctionPkgs`, `ownedPhysicalFunctionPkgs`) | Native | `package`, nested in a package or in the body of an action | Organizes functions | P1: a Capella package is a pure organizational element, like a SysML v2 package |
-| PKG-02 | Capability and mission packages (Operational Capability Pkg, Capability Pkg, Capability Realization Pkg, Mission Pkg) | `oa::OperationalCapabilityPkg`, `ctx::CapabilityPkg`, `la::CapabilityRealizationPkg`, `ctx::MissionPkg` | Native | `package` | Organizes capabilities and missions | P1 |
-| PKG-03 | Interface Pkg | `cs::InterfacePkg` | Native | `package` | Organizes interfaces and exchange items | P1 |
-| PKG-04 | Data Pkg | `information::DataPkg` | Native | `package` | Organizes classes, data types, collections, units, signals and messages | P1 |
-| PKG-05 | Component packages (Entity Pkg, System Component Pkg, Logical Component Pkg, Physical Component Pkg) | `oa::EntityPkg`, `ctx::SystemComponentPkg`, `la::LogicalComponentPkg`, `pa::PhysicalComponentPkg` (all `cs::ComponentPkg`); owned by a package or by a component (`ownedSystemComponentPkgs`, `ownedLogicalComponentPkgs`, `ownedPhysicalComponentPkgs`) | Native | `package`, nested in a package or in the body of a part | Organizes components and actors | P1 |
-| PKG-06 | Description, status and other fields of a package | features inherited from `capellacore::CapellaElement` (see the ELEM section) | Native | `doc description /* ... */` and `@StatusInfo` on the package, when needed | Same as for any element | P1. Rarely used on packages (see OP-PKG-FIELDS) |
-| PKG-07 | Role Pkg | `oa::RolePkg` | Not translated – replaced by definition/usage | none | Organizes roles | Roles are not translated (see COMP-10) |
-| PKG-08 | Concept Pkg | `oa::ConceptPkg` | Not translated – rarely used | none | Organizes operational concepts | See STRUCT-14 |
-| PKG-09 | Configuration Item Pkg | `epbs::ConfigurationItemPkg` | Deferred – OP-EPBS | none | Organizes the configuration items of the EPBS | EPBS is not covered yet |
-| PKG-10 | Generic Pkg | `sharedmodel::GenericPkg` | Not translated – legacy | none | Generic container of the "shared model" mechanism, meant to share elements between projects | P4: remainder of an earlier tool generation, according to the Capella metamodel itself |
-| PKG-11 | Property Value Pkg | `capellacore::PropertyValuePkg`, owned by a package or an architecture (`capellacore::Structure.ownedPropertyValuePkgs`) | Deferred – OP-PV-SHARED | none | Contains property values, groups and enumeration types that are shared: they are applied to elements by reference | Shared (applied) property values are not covered yet (see the PV section) |
+| <a id="pkg-01"></a>PKG-01 | Function packages (Operational Activity Pkg, System Function Pkg, Logical Function Pkg, Physical Function Pkg) | `oa::OperationalActivityPkg`, `ctx::SystemFunctionPkg`, `la::LogicalFunctionPkg`, `pa::PhysicalFunctionPkg` (all `fa::FunctionPkg`); owned by a package or by a function (`ownedOperationalActivityPkgs`, `ownedSystemFunctionPkgs`, `ownedLogicalFunctionPkgs`, `ownedPhysicalFunctionPkgs`) | Native | `package`, nested in a package or in the body of an action | Organizes functions | P1: a Capella package is a pure organizational element, like a SysML v2 package |
+| <a id="pkg-02"></a>PKG-02 | Capability and mission packages (Operational Capability Pkg, Capability Pkg, Capability Realization Pkg, Mission Pkg) | `oa::OperationalCapabilityPkg`, `ctx::CapabilityPkg`, `la::CapabilityRealizationPkg`, `ctx::MissionPkg` | Native | `package` | Organizes capabilities and missions | P1 |
+| <a id="pkg-03"></a>PKG-03 | Interface Pkg | `cs::InterfacePkg` | Native | `package` | Organizes interfaces and exchange items | P1 |
+| <a id="pkg-04"></a>PKG-04 | Data Pkg | `information::DataPkg` | Native | `package` | Organizes classes, data types, collections, units, signals and messages | P1 |
+| <a id="pkg-05"></a>PKG-05 | Component packages (Entity Pkg, System Component Pkg, Logical Component Pkg, Physical Component Pkg) | `oa::EntityPkg`, `ctx::SystemComponentPkg`, `la::LogicalComponentPkg`, `pa::PhysicalComponentPkg` (all `cs::ComponentPkg`); owned by a package or by a component (`ownedSystemComponentPkgs`, `ownedLogicalComponentPkgs`, `ownedPhysicalComponentPkgs`) | Native | `package`, nested in a package or in the body of a part | Organizes components and actors | P1 |
+| <a id="pkg-06"></a>PKG-06 | Description, status and other fields of a package | features inherited from `capellacore::CapellaElement` (see the ELEM section) | Native | `doc description /* ... */` and `@StatusInfo` on the package, when needed | Same as for any element | P1. Rarely used on packages (see [OP-PKG-FIELDS](../ArcadiaLibraryMapping.md#op-pkg-fields)) |
+| <a id="pkg-07"></a>PKG-07 | Role Pkg | `oa::RolePkg` | Not translated – replaced by definition/usage | none | Organizes roles | Roles are not translated (see [COMP-10](05-Component.md#comp-10)) |
+| <a id="pkg-08"></a>PKG-08 | Concept Pkg | `oa::ConceptPkg` | Not translated – rarely used | none | Organizes operational concepts | See [STRUCT-14](03-DefaultModelStructure.md#struct-14) |
+| <a id="pkg-09"></a>PKG-09 | Configuration Item Pkg | `epbs::ConfigurationItemPkg` | Deferred – [OP-EPBS](../ArcadiaLibraryMapping.md#op-epbs) | none | Organizes the configuration items of the EPBS | EPBS is not covered yet |
+| <a id="pkg-10"></a>PKG-10 | Generic Pkg | `sharedmodel::GenericPkg` | Not translated – legacy | none | Generic container of the "shared model" mechanism, meant to share elements between projects | P4: remainder of an earlier tool generation, according to the Capella metamodel itself |
+| <a id="pkg-11"></a>PKG-11 | Property Value Pkg | `capellacore::PropertyValuePkg`, owned by a package or an architecture (`capellacore::Structure.ownedPropertyValuePkgs`) | Deferred – [OP-PV-SHARED](../ArcadiaLibraryMapping.md#op-pv-shared) | none | Contains property values, groups and enumeration types that are shared: they are applied to elements by reference | Shared (applied) property values are not covered yet (see the PV section) |
 
 ## Example
 
-From `examples/concepts/packages.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/packages.sysml`](../../examples/concepts/packages.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 	package Functions {
@@ -75,8 +75,8 @@ From `examples/concepts/packages.sysml`, validated with the SysML v2 pilot imple
 
 - All packages can be displayed in the same way (one folder representation).
 - Tooling can restrict the content of a package according to where it is, as for `Functions` and `Structure`.
-- PKG-01, PKG-05: tooling computes the sub-functions of a function and the sub-components of a component by going through their nested packages.
-- PKG-06: tooling can give access to the description and to the status of a package.
+- [PKG-01](#pkg-01), [PKG-05](#pkg-05): tooling computes the sub-functions of a function and the sub-components of a component by going through their nested packages.
+- [PKG-06](#pkg-06): tooling can give access to the description and to the status of a package.
 
 ## SysML v2 limitations
 
@@ -85,4 +85,4 @@ From `examples/concepts/packages.sysml`, validated with the SysML v2 pilot imple
 
 ## Open points
 
-OP-PKG-FIELDS, OP-PKG-IN-COMPONENT, OP-EPBS, OP-PV-SHARED (see the open points register).
+[OP-PKG-FIELDS](../ArcadiaLibraryMapping.md#op-pkg-fields), [OP-PKG-IN-COMPONENT](../ArcadiaLibraryMapping.md#op-pkg-in-component), [OP-EPBS](../ArcadiaLibraryMapping.md#op-epbs), [OP-PV-SHARED](../ArcadiaLibraryMapping.md#op-pv-shared) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

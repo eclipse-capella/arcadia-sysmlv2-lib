@@ -8,27 +8,27 @@
 - [Design principles](#design-principles)
 - [Open points register](#open-points-register)
 - Concepts and mappings, with the prefix of their row identifiers
-  1. [ArcadiaElement](mapping/01-ArcadiaElement.md) (`ELEM`)
-  2. [ArcadiaPackage](mapping/02-ArcadiaPackage.md) (`PKGM`)
-  3. [Default model structure](mapping/03-DefaultModelStructure.md) (`STRUCT`)
-  4. [Packages](mapping/04-Packages.md) (`PKG`)
-  5. [Component](mapping/05-Component.md) (`COMP`)
-  6. [Node and Behavior Components](mapping/06-NodeAndBehaviorComponents.md) (`NODE`)
-  7. [Deployment](mapping/07-Deployment.md) (`DEPL`)
-  8. [Function](mapping/08-Function.md) (`FUNC`)
-  9. [Function Port](mapping/09-FunctionPort.md) (`FPORT`)
-  10. [Functional Chain](mapping/10-FunctionalChain.md) (`FC`)
-  11. [Functional Exchange](mapping/11-FunctionalExchange.md) (`FE`)
-  12. [Component Exchange](mapping/12-ComponentExchange.md) (`CE`)
-  13. [Component Port](mapping/13-ComponentPort.md) (`CP`)
-  14. [Exchange Allocation](mapping/14-ExchangeAllocation.md) (`EA`)
-  15. [Realization](mapping/15-Realization.md) (`REAL`)
-  16. [Exchange Item](mapping/16-ExchangeItem.md) (`EI`)
-  17. [Requirements](mapping/17-Requirements.md) (`REQ`)
-  18. [Capability](mapping/18-Capability.md) (`CAP`)
-  19. [Mission](mapping/19-Mission.md) (`MIS`)
-  20. [Property values](mapping/20-PropertyValues.md) (`PV`)
-  21. [Views](mapping/21-Views.md) (`VIEW`)
+  1. [ArcadiaElement](mapping/01-ArcadiaElement.md) (`ELEM`) – example: [arcadia-element.sysml](../examples/concepts/arcadia-element.sysml)
+  2. [ArcadiaPackage](mapping/02-ArcadiaPackage.md) (`PKGM`) – example: [arcadia-package.sysml](../examples/concepts/arcadia-package.sysml)
+  3. [Default model structure](mapping/03-DefaultModelStructure.md) (`STRUCT`) – example: [default-structure.sysml](../examples/concepts/default-structure.sysml)
+  4. [Packages](mapping/04-Packages.md) (`PKG`) – example: [packages.sysml](../examples/concepts/packages.sysml)
+  5. [Component](mapping/05-Component.md) (`COMP`) – example: [component.sysml](../examples/concepts/component.sysml)
+  6. [Node and Behavior Components](mapping/06-NodeAndBehaviorComponents.md) (`NODE`) – example: [node-behavior.sysml](../examples/concepts/node-behavior.sysml)
+  7. [Deployment](mapping/07-Deployment.md) (`DEPL`) – example: [node-behavior.sysml](../examples/concepts/node-behavior.sysml)
+  8. [Function](mapping/08-Function.md) (`FUNC`) – example: [function.sysml](../examples/concepts/function.sysml)
+  9. [Function Port](mapping/09-FunctionPort.md) (`FPORT`) – example: [function.sysml](../examples/concepts/function.sysml)
+  10. [Functional Chain](mapping/10-FunctionalChain.md) (`FC`) – example: [functional-chain.sysml](../examples/concepts/functional-chain.sysml)
+  11. [Functional Exchange](mapping/11-FunctionalExchange.md) (`FE`) – example: [exchanges.sysml](../examples/concepts/exchanges.sysml)
+  12. [Component Exchange](mapping/12-ComponentExchange.md) (`CE`) – example: [exchanges.sysml](../examples/concepts/exchanges.sysml)
+  13. [Component Port](mapping/13-ComponentPort.md) (`CP`) – example: [exchanges.sysml](../examples/concepts/exchanges.sysml)
+  14. [Exchange Allocation](mapping/14-ExchangeAllocation.md) (`EA`) – example: [exchanges.sysml](../examples/concepts/exchanges.sysml)
+  15. [Realization](mapping/15-Realization.md) (`REAL`) – example: [realization.sysml](../examples/concepts/realization.sysml)
+  16. [Exchange Item](mapping/16-ExchangeItem.md) (`EI`) – example: [exchange-item.sysml](../examples/concepts/exchange-item.sysml)
+  17. [Requirements](mapping/17-Requirements.md) (`REQ`) – example: [requirements.sysml](../examples/concepts/requirements.sysml)
+  18. [Capability](mapping/18-Capability.md) (`CAP`) – example: [capability.sysml](../examples/concepts/capability.sysml)
+  19. [Mission](mapping/19-Mission.md) (`MIS`) – example: [capability.sysml](../examples/concepts/capability.sysml)
+  20. [Property values](mapping/20-PropertyValues.md) (`PV`) – example: [property-values.sysml](../examples/concepts/property-values.sysml)
+  21. [Views](mapping/21-Views.md) (`VIEW`) – example: [views.sysml](../examples/concepts/views.sysml)
 
 ## Introduction
 
@@ -82,7 +82,7 @@ A concept that is `Not translated` or `Deferred` has no SysML v2 counterpart for
 
 ### Examples
 
-Every example of this document is taken from a model file of the `examples/concepts` folder, validated with the SysML v2 pilot implementation. Each section names its file. Comments in the examples refer to the row identifiers of the mapping table. `examples/optical-mouse.sysml` remains the complete reference model.
+Every example of this document is taken from a model file of the `examples/concepts` folder, validated with the SysML v2 pilot implementation. The Contents and each section link to its file. Comments in the examples refer to the row identifiers of the mapping table. `examples/optical-mouse.sysml` remains the complete reference model.
 
 ### Terms
 
@@ -112,33 +112,33 @@ All the points that are not decided or not covered yet are listed here, and only
 
 | ID | Subject | Section | Owner | Issue |
 | --- | --- | --- | --- | --- |
-| OP-EPBS | EPBS perspective: only its place in the default model structure exists | Default model structure | SLA | — |
-| OP-ID | Identifiers of Capella elements (`id`, `sid`): kept, for example for the traceability of a migration, or not translated? | ArcadiaElement | SLA | — |
-| OP-CONSTRAINTS | Constraints attached to elements (free text, guards of transitions, scenarios) | ArcadiaElement | SLA | — |
-| OP-PKG-FIELDS | Are the description and status fields of Capella packages really used? | Packages | SLA, with TGS | — |
-| OP-PKG-IN-COMPONENT | Interface, data and capability packages owned by a component: allowed by the Capella metamodel, not described here. What tells such a package from a component package, and what can it contain? | Packages | SLA | — |
-| OP-PV-ENUM | Enumeration property values (a value chosen in a user-defined list) | Property values | SLA | — |
-| OP-PV-SHARED | Shared property values: values defined in a Property Value Pkg and applied to elements by reference | Packages, Property values | SLA | — |
-| OP-KIND | Kind of a Physical Component: not translated, or an optional attribute? | Component | SLA | — |
-| OP-REC | Reuse of elements (REC/RPL, definitions and usages), abstract and generalized components | Component | SLA | — |
-| OP-SUBPARTS | Restrict `subparts` to components (`ref part subparts[*] : Component :>> subparts;`). It would also give tools an indication to leave the views out of the sub-components | Component, Views | SLA, with TWE | — |
-| OP-DEPLOY-OTHER | Other deployment classes of the Capella metamodel (`InstanceDeploymentLink`, `TypeDeploymentLink`, `DeploymentAspect`, `DeploymentConfiguration`): to be translated or not? | Deployment | SLA | — |
-| OP-PHYS | Physical Links and Physical Ports of Node Components, Physical Paths | Node and Behavior Components | SLA | — |
-| OP-SCENARIOS | Scenarios, and their relationship with Functional Chains (keep separate, merge or unify?) | Function | SLA | — |
-| OP-ROUTING | Routing functions (Duplicate, Split, Gather, Route, Select) translated to control nodes: the syntax is accepted by the pilot implementation, but (1) the ends of a `FunctionalExchange` are typed `Function` and a control node is not a `Function`, and (2) there is no obvious place for the condition of a Route or Select function when the node only routes data flows. Alternative: keep them as ordinary functions | Function | SLA | — |
-| OP-INOUT | Should `inout` parameters be allowed on functions? | Function Port | SLA | — |
-| OP-FC-JUNCTION | A link between two involvements of the same Function gives no succession: to be validated | Functional Chain | SLA, with TWE | — |
-| OP-FC-REPEAT | A chain that references the same chain several times is not handled | Functional Chain | SLA | — |
-| OP-FC-TRACE | Capella trace objects of Functional Chains (control flow): is the solution based on successions sufficient? | Functional Chain | SLA | — |
-| OP-FC-CONTEXT | "Exchange Context" property of the Functional Chain Involvement Link | Functional Chain | SLA | — |
-| OP-FC-KIND | Kind field of Functional Chains (SIMPLE, COMPOSITE, FRAGMENT): probably rarely used, to be confirmed | Functional Chain | SLA | — |
-| OP-FC-COMPONENTS | Derived relationship giving the components involved in a Functional Chain | Functional Chain | SLA | — |
-| OP-CATEGORIES | Exchange categories (functional and component exchanges) | Functional Exchange, Component Exchange | SLA | #33 |
-| OP-CE-KIND | Kind of a Component Exchange (ASSEMBLY, DELEGATION, FLOW) and delegation | Component Exchange | SLA | #34 |
-| OP-PORT-DIR | Direction of a Component Port: stored, computed or used as a check? | Component Port | SLA | — |
-| OP-PORT-ALLOC-TYPE | `allocatedFunctionPorts` of `ComponentPort` is typed by `ExchangeItem`: its name says function ports, its type says exchange items. Rename it, retype it, or keep it? | Component Port | SLA | — |
-| OP-INTERFACES | Interfaces, provided and required interfaces, and their impact on Component Ports | Component Port | SLA | — |
-| OP-DATA | Data modeling and the fields of Exchange Items (exchange mechanism, exchange item elements), and the "Predefined Types" package created by default in Data | Exchange Item | SLA | — |
-| OP-CAP | Capabilities: pre and post conditions, inheritance, extends and includes | Capability | SLA | #35 |
-| OP-MISSION | Missions: only in System Analysis? | Mission | SLA | — |
-| OP-MODES | Modes and States | (no section yet) | SLA | — |
+| <a id="op-epbs"></a>[OP-EPBS](mapping/03-DefaultModelStructure.md#open-points) | EPBS perspective: only its place in the default model structure exists | [Default model structure](mapping/03-DefaultModelStructure.md#open-points) | SLA | — |
+| <a id="op-id"></a>[OP-ID](mapping/01-ArcadiaElement.md#open-points) | Identifiers of Capella elements (`id`, `sid`): kept, for example for the traceability of a migration, or not translated? | [ArcadiaElement](mapping/01-ArcadiaElement.md#open-points) | SLA | — |
+| <a id="op-constraints"></a>[OP-CONSTRAINTS](mapping/01-ArcadiaElement.md#open-points) | Constraints attached to elements (free text, guards of transitions, scenarios) | [ArcadiaElement](mapping/01-ArcadiaElement.md#open-points) | SLA | — |
+| <a id="op-pkg-fields"></a>[OP-PKG-FIELDS](mapping/04-Packages.md#open-points) | Are the description and status fields of Capella packages really used? | [Packages](mapping/04-Packages.md#open-points) | SLA, with TGS | — |
+| <a id="op-pkg-in-component"></a>[OP-PKG-IN-COMPONENT](mapping/04-Packages.md#open-points) | Interface, data and capability packages owned by a component: allowed by the Capella metamodel, not described here. What tells such a package from a component package, and what can it contain? | [Packages](mapping/04-Packages.md#open-points) | SLA | — |
+| <a id="op-pv-enum"></a>[OP-PV-ENUM](mapping/20-PropertyValues.md#open-points) | Enumeration property values (a value chosen in a user-defined list) | [Property values](mapping/20-PropertyValues.md#open-points) | SLA | — |
+| <a id="op-pv-shared"></a>[OP-PV-SHARED](mapping/04-Packages.md#open-points) | Shared property values: values defined in a Property Value Pkg and applied to elements by reference | [Packages](mapping/04-Packages.md#open-points), [Property values](mapping/20-PropertyValues.md#open-points) | SLA | — |
+| <a id="op-kind"></a>[OP-KIND](mapping/05-Component.md#open-points) | Kind of a Physical Component: not translated, or an optional attribute? | [Component](mapping/05-Component.md#open-points) | SLA | — |
+| <a id="op-rec"></a>[OP-REC](mapping/05-Component.md#open-points) | Reuse of elements (REC/RPL, definitions and usages), abstract and generalized components | [Component](mapping/05-Component.md#open-points) | SLA | — |
+| <a id="op-subparts"></a>[OP-SUBPARTS](mapping/05-Component.md#open-points) | Restrict `subparts` to components (`ref part subparts[*] : Component :>> subparts;`). It would also give tools an indication to leave the views out of the sub-components | [Component](mapping/05-Component.md#open-points), [Views](mapping/21-Views.md#open-points) | SLA, with TWE | — |
+| <a id="op-deploy-other"></a>[OP-DEPLOY-OTHER](mapping/07-Deployment.md#open-points) | Other deployment classes of the Capella metamodel (`InstanceDeploymentLink`, `TypeDeploymentLink`, `DeploymentAspect`, `DeploymentConfiguration`): to be translated or not? | [Deployment](mapping/07-Deployment.md#open-points) | SLA | — |
+| <a id="op-phys"></a>[OP-PHYS](mapping/06-NodeAndBehaviorComponents.md#open-points) | Physical Links and Physical Ports of Node Components, Physical Paths | [Node and Behavior Components](mapping/06-NodeAndBehaviorComponents.md#open-points) | SLA | — |
+| <a id="op-scenarios"></a>[OP-SCENARIOS](mapping/08-Function.md#open-points) | Scenarios, and their relationship with Functional Chains (keep separate, merge or unify?) | [Function](mapping/08-Function.md#open-points) | SLA | — |
+| <a id="op-routing"></a>[OP-ROUTING](mapping/08-Function.md#open-points) | Routing functions (Duplicate, Split, Gather, Route, Select) translated to control nodes: the syntax is accepted by the pilot implementation, but (1) the ends of a `FunctionalExchange` are typed `Function` and a control node is not a `Function`, and (2) there is no obvious place for the condition of a Route or Select function when the node only routes data flows. Alternative: keep them as ordinary functions | [Function](mapping/08-Function.md#open-points) | SLA | — |
+| <a id="op-inout"></a>[OP-INOUT](mapping/09-FunctionPort.md#open-points) | Should `inout` parameters be allowed on functions? | [Function Port](mapping/09-FunctionPort.md#open-points) | SLA | — |
+| <a id="op-fc-junction"></a>[OP-FC-JUNCTION](mapping/10-FunctionalChain.md#open-points) | A link between two involvements of the same Function gives no succession: to be validated | [Functional Chain](mapping/10-FunctionalChain.md#open-points) | SLA, with TWE | — |
+| <a id="op-fc-repeat"></a>[OP-FC-REPEAT](mapping/10-FunctionalChain.md#open-points) | A chain that references the same chain several times is not handled | [Functional Chain](mapping/10-FunctionalChain.md#open-points) | SLA | — |
+| <a id="op-fc-trace"></a>[OP-FC-TRACE](mapping/10-FunctionalChain.md#open-points) | Capella trace objects of Functional Chains (control flow): is the solution based on successions sufficient? | [Functional Chain](mapping/10-FunctionalChain.md#open-points) | SLA | — |
+| <a id="op-fc-context"></a>[OP-FC-CONTEXT](mapping/10-FunctionalChain.md#open-points) | "Exchange Context" property of the Functional Chain Involvement Link | [Functional Chain](mapping/10-FunctionalChain.md#open-points) | SLA | — |
+| <a id="op-fc-kind"></a>[OP-FC-KIND](mapping/10-FunctionalChain.md#open-points) | Kind field of Functional Chains (SIMPLE, COMPOSITE, FRAGMENT): probably rarely used, to be confirmed | [Functional Chain](mapping/10-FunctionalChain.md#open-points) | SLA | — |
+| <a id="op-fc-components"></a>[OP-FC-COMPONENTS](mapping/10-FunctionalChain.md#open-points) | Derived relationship giving the components involved in a Functional Chain | [Functional Chain](mapping/10-FunctionalChain.md#open-points) | SLA | — |
+| <a id="op-categories"></a>[OP-CATEGORIES](mapping/11-FunctionalExchange.md#open-points) | Exchange categories (functional and component exchanges) | [Functional Exchange](mapping/11-FunctionalExchange.md#open-points), [Component Exchange](mapping/12-ComponentExchange.md#open-points) | SLA | [#33](https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/33) |
+| <a id="op-ce-kind"></a>[OP-CE-KIND](mapping/12-ComponentExchange.md#open-points) | Kind of a Component Exchange (ASSEMBLY, DELEGATION, FLOW) and delegation | [Component Exchange](mapping/12-ComponentExchange.md#open-points) | SLA | [#34](https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/34) |
+| <a id="op-port-dir"></a>[OP-PORT-DIR](mapping/13-ComponentPort.md#open-points) | Direction of a Component Port: stored, computed or used as a check? | [Component Port](mapping/13-ComponentPort.md#open-points) | SLA | — |
+| <a id="op-port-alloc-type"></a>[OP-PORT-ALLOC-TYPE](mapping/13-ComponentPort.md#open-points) | `allocatedFunctionPorts` of `ComponentPort` is typed by `ExchangeItem`: its name says function ports, its type says exchange items. Rename it, retype it, or keep it? | [Component Port](mapping/13-ComponentPort.md#open-points) | SLA | — |
+| <a id="op-interfaces"></a>[OP-INTERFACES](mapping/13-ComponentPort.md#open-points) | Interfaces, provided and required interfaces, and their impact on Component Ports | [Component Port](mapping/13-ComponentPort.md#open-points) | SLA | — |
+| <a id="op-data"></a>[OP-DATA](mapping/16-ExchangeItem.md#open-points) | Data modeling and the fields of Exchange Items (exchange mechanism, exchange item elements), and the "Predefined Types" package created by default in Data | [Exchange Item](mapping/16-ExchangeItem.md#open-points) | SLA | — |
+| <a id="op-cap"></a>[OP-CAP](mapping/18-Capability.md#open-points) | Capabilities: pre and post conditions, inheritance, extends and includes | [Capability](mapping/18-Capability.md#open-points) | SLA | [#35](https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/35) |
+| <a id="op-mission"></a>[OP-MISSION](mapping/19-Mission.md#open-points) | Missions: only in System Analysis? | [Mission](mapping/19-Mission.md#open-points) | SLA | — |
+| <a id="op-modes"></a>OP-MODES | Modes and States | (no section yet) | SLA | — |

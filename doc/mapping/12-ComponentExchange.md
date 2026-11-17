@@ -19,17 +19,17 @@
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| CE-01 | Component Exchange; Communication Mean in Operational Analysis | `fa::ComponentExchange`, `oa::CommunicationMean` | Library | `interface def ComponentExchange :> ArcadiaElement`, used as `interface x : ComponentExchange connect <port> to <port>` | A possible interaction between two behavioral components, that transmits exchange items through their ports. Called "behavioral exchange" in Arcadia | P1: a component exchange is an interface between two ports |
-| CE-02 | Source port | derived `fa::ComponentExchange.sourcePort` | Library | `end cp1 : ComponentPort` | The port from which the exchange starts | P1 |
-| CE-03 | Target port | derived `fa::ComponentExchange.targetPort` | Library | `end cp2 : ComponentPort` | The port where the exchange ends | P1 |
-| CE-04 | Conveyed exchange items | `modellingcore::AbstractInformationFlow.convoyedInformations` | Library | `ref item allocatedExchangeItems: ExchangeItem[*]`, set with `ref item :>> allocatedExchangeItems = (...)` | The exchange items conveyed by the component exchange | P3: needed by Arcadia, no native equivalent that fits (see Decisions) |
-| CE-05 | Allocated functional exchanges | derived `fa::ComponentExchange.allocatedFunctionalExchanges` | Derived | the `ExchangeAllocation` usages owned by the component exchange (see the EA section) | The functional exchanges allocated to the component exchange | The link is stored once, as an allocation, as in Capella |
-| CE-06 | Kind (Assembly, Delegation, Flow) | `fa::ComponentExchange.kind` | Deferred – OP-CE-KIND | none | Kind of the component exchange | Not decided yet |
-| CE-07 | Component exchange categories | `fa::ComponentExchangeCategory` (derived: `fa::ComponentExchange.categories`) | Deferred – OP-CATEGORIES | none | A named group of component exchanges, used to simplify diagrams | Not decided yet |
+| <a id="ce-01"></a>CE-01 | Component Exchange; Communication Mean in Operational Analysis | `fa::ComponentExchange`, `oa::CommunicationMean` | Library | `interface def ComponentExchange :> ArcadiaElement`, used as `interface x : ComponentExchange connect <port> to <port>` | A possible interaction between two behavioral components, that transmits exchange items through their ports. Called "behavioral exchange" in Arcadia | P1: a component exchange is an interface between two ports |
+| <a id="ce-02"></a>CE-02 | Source port | derived `fa::ComponentExchange.sourcePort` | Library | `end cp1 : ComponentPort` | The port from which the exchange starts | P1 |
+| <a id="ce-03"></a>CE-03 | Target port | derived `fa::ComponentExchange.targetPort` | Library | `end cp2 : ComponentPort` | The port where the exchange ends | P1 |
+| <a id="ce-04"></a>CE-04 | Conveyed exchange items | `modellingcore::AbstractInformationFlow.convoyedInformations` | Library | `ref item allocatedExchangeItems: ExchangeItem[*]`, set with `ref item :>> allocatedExchangeItems = (...)` | The exchange items conveyed by the component exchange | P3: needed by Arcadia, no native equivalent that fits (see Decisions) |
+| <a id="ce-05"></a>CE-05 | Allocated functional exchanges | derived `fa::ComponentExchange.allocatedFunctionalExchanges` | Derived | the `ExchangeAllocation` usages owned by the component exchange (see the EA section) | The functional exchanges allocated to the component exchange | The link is stored once, as an allocation, as in Capella |
+| <a id="ce-06"></a>CE-06 | Kind (Assembly, Delegation, Flow) | `fa::ComponentExchange.kind` | Deferred – [OP-CE-KIND](../ArcadiaLibraryMapping.md#op-ce-kind) | none | Kind of the component exchange | Not decided yet |
+| <a id="ce-07"></a>CE-07 | Component exchange categories | `fa::ComponentExchangeCategory` (derived: `fa::ComponentExchange.categories`) | Deferred – [OP-CATEGORIES](../ArcadiaLibraryMapping.md#op-categories) | none | A named group of component exchanges, used to simplify diagrams | Not decided yet |
 
 ## Example
 
-From `examples/concepts/exchanges.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 			// CE-01: a component exchange between two component ports (CE-02, CE-03)
@@ -45,14 +45,14 @@ From `examples/concepts/exchanges.sysml`, validated with the SysML v2 pilot impl
 ## Decisions
 
 - `allocatedExchangeItems` is a stored list, independent of the functional exchanges allocated to the component exchange, as in Capella: the Capella reference has no constraint, and the consistency with the exchange items of the allocated functional exchanges is only checked by validation rules that raise warnings. It is not constrained in the library either.
-- Not retained for CE-04: a SysML v2 constraint in the library (stricter than Capella and heavy to write); and replacing the list by the payload of a flow of the interface (native, but the payload is untyped and a flow is directed, whereas a component exchange can convey exchange items in both directions).
-- The list of allocated functional exchanges is not stored on the component exchange (CE-05): see the EA section.
-- Node Components have physical links, not component exchanges (see OP-PHYS).
+- Not retained for [CE-04](#ce-04): a SysML v2 constraint in the library (stricter than Capella and heavy to write); and replacing the list by the payload of a flow of the interface (native, but the payload is untyped and a flow is directed, whereas a component exchange can convey exchange items in both directions).
+- The list of allocated functional exchanges is not stored on the component exchange ([CE-05](#ce-05)): see the EA section.
+- Node Components have physical links, not component exchanges (see [OP-PHYS](../ArcadiaLibraryMapping.md#op-phys)).
 
 ## Tooling requirements
 
-- CE-04: tooling can propose the exchange items of the allocated functional exchanges, and report the differences.
-- CE-05: the allocated functional exchanges of a component exchange are computed from the allocations.
+- [CE-04](#ce-04): tooling can propose the exchange items of the allocated functional exchanges, and report the differences.
+- [CE-05](#ce-05): the allocated functional exchanges of a component exchange are computed from the allocations.
 
 ## SysML v2 limitations
 
@@ -60,4 +60,4 @@ From `examples/concepts/exchanges.sysml`, validated with the SysML v2 pilot impl
 
 ## Open points
 
-OP-CE-KIND, OP-CATEGORIES, OP-PHYS (see the open points register).
+[OP-CE-KIND](../ArcadiaLibraryMapping.md#op-ce-kind), [OP-CATEGORIES](../ArcadiaLibraryMapping.md#op-categories), [OP-PHYS](../ArcadiaLibraryMapping.md#op-phys) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

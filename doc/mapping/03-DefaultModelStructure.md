@@ -10,24 +10,24 @@ None. The default structure is not a library element: it is a model template, gi
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| STRUCT-01 | Project and its System Engineering root | `capellamodeller::Project`, `capellamodeller::SystemEngineering` | Native | `occurrence def <short name> 'name'`, annotated with `ArcadiaPackage` (PKGM-07) | The root of the model | P1. An occurrence definition gives a name, a short name and a namespace to the model |
-| STRUCT-02 | The five architectures | `capellacore::AbstractModellingStructure.ownedArchitectures` | Native | one package per perspective, with a fixed short name: `<OA>`, `<SA>`, `<LA>`, `<PA>`, `<EPBS>`, annotated with `ArcadiaPackage` (PKGM-02 to PKGM-06) | The engineering perspectives | P1: perspectives are packages |
-| STRUCT-03 | Operational Activities / System Functions / Logical Functions / Physical Functions | `fa::AbstractFunctionalArchitecture.ownedFunctionPkg` | Native | `package Functions` | Contains the functions of the perspective | P6: same package name in every perspective |
-| STRUCT-04 | Operational Capabilities / Capabilities | `cs::BlockArchitecture.ownedAbstractCapabilityPkg` | Native | `package Capabilities` | Contains the capabilities of the perspective | P6 |
-| STRUCT-05 | Missions (System Analysis) | `ctx::SystemAnalysis.ownedMissionPkg` | Native | `package Capabilities` (no dedicated package) | Contains the missions | P3: missions are kept with the capabilities they exploit |
-| STRUCT-06 | Interfaces | `cs::BlockArchitecture.ownedInterfacePkg` | Native | `package Interfaces` | Contains the interfaces and exchange items | P6 |
-| STRUCT-07 | Data | `cs::BlockArchitecture.ownedDataPkg` | Native | `package Data` | Contains the data model | P6 |
-| STRUCT-08 | Operational Entities / Structure | `oa::OperationalAnalysis.ownedEntityPkg`, `ctx::SystemAnalysis.ownedSystemComponentPkg`, `la::LogicalArchitecture.ownedLogicalComponentPkg`, `pa::PhysicalArchitecture.ownedPhysicalComponentPkg`, `epbs::EPBSArchitecture.ownedConfigurationItemPkg` | Native | `package Structure` | Contains the components and actors of the perspective | P6 |
-| STRUCT-09 | (no Capella counterpart: the Capella core metamodel has no requirement concept) | none | Native | `package Requirements` | Contains the requirements of the perspective (see the REQ section) | P6 |
-| STRUCT-10 | Roles (Operational Analysis) | `oa::OperationalAnalysis.ownedRolePkg` | Not translated – replaced by definition/usage | none | Contains the roles | Roles are not translated (see COMP-10) |
-| STRUCT-11 | Root Operational Activity / Root System Function / Root Logical Function / Root Physical Function | the root function of `ownedFunctionPkg` | Library | `action 'Root Activity' : Function` in OA, `action 'Root Function' : Function` in the other perspectives | The function that contains all the functions of the perspective | P6: same name in every perspective, except in OA where Capella speaks of activities |
-| STRUCT-12 | System / Logical System / Physical System | the root component of the component package | Library | `part system : Component`; none in OA | The component that represents the system in the perspective | P6. Capella has no root component in Operational Analysis |
-| STRUCT-13 | Default realizations between the root elements of consecutive perspectives | realization objects created with the project (see the REAL section) | Library | `allocation : Realization allocate <root of the previous perspective> to self;` | A new project already links each root function and each root component to the one of the previous perspective | P5: same initial model as in Capella |
-| STRUCT-14 | Operational concepts (Concept, Capability Configuration, Location, Organisational Unit, Community of Interest) and their package | `oa::OperationalAnalysis.ownedConceptPkg`, `oa::ConceptPkg`, `oa::Concept` and related classes | Not translated – rarely used | none | Describes how capabilities are used in an operational context | P4: present in the Capella metamodel, with no known use in Capella models |
+| <a id="struct-01"></a>STRUCT-01 | Project and its System Engineering root | `capellamodeller::Project`, `capellamodeller::SystemEngineering` | Native | `occurrence def <short name> 'name'`, annotated with `ArcadiaPackage` ([PKGM-07](02-ArcadiaPackage.md#pkgm-07)) | The root of the model | P1. An occurrence definition gives a name, a short name and a namespace to the model |
+| <a id="struct-02"></a>STRUCT-02 | The five architectures | `capellacore::AbstractModellingStructure.ownedArchitectures` | Native | one package per perspective, with a fixed short name: `<OA>`, `<SA>`, `<LA>`, `<PA>`, `<EPBS>`, annotated with `ArcadiaPackage` ([PKGM-02](02-ArcadiaPackage.md#pkgm-02) to [PKGM-06](02-ArcadiaPackage.md#pkgm-06)) | The engineering perspectives | P1: perspectives are packages |
+| <a id="struct-03"></a>STRUCT-03 | Operational Activities / System Functions / Logical Functions / Physical Functions | `fa::AbstractFunctionalArchitecture.ownedFunctionPkg` | Native | `package Functions` | Contains the functions of the perspective | P6: same package name in every perspective |
+| <a id="struct-04"></a>STRUCT-04 | Operational Capabilities / Capabilities | `cs::BlockArchitecture.ownedAbstractCapabilityPkg` | Native | `package Capabilities` | Contains the capabilities of the perspective | P6 |
+| <a id="struct-05"></a>STRUCT-05 | Missions (System Analysis) | `ctx::SystemAnalysis.ownedMissionPkg` | Native | `package Capabilities` (no dedicated package) | Contains the missions | P3: missions are kept with the capabilities they exploit |
+| <a id="struct-06"></a>STRUCT-06 | Interfaces | `cs::BlockArchitecture.ownedInterfacePkg` | Native | `package Interfaces` | Contains the interfaces and exchange items | P6 |
+| <a id="struct-07"></a>STRUCT-07 | Data | `cs::BlockArchitecture.ownedDataPkg` | Native | `package Data` | Contains the data model | P6 |
+| <a id="struct-08"></a>STRUCT-08 | Operational Entities / Structure | `oa::OperationalAnalysis.ownedEntityPkg`, `ctx::SystemAnalysis.ownedSystemComponentPkg`, `la::LogicalArchitecture.ownedLogicalComponentPkg`, `pa::PhysicalArchitecture.ownedPhysicalComponentPkg`, `epbs::EPBSArchitecture.ownedConfigurationItemPkg` | Native | `package Structure` | Contains the components and actors of the perspective | P6 |
+| <a id="struct-09"></a>STRUCT-09 | (no Capella counterpart: the Capella core metamodel has no requirement concept) | none | Native | `package Requirements` | Contains the requirements of the perspective (see the REQ section) | P6 |
+| <a id="struct-10"></a>STRUCT-10 | Roles (Operational Analysis) | `oa::OperationalAnalysis.ownedRolePkg` | Not translated – replaced by definition/usage | none | Contains the roles | Roles are not translated (see [COMP-10](05-Component.md#comp-10)) |
+| <a id="struct-11"></a>STRUCT-11 | Root Operational Activity / Root System Function / Root Logical Function / Root Physical Function | the root function of `ownedFunctionPkg` | Library | `action 'Root Activity' : Function` in OA, `action 'Root Function' : Function` in the other perspectives | The function that contains all the functions of the perspective | P6: same name in every perspective, except in OA where Capella speaks of activities |
+| <a id="struct-12"></a>STRUCT-12 | System / Logical System / Physical System | the root component of the component package | Library | `part system : Component`; none in OA | The component that represents the system in the perspective | P6. Capella has no root component in Operational Analysis |
+| <a id="struct-13"></a>STRUCT-13 | Default realizations between the root elements of consecutive perspectives | realization objects created with the project (see the REAL section) | Library | `allocation : Realization allocate <root of the previous perspective> to self;` | A new project already links each root function and each root component to the one of the previous perspective | P5: same initial model as in Capella |
+| <a id="struct-14"></a>STRUCT-14 | Operational concepts (Concept, Capability Configuration, Location, Organisational Unit, Community of Interest) and their package | `oa::OperationalAnalysis.ownedConceptPkg`, `oa::ConceptPkg`, `oa::Concept` and related classes | Not translated – rarely used | none | Describes how capabilities are used in an operational context | P4: present in the Capella metamodel, with no known use in Capella models |
 
 ## Example
 
-From `examples/concepts/default-structure.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/default-structure.sysml`](../../examples/concepts/default-structure.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 // STRUCT-01: the top-level element of the model, with a name and a short name
@@ -87,9 +87,9 @@ The complete template, with the five perspectives, is `lib/ArcadiaDefaultStructu
 
 ## Tooling requirements
 
-- STRUCT-01 to STRUCT-13: the creation of a project generates this structure, including the `ArcadiaPackage` annotations and the default realizations, so that the initial model is the same as in Capella.
-- STRUCT-01: the user gives the name and the short name of the model.
-- STRUCT-11, STRUCT-12: tooling prevents the creation of a second root function next to the root function, and of components next to the root component, except actors.
+- [STRUCT-01](#struct-01) to [STRUCT-13](#struct-13): the creation of a project generates this structure, including the `ArcadiaPackage` annotations and the default realizations, so that the initial model is the same as in Capella.
+- [STRUCT-01](#struct-01): the user gives the name and the short name of the model.
+- [STRUCT-11](#struct-11), [STRUCT-12](#struct-12): tooling prevents the creation of a second root function next to the root function, and of components next to the root component, except actors.
 
 ## SysML v2 limitations
 
@@ -98,4 +98,4 @@ The complete template, with the five perspectives, is `lib/ArcadiaDefaultStructu
 
 ## Open points
 
-OP-EPBS (see the open points register).
+[OP-EPBS](../ArcadiaLibraryMapping.md#op-epbs) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

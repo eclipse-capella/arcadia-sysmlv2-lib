@@ -10,17 +10,17 @@ None. The library has no requirement concept: Arcadia models use the native SysM
 
 | ID | Need | Treatment | In SysML v2 |
 | --- | --- | --- | --- |
-| REQ-01 | A requirement | Native | `requirement`, in the `Requirements` package of an engineering perspective |
-| REQ-02 | Identifier of a requirement | Native | short name: `requirement <'R1.1'> Optical` |
-| REQ-03 | Statement of a requirement (the "shall" statement) | Native | `doc` of the requirement |
-| REQ-04 | Status of a requirement | Native | `@StatusInfo` metadata, optional |
-| REQ-05 | Organization of the requirements | Native | requirements nested in requirements; sub-packages of `Requirements` |
-| REQ-06 | Link between a requirement and a model element | Native | `satisfy <requirement>;` owned by the satisfying element |
-| REQ-07 | Trace between requirements | Native | derivation connection of the `RequirementDerivation` library: `#derivation connection { end #original ::> ...; end #derive ::> ...; }` |
+| <a id="req-01"></a>REQ-01 | A requirement | Native | `requirement`, in the `Requirements` package of an engineering perspective |
+| <a id="req-02"></a>REQ-02 | Identifier of a requirement | Native | short name: `requirement <'R1.1'> Optical` |
+| <a id="req-03"></a>REQ-03 | Statement of a requirement (the "shall" statement) | Native | `doc` of the requirement |
+| <a id="req-04"></a>REQ-04 | Status of a requirement | Native | `@StatusInfo` metadata, optional |
+| <a id="req-05"></a>REQ-05 | Organization of the requirements | Native | requirements nested in requirements; sub-packages of `Requirements` |
+| <a id="req-06"></a>REQ-06 | Link between a requirement and a model element | Native | `satisfy <requirement>;` owned by the satisfying element |
+| <a id="req-07"></a>REQ-07 | Trace between requirements | Native | derivation connection of the `RequirementDerivation` library: `#derivation connection { end #original ::> ...; end #derive ::> ...; }` |
 
 ## Example
 
-From `examples/concepts/requirements.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/requirements.sysml`](../../examples/concepts/requirements.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 			requirement <'R1'> 'Movement Capture' {
@@ -48,7 +48,7 @@ From `examples/concepts/requirements.sysml`, validated with the SysML v2 pilot i
 
 ## Decisions
 
-- Requirements have their own hierarchy, in the `Requirements` package of each engineering perspective (see STRUCT-09).
+- Requirements have their own hierarchy, in the `Requirements` package of each engineering perspective (see [STRUCT-09](03-DefaultModelStructure.md#struct-09)).
 - Nesting is only a way to organize requirements: it is not a trace.
 - A requirement can be linked to any element of an Arcadia model (function, component, exchange, capability…) with a `satisfy`, owned by the satisfying element.
 - The `subject` of a requirement is not used for this link: a requirement has a single subject, whereas it can be satisfied by several elements.
