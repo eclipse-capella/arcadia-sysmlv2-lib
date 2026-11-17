@@ -134,6 +134,14 @@ occurrence def <SE> OpticalMouseModel {
 	   	    		succession first Capabilities::'Move Cursor on Screen'.'read movement'.'Transform Raw Optical Data' then 'Root Function'.'Update Pointer Position';
 	   	    		succession first 'Root Function'.'Update Pointer Position' then done;
 	   	    	}
+
+	   	    	// A Capella Logical Data Flow Blank diagram: a view usage typed by the Arcadia view definition LDFB (short name of
+	   	    	// 'Logical Data Flow Blank'), owned like the diagram in Capella (here by the function it is created on).
+	   	    	view 'Optical Data Flow' : LDFB {
+	   	    		expose 'Capture Movement';
+	   	    		expose 'Transform Raw Optical Data';
+	   	    		expose 'Update Pointer Position';
+	   	    	}
 	   	    }
 
 			// A Capella Function Package: a plain nested package
@@ -237,6 +245,12 @@ occurrence def <SE> OpticalMouseModel {
 	        		// The allocation is owned by the Component Exchange, which is designated by 'self'.
 	        		allocation : ExchangeAllocation allocate 'Root Function'.'Optical Data' to self;
 					}
+
+				// A Capella Logical Architecture Blank diagram: a view usage typed by LAB ('Logical Architecture Blank'), owned by the component
+				view 'Mouse Logical Architecture' : LAB {
+					expose 'Optical Sensor Unit';
+					expose 'Mouse Controller';
+				}
 			}
 		}
 

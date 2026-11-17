@@ -16,6 +16,7 @@ library package Arcadia {
     private import ScalarValues::Boolean;
     private import ScalarValues::String;
 	private import KerML::FeatureDirectionKind;
+	private import StandardViewDefinitions::*;
 
 	abstract occurrence def ArcadiaElement {
     	private doc /* Reusable structure shared by all Arcadia elements.*/
@@ -134,5 +135,70 @@ library package Arcadia {
 		ref part involvedComponents: Component[*];
 		ref occurrence exploitedCapabilities: Capability[*];
 	}
+
+	// Arcadia view definitions: one view definition per Capella diagram kind. The name is the diagram name displayed
+	// in Capella, the short name is the Capella acronym. Each one specializes the closest standard view definition,
+	// so that a tool which does not know Arcadia still sees a standard view. An Arcadia diagram is represented by a view
+	// usage typed by one of them: view 'My diagram name' : LAB { expose ...; }
+	// Not included: "Modes and States" (deprecated in Capella).
+	// Operational Analysis
+	view def <OEBD> 'Operational Entity Breakdown' :> GeneralView;
+	view def <OAIB> 'Operational Activity Interaction Blank' :> ActionFlowView;
+	view def <OAB> 'Operational Architecture Blank' :> InterconnectionView;
+	view def <OABD> 'Operational Activity Breakdown' :> GeneralView;
+	view def <ORB> 'Operational Role Blank' :> GeneralView;
+	view def <OES> 'Entity Scenario' :> SequenceView;
+	view def <OAS> 'Activity Scenario' :> SequenceView;
+	view def <OPD> 'Operational Process Description' :> ActionFlowView;
+	view def <OCB> 'Operational Capabilities Blank' :> GeneralView;
+	view def <COC> 'Contextual Operational Capability' :> GeneralView;
+
+	// System Analysis
+	view def <CM> 'Contextual Mission' :> GeneralView;
+	view def <MB> 'Missions Blank' :> GeneralView;
+	view def <CC> 'Contextual Capability' :> GeneralView;
+	view def <MCB> 'Missions Capabilities Blank' :> GeneralView;
+	view def <SFBD> 'System Function Breakdown' :> GeneralView;
+	view def <SDFB> 'System Data Flow Blank' :> ActionFlowView;
+	view def <SAB> 'System Architecture Blank' :> InterconnectionView;
+	view def <CSA> 'Contextual System Actors' :> GeneralView;
+
+	// Logical Architecture
+	view def <LCBD> 'Logical Component Breakdown' :> GeneralView;
+	view def <LFBD> 'Logical Function Breakdown' :> GeneralView;
+	view def <LDFB> 'Logical Data Flow Blank' :> ActionFlowView;
+	view def <LAB> 'Logical Architecture Blank' :> InterconnectionView;
+	view def <CRR> 'Capability Realization Refinement' :> GeneralView;
+
+	// Physical Architecture
+	view def <PFBD> 'Physical Function Breakdown' :> GeneralView;
+	view def <PDFB> 'Physical Data Flow Blank' :> ActionFlowView;
+	view def <PCBD> 'Physical Component Breakdown' :> GeneralView;
+	view def <PAB> 'Physical Architecture Blank' :> InterconnectionView;
+	view def <PPD> 'Physical Path Description' :> InterconnectionView;
+
+	// EPBS
+	view def <EAB> 'EPBS Architecture Blank' :> InterconnectionView;
+	view def <CIBD> 'Configuration Items Breakdown' :> GeneralView;
+
+	// Common to several perspectives
+	view def <MSM> 'Mode State Machine' :> StateTransitionView;
+	view def <CDB> 'Class Diagram Blank' :> GeneralView;
+	view def <CA> 'Capella Architecture' :> GeneralView;
+	view def <IDB> 'Interfaces Diagram Blank' :> GeneralView;
+	view def <ID> 'Interface Diagram' :> GeneralView;
+	view def <CDI> 'Contextual Component Detailed Interfaces' :> GeneralView;
+	view def <CEI> 'Contextual Component External Interfaces' :> GeneralView;
+	view def <CII> 'Contextual Component Internal Interfaces' :> GeneralView;
+	view def <CRB> 'Capability Realization Blank' :> GeneralView;
+	view def <CRI> 'Contextual Capability Realization Involvement' :> GeneralView;
+	view def <PD> 'Package Dependencies' :> GeneralView;
+	view def <IS> 'Interface Scenario' :> SequenceView;
+	view def <ES> 'Exchange Scenario' :> SequenceView;
+	view def <FS> 'Function Scenario' :> SequenceView;
+	view def <FCD> 'Functional Chain Description' :> ActionFlowView;
+
+	// Matrices (the Capella cross tables): a single view definition for all of them, without short name (Capella gives none)
+	view def 'Matrix' :> GridView;
 
 }
