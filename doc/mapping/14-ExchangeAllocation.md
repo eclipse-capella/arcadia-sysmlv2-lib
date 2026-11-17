@@ -18,13 +18,13 @@
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| EA-01 | Allocation of a functional exchange to a component exchange | `fa::ComponentExchangeFunctionalExchangeAllocation`, owned by the component exchange (`fa::ComponentExchange.ownedComponentExchangeFunctionalExchangeAllocations`) | Library | `allocation def ExchangeAllocation :> ArcadiaElement`, used as `allocation : ExchangeAllocation allocate <functional exchange> to self;` in the component exchange | The content of the interfaces between components is based on the functional content, through these allocations | P1: native allocation. P3: a thin typing that lets tools recognize an Arcadia exchange allocation |
-| EA-02 | Allocated functional exchange | derived `allocatedFunctionalExchange` | Library | `end functionalExchange : FunctionalExchange` (source of the allocation) | The functional exchange that is allocated | P1 |
-| EA-03 | Allocating component exchange | derived `allocatingComponentExchange` | Library | `end componentExchange : ComponentExchange` (target of the allocation) | The component exchange it is allocated to | P1 |
+| <a id="ea-01"></a>EA-01 | Allocation of a functional exchange to a component exchange | `fa::ComponentExchangeFunctionalExchangeAllocation`, owned by the component exchange (`fa::ComponentExchange.ownedComponentExchangeFunctionalExchangeAllocations`) | Library | `allocation def ExchangeAllocation :> ArcadiaElement`, used as `allocation : ExchangeAllocation allocate <functional exchange> to self;` in the component exchange | The content of the interfaces between components is based on the functional content, through these allocations | P1: native allocation. P3: a thin typing that lets tools recognize an Arcadia exchange allocation |
+| <a id="ea-02"></a>EA-02 | Allocated functional exchange | derived `allocatedFunctionalExchange` | Library | `end functionalExchange : FunctionalExchange` (source of the allocation) | The functional exchange that is allocated | P1 |
+| <a id="ea-03"></a>EA-03 | Allocating component exchange | derived `allocatingComponentExchange` | Library | `end componentExchange : ComponentExchange` (target of the allocation) | The component exchange it is allocated to | P1 |
 
 ## Example
 
-From `examples/concepts/exchanges.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 			interface cable : ComponentExchange
@@ -44,7 +44,7 @@ From `examples/concepts/exchanges.sysml`, validated with the SysML v2 pilot impl
 
 ## Tooling requirements
 
-- The allocated functional exchanges of a component exchange are computed from the allocations (CE-05).
+- The allocated functional exchanges of a component exchange are computed from the allocations ([CE-05](12-ComponentExchange.md#ce-05)).
 
 ## SysML v2 limitations
 

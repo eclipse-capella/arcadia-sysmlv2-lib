@@ -17,17 +17,17 @@
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| FE-01 | Functional Exchange (Interaction in Operational Analysis) | `fa::FunctionalExchange` | Library | `flow def FunctionalExchange :> ArcadiaElement`, used as `flow x : FunctionalExchange from <output port> to <input port>;` | A possible interaction between a source function and a destination function, that transmits exchange items through their output and input ports | P1: a functional exchange is a flow |
-| FE-02 | Exchanged items | `fa::FunctionalExchange.exchangedItems` | Library | `ref item :>> payload : ExchangeItem [*]`, set with `of :>> payload = (...)` | The exchange items carried by the exchange | P1: the standard `payload` of a flow, redefined so that it is typed by `ExchangeItem` |
-| FE-03 | Source | derived `fa::FunctionalExchange.sourceFunctionOutputPort` | Library | `end source : Function`; the usage starts from an `out` parameter (FPORT-02) | The function, and its output port, from which the exchange starts | P1 |
-| FE-04 | Target | derived `fa::FunctionalExchange.targetFunctionInputPort` | Library | `end target : Function`; the usage ends on an `in` parameter (FPORT-01) | The function, and its input port, where the exchange ends | P1 |
-| FE-05 | Exchange categories | `fa::ExchangeCategory` (derived: `fa::FunctionalExchange.categories`) | Deferred – OP-CATEGORIES | none | A named group of functional exchanges, used to simplify diagrams | Not decided yet |
+| <a id="fe-01"></a>FE-01 | Functional Exchange (Interaction in Operational Analysis) | `fa::FunctionalExchange` | Library | `flow def FunctionalExchange :> ArcadiaElement`, used as `flow x : FunctionalExchange from <output port> to <input port>;` | A possible interaction between a source function and a destination function, that transmits exchange items through their output and input ports | P1: a functional exchange is a flow |
+| <a id="fe-02"></a>FE-02 | Exchanged items | `fa::FunctionalExchange.exchangedItems` | Library | `ref item :>> payload : ExchangeItem [*]`, set with `of :>> payload = (...)` | The exchange items carried by the exchange | P1: the standard `payload` of a flow, redefined so that it is typed by `ExchangeItem` |
+| <a id="fe-03"></a>FE-03 | Source | derived `fa::FunctionalExchange.sourceFunctionOutputPort` | Library | `end source : Function`; the usage starts from an `out` parameter ([FPORT-02](09-FunctionPort.md#fport-02)) | The function, and its output port, from which the exchange starts | P1 |
+| <a id="fe-04"></a>FE-04 | Target | derived `fa::FunctionalExchange.targetFunctionInputPort` | Library | `end target : Function`; the usage ends on an `in` parameter ([FPORT-01](09-FunctionPort.md#fport-01)) | The function, and its input port, where the exchange ends | P1 |
+| <a id="fe-05"></a>FE-05 | Exchange categories | `fa::ExchangeCategory` (derived: `fa::FunctionalExchange.categories`) | Deferred – [OP-CATEGORIES](../ArcadiaLibraryMapping.md#op-categories) | none | A named group of functional exchanges, used to simplify diagrams | Not decided yet |
 
-The allocation of a functional exchange to a component exchange is described in the EA section, its involvement in a functional chain in FC-03, and realizations in the REAL section.
+The allocation of a functional exchange to a component exchange is described in the EA section, its involvement in a functional chain in [FC-03](10-FunctionalChain.md#fc-03), and realizations in the REAL section.
 
 ## Example
 
-From `examples/concepts/exchanges.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 			// FE-01: a functional exchange between two function ports (FE-03, FE-04)
@@ -52,4 +52,4 @@ From `examples/concepts/exchanges.sysml`, validated with the SysML v2 pilot impl
 
 ## Open points
 
-OP-CATEGORIES (see the open points register).
+[OP-CATEGORIES](../ArcadiaLibraryMapping.md#op-categories) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

@@ -20,13 +20,13 @@
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| NODE-01 | Physical Component of nature Node, including the actors of the Physical Architecture | `pa::PhysicalComponent` with `nature = NODE` | Library | `part def NodeComponent :> Component`, used as `part x : NodeComponent` | A physical platform that hosts deployed components and is connected to other nodes by physical links | P3: the Node / Behavior distinction is essential in the Physical Architecture. P1: a specialization of the part definition is the standard way to distinguish kinds of parts, and any tool can read it without knowing a library attribute |
-| NODE-02 | Physical Component of nature Behavior | `pa::PhysicalComponent` with `nature = BEHAVIOR` | Library | `part def BehaviorComponent :> Component`, used as `part x : BehaviorComponent` | A component that carries allocated functions and component exchanges, and that is deployed on a Node Component, not contained in it | Same as NODE-01 |
-| NODE-03 | Root component of the Physical Architecture | `pa::PhysicalComponent` with `nature = UNSET` | Library | `part system : Component` | The only Physical Component whose nature is not specified | It stays a plain `Component` |
+| <a id="node-01"></a>NODE-01 | Physical Component of nature Node, including the actors of the Physical Architecture | `pa::PhysicalComponent` with `nature = NODE` | Library | `part def NodeComponent :> Component`, used as `part x : NodeComponent` | A physical platform that hosts deployed components and is connected to other nodes by physical links | P3: the Node / Behavior distinction is essential in the Physical Architecture. P1: a specialization of the part definition is the standard way to distinguish kinds of parts, and any tool can read it without knowing a library attribute |
+| <a id="node-02"></a>NODE-02 | Physical Component of nature Behavior | `pa::PhysicalComponent` with `nature = BEHAVIOR` | Library | `part def BehaviorComponent :> Component`, used as `part x : BehaviorComponent` | A component that carries allocated functions and component exchanges, and that is deployed on a Node Component, not contained in it | Same as [NODE-01](#node-01) |
+| <a id="node-03"></a>NODE-03 | Root component of the Physical Architecture | `pa::PhysicalComponent` with `nature = UNSET` | Library | `part system : Component` | The only Physical Component whose nature is not specified | It stays a plain `Component` |
 
 ## Example
 
-From `examples/concepts/node-behavior.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/node-behavior.sysml`](../../examples/concepts/node-behavior.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 	// The root component of the Physical Architecture stays a plain Component
@@ -50,7 +50,7 @@ From `examples/concepts/node-behavior.sysml`, validated with the SysML v2 pilot 
 
 ## Decisions
 
-- The two specializations are used only in the Physical Architecture, where every component is either a Node Component or a Behavior Component, except the root component (NODE-03). The other engineering perspectives keep using `Component`.
+- The two specializations are used only in the Physical Architecture, where every component is either a Node Component or a Behavior Component, except the root component ([NODE-03](#node-03)). The other engineering perspectives keep using `Component`.
 - Migration from Capella is direct: nature NODE gives `NodeComponent`, nature BEHAVIOR gives `BehaviorComponent`, and the root component (nature UNSET) stays a `Component`. An actor of the Physical Architecture is a `NodeComponent` with `isActor = true`.
 - Hierarchies of Node Components and hierarchies of Behavior Components are both supported. It is a good practice in Arcadia to keep separate hierarchies for nodes and for behaviors.
 - Containment and deployment are two different relations, as in Capella. A component created inside another one is contained in it. A deployed component is related to the component that hosts it by a `Deployment` allocation (see the DEPL section). A Node Component can be contained in a Node Component or deployed on it. A Behavior Component can be contained in a Behavior Component, but not in a Node Component: it is deployed on it.
@@ -71,4 +71,4 @@ The following rules are not enforced by the library. They are validation rules f
 
 ## Open points
 
-OP-PHYS (see the open points register).
+[OP-PHYS](../ArcadiaLibraryMapping.md#op-phys) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

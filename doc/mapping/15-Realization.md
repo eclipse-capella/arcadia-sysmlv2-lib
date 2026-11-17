@@ -20,14 +20,14 @@
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| REAL-01 | Realization of an element by an element of the next engineering perspective | the realization classes, one per kind of element: `fa::FunctionRealization`, `cs::ComponentRealization`, `fa::FunctionalExchangeRealization`, `fa::ComponentExchangeRealization`, `fa::FunctionalChainRealization`, `information::PortRealization`, `interaction::AbstractCapabilityRealization`…; owned by the realizing element | Library | `allocation def Realization :> ArcadiaElement`, used as `allocation : Realization allocate <realized element> to self;` in the realizing element | Traceability between engineering perspectives: an element realizes one or several elements of the previous perspective (SA realizes OA, LA realizes SA, PA realizes LA) | P1: allocation is the standard way to relate an abstract architecture to a more concrete one. P3: one single definition for all kinds of elements |
-| REAL-02 | Realized element | `modellingcore::AbstractTrace.targetElement` | Library | `end realized : ArcadiaElement` (source of the allocation) | The element of the previous perspective | P1 |
-| REAL-03 | Realizing element | `modellingcore::AbstractTrace.sourceElement` | Library | `end realizing : ArcadiaElement` (target of the allocation) | The element of this perspective | P1 |
-| REAL-04 | Realized and realizing elements of an element | derived references of each class (`realizedXxx`, `realizingXxx`) | Derived | computed from the `Realization` allocations | Navigation in both directions | The link is stored once, as in Capella |
+| <a id="real-01"></a>REAL-01 | Realization of an element by an element of the next engineering perspective | the realization classes, one per kind of element: `fa::FunctionRealization`, `cs::ComponentRealization`, `fa::FunctionalExchangeRealization`, `fa::ComponentExchangeRealization`, `fa::FunctionalChainRealization`, `information::PortRealization`, `interaction::AbstractCapabilityRealization`…; owned by the realizing element | Library | `allocation def Realization :> ArcadiaElement`, used as `allocation : Realization allocate <realized element> to self;` in the realizing element | Traceability between engineering perspectives: an element realizes one or several elements of the previous perspective (SA realizes OA, LA realizes SA, PA realizes LA) | P1: allocation is the standard way to relate an abstract architecture to a more concrete one. P3: one single definition for all kinds of elements |
+| <a id="real-02"></a>REAL-02 | Realized element | `modellingcore::AbstractTrace.targetElement` | Library | `end realized : ArcadiaElement` (source of the allocation) | The element of the previous perspective | P1 |
+| <a id="real-03"></a>REAL-03 | Realizing element | `modellingcore::AbstractTrace.sourceElement` | Library | `end realizing : ArcadiaElement` (target of the allocation) | The element of this perspective | P1 |
+| <a id="real-04"></a>REAL-04 | Realized and realizing elements of an element | derived references of each class (`realizedXxx`, `realizingXxx`) | Derived | computed from the `Realization` allocations | Navigation in both directions | The link is stored once, as in Capella |
 
 ## Example
 
-From `examples/concepts/realization.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/realization.sysml`](../../examples/concepts/realization.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 				// REAL-01 to REAL-03: a logical function realizes a system function
@@ -57,12 +57,12 @@ From `examples/concepts/realization.sysml`, validated with the SysML v2 pilot im
 - **Many-to-many.** A realizing element can have several `Realization` allocations, one per realized element, and an element can be realized by several elements.
 - **Status and property values.** A Capella realization has no name, but it has a status and property values: they are kept, as the allocation is an `ArcadiaElement`.
 - **Realization between architectures.** Capella also creates realization links between the architectures themselves (`ctx::OperationalAnalysisRealization`, `la::SystemAnalysisRealization`, `pa::LogicalArchitectureRealization`, `epbs::PhysicalArchitectureRealization`). They are not translated: a `Realization` links Arcadia elements, not packages, and the order of the engineering perspectives already gives this information.
-- The allocation of function ports to component ports is not a `Realization`: it stays a reference (see CP-04).
+- The allocation of function ports to component ports is not a `Realization`: it stays a reference (see [CP-04](13-ComponentPort.md#cp-04)).
 - Nested allocations (the allocation of a parent function containing the allocations of its children) are accepted by the pilot implementation but are not used: their semantics has not been verified.
 
 ## Tooling requirements
 
-- REAL-04: the realized and realizing elements of an element are computed from the allocations, for its properties and for traceability views. Labels keep the Arcadia vocabulary (Realized, Realizing).
+- [REAL-04](#real-04): the realized and realizing elements of an element are computed from the allocations, for its properties and for traceability views. Labels keep the Arcadia vocabulary (Realized, Realizing).
 - The consistency of the ends (a function realizes a function, a component a component…) is a validation rule.
 - A migration from Capella swaps the ends (see Direction).
 

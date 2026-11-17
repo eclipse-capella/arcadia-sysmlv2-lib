@@ -17,19 +17,19 @@
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| CAP-01 | Operational Capability, Capability, Capability Realization | `oa::OperationalCapability`, `ctx::Capability`, `la::CapabilityRealization` (all `interaction::AbstractCapability`) | Library | `occurrence def Capability :> ArcadiaElement`, used as `occurrence x : Capability` | An ability required from the system, to provide a service that supports the achievement of a mission | P3: capabilities are essential to Arcadia and no native concept keeps their role of abstract abilities, independent of specific behaviors or structures. P6: one type for all perspectives |
-| CAP-02 | Involved functions | `interaction::AbstractCapability.ownedAbstractFunctionAbstractCapabilityInvolvements` (derived: `involvedAbstractFunctions`) | Library | `ref action involvedFunctions: Function[*]`, set with `ref action :>> involvedFunctions = (...)` | The functions involved in the capability | P3: needed by Arcadia |
-| CAP-03 | Involved functional chains (or operational processes) | `interaction::AbstractCapability.ownedFunctionalChainAbstractCapabilityInvolvements` (derived: `involvedFunctionalChains`); chains owned by the capability: `fa::AbstractFunctionalChainContainer.ownedFunctionalChains` | Library | a chain owned by the capability is an action usage nested in it; a chain owned elsewhere is listed in `ref action involvedFunctionalChains: FunctionalChain[*]` | The functional chains involved in the capability | P3. The information is stored once (see Decisions) |
-| CAP-04 | Involved components (entities in Operational Analysis) | `oa::OperationalCapability.ownedEntityOperationalCapabilityInvolvements`, `ctx::Capability.ownedCapabilityInvolvements`, `la::CapabilityRealization.ownedCapabilityRealizationInvolvements` (derived: `involvedEntities`, `involvedSystemComponents`, `involvedComponents`) | Library | `ref part involvedComponents: Component[*]`, set with `ref part :>> involvedComponents = (...)` | The components and actors involved in the capability | P6: one reference for all perspectives, whereas Capella has one per perspective |
-| CAP-05 | Missions that exploit the capability | derived `ctx::Capability.purposeMissions` | Derived | computed from the missions that list the capability in `exploitedCapabilities` (MIS-02) | The missions that the capability contributes to | The link is stored once, on the mission, as in Capella |
-| CAP-06 | Pre-condition and post-condition | `interaction::AbstractCapability.preCondition`, `postCondition` | Deferred – OP-CAP | none | Conditions before and after the capability | Not decided yet |
-| CAP-07 | Extends, includes, generalization between capabilities | `interaction::AbstractCapability.extends`, `includes`, `superGeneralizations` | Deferred – OP-CAP | none | Relationships between capabilities | Not decided yet |
-| CAP-08 | Scenarios of a capability | `interaction::AbstractCapability.ownedScenarios` | Deferred – OP-SCENARIOS | none | The scenarios that describe the capability | Scenarios are not covered yet |
-| CAP-09 | Available in modes and states | `interaction::AbstractCapability.availableInStates` | Deferred – OP-MODES | none | The modes and states in which the capability is available | Modes and states are not covered yet |
+| <a id="cap-01"></a>CAP-01 | Operational Capability, Capability, Capability Realization | `oa::OperationalCapability`, `ctx::Capability`, `la::CapabilityRealization` (all `interaction::AbstractCapability`) | Library | `occurrence def Capability :> ArcadiaElement`, used as `occurrence x : Capability` | An ability required from the system, to provide a service that supports the achievement of a mission | P3: capabilities are essential to Arcadia and no native concept keeps their role of abstract abilities, independent of specific behaviors or structures. P6: one type for all perspectives |
+| <a id="cap-02"></a>CAP-02 | Involved functions | `interaction::AbstractCapability.ownedAbstractFunctionAbstractCapabilityInvolvements` (derived: `involvedAbstractFunctions`) | Library | `ref action involvedFunctions: Function[*]`, set with `ref action :>> involvedFunctions = (...)` | The functions involved in the capability | P3: needed by Arcadia |
+| <a id="cap-03"></a>CAP-03 | Involved functional chains (or operational processes) | `interaction::AbstractCapability.ownedFunctionalChainAbstractCapabilityInvolvements` (derived: `involvedFunctionalChains`); chains owned by the capability: `fa::AbstractFunctionalChainContainer.ownedFunctionalChains` | Library | a chain owned by the capability is an action usage nested in it; a chain owned elsewhere is listed in `ref action involvedFunctionalChains: FunctionalChain[*]` | The functional chains involved in the capability | P3. The information is stored once (see Decisions) |
+| <a id="cap-04"></a>CAP-04 | Involved components (entities in Operational Analysis) | `oa::OperationalCapability.ownedEntityOperationalCapabilityInvolvements`, `ctx::Capability.ownedCapabilityInvolvements`, `la::CapabilityRealization.ownedCapabilityRealizationInvolvements` (derived: `involvedEntities`, `involvedSystemComponents`, `involvedComponents`) | Library | `ref part involvedComponents: Component[*]`, set with `ref part :>> involvedComponents = (...)` | The components and actors involved in the capability | P6: one reference for all perspectives, whereas Capella has one per perspective |
+| <a id="cap-05"></a>CAP-05 | Missions that exploit the capability | derived `ctx::Capability.purposeMissions` | Derived | computed from the missions that list the capability in `exploitedCapabilities` ([MIS-02](19-Mission.md#mis-02)) | The missions that the capability contributes to | The link is stored once, on the mission, as in Capella |
+| <a id="cap-06"></a>CAP-06 | Pre-condition and post-condition | `interaction::AbstractCapability.preCondition`, `postCondition` | Deferred – [OP-CAP](../ArcadiaLibraryMapping.md#op-cap) | none | Conditions before and after the capability | Not decided yet |
+| <a id="cap-07"></a>CAP-07 | Extends, includes, generalization between capabilities | `interaction::AbstractCapability.extends`, `includes`, `superGeneralizations` | Deferred – [OP-CAP](../ArcadiaLibraryMapping.md#op-cap) | none | Relationships between capabilities | Not decided yet |
+| <a id="cap-08"></a>CAP-08 | Scenarios of a capability | `interaction::AbstractCapability.ownedScenarios` | Deferred – [OP-SCENARIOS](../ArcadiaLibraryMapping.md#op-scenarios) | none | The scenarios that describe the capability | Scenarios are not covered yet |
+| <a id="cap-09"></a>CAP-09 | Available in modes and states | `interaction::AbstractCapability.availableInStates` | Deferred – [OP-MODES](../ArcadiaLibraryMapping.md#op-modes) | none | The modes and states in which the capability is available | Modes and states are not covered yet |
 
 ## Example
 
-From `examples/concepts/capability.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/capability.sysml`](../../examples/concepts/capability.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 			// CAP-01: a capability
@@ -59,7 +59,7 @@ From `examples/concepts/capability.sysml`, validated with the SysML v2 pilot imp
 ## Tooling requirements
 
 - The full list of the functional chains involved in a capability (owned and referenced) is computed.
-- CAP-05: the missions that exploit a capability are computed from the missions.
+- [CAP-05](#cap-05): the missions that exploit a capability are computed from the missions.
 - Involved functions and chains are shown in the properties of the capability; involved components are shown as links in capability diagrams.
 
 ## SysML v2 limitations
@@ -68,4 +68,4 @@ None.
 
 ## Open points
 
-OP-CAP, OP-SCENARIOS, OP-MODES (see the open points register).
+[OP-CAP](../ArcadiaLibraryMapping.md#op-cap), [OP-SCENARIOS](../ArcadiaLibraryMapping.md#op-scenarios), [OP-MODES](../ArcadiaLibraryMapping.md#op-modes) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

@@ -20,14 +20,14 @@
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| DEPL-01 | Deployment of a component on another one | `pa::deployment::PartDeploymentLink`, owned by the part of the hosting component (`cs::Part.ownedDeploymentLinks`) | Library | `allocation def Deployment :> ArcadiaElement`, used as `allocation : Deployment allocate <deployed component> to self;` in the hosting component | A component is deployed on another component instead of being contained in it: typically a Behavior Component or a Node Component on a Node Component, which is the platform that hosts it | P1: SysML v2 has no deployment concept; the allocation is the standard way to relate a component to the one that implements or hosts it. P3: deployment is essential in the Physical Architecture |
-| DEPL-02 | Deployed element | `cs::AbstractDeploymentLink.deployedElement` | Library | `end deployedElement : Component` (source of the allocation) | The deployed component | Named as in Capella |
-| DEPL-03 | Location | `cs::AbstractDeploymentLink.location` | Library | `end location : Component` (target of the allocation) | The component on which it is deployed | Named as in Capella |
-| DEPL-04 | Deployed components / deploying components | derived `pa::PhysicalComponent.deployedPhysicalComponents`, `deployingPhysicalComponents` (and `cs::Part.deployedParts`, `deployingParts`) | Derived | computed from the `Deployment` allocations | The components deployed on a component, and the component on which a component is deployed | The link is stored once, as in Capella |
+| <a id="depl-01"></a>DEPL-01 | Deployment of a component on another one | `pa::deployment::PartDeploymentLink`, owned by the part of the hosting component (`cs::Part.ownedDeploymentLinks`) | Library | `allocation def Deployment :> ArcadiaElement`, used as `allocation : Deployment allocate <deployed component> to self;` in the hosting component | A component is deployed on another component instead of being contained in it: typically a Behavior Component or a Node Component on a Node Component, which is the platform that hosts it | P1: SysML v2 has no deployment concept; the allocation is the standard way to relate a component to the one that implements or hosts it. P3: deployment is essential in the Physical Architecture |
+| <a id="depl-02"></a>DEPL-02 | Deployed element | `cs::AbstractDeploymentLink.deployedElement` | Library | `end deployedElement : Component` (source of the allocation) | The deployed component | Named as in Capella |
+| <a id="depl-03"></a>DEPL-03 | Location | `cs::AbstractDeploymentLink.location` | Library | `end location : Component` (target of the allocation) | The component on which it is deployed | Named as in Capella |
+| <a id="depl-04"></a>DEPL-04 | Deployed components / deploying components | derived `pa::PhysicalComponent.deployedPhysicalComponents`, `deployingPhysicalComponents` (and `cs::Part.deployedParts`, `deployingParts`) | Derived | computed from the `Deployment` allocations | The components deployed on a component, and the component on which a component is deployed | The link is stored once, as in Capella |
 
 ## Example
 
-From `examples/concepts/node-behavior.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/node-behavior.sysml`](../../examples/concepts/node-behavior.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 	part system : Component {
@@ -51,7 +51,7 @@ From `examples/concepts/node-behavior.sysml`, validated with the SysML v2 pilot 
 ## Tooling requirements
 
 - The creation of a deployment creates a `Deployment` allocation in the hosting component.
-- DEPL-04: the deployed components of a component and the component on which a component is deployed are computed from the allocations, for the properties of both components and for the architecture diagrams, where deployed components are shown inside the component that hosts them.
+- [DEPL-04](#depl-04): the deployed components of a component and the component on which a component is deployed are computed from the allocations, for the properties of both components and for the architecture diagrams, where deployed components are shown inside the component that hosts them.
 - Validation rules: typically a Behavior Component or a Node Component is deployed on a Node Component.
 
 ## SysML v2 limitations
@@ -61,4 +61,4 @@ From `examples/concepts/node-behavior.sysml`, validated with the SysML v2 pilot 
 
 ## Open points
 
-OP-DEPLOY-OTHER (see the open points register).
+[OP-DEPLOY-OTHER](../ArcadiaLibraryMapping.md#op-deploy-other) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

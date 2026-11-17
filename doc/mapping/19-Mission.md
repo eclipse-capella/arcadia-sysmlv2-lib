@@ -16,13 +16,13 @@
 
 | ID | Capella concept | Capella metamodel | Treatment | In SysML v2 | Meaning | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| MIS-01 | Mission | `ctx::Mission` | Library | `occurrence def Mission :> ArcadiaElement`, used as `occurrence x : Mission` | A major goal to which the system is expected to contribute | P3: no native SysML v2 behavioral or interaction concept captures a goal that is independent of the system of interest |
-| MIS-02 | Exploited capabilities | `ctx::Mission.ownedCapabilityExploitations` (derived: `exploitedCapabilities`) | Library | `ref occurrence exploitedCapabilities: Capability[*]`, set with `ref occurrence :>> exploitedCapabilities = (...)` | The capabilities exploited to achieve the mission | P3: needed by Arcadia |
-| MIS-03 | Involved components | `ctx::Mission.ownedMissionInvolvements` (derived: `involvedSystemComponents`) | Library | `ref part involvedComponents: Component[*]`, set with `ref part :>> involvedComponents = (...)` | The components and actors involved in the mission | P3: needed by Arcadia |
+| <a id="mis-01"></a>MIS-01 | Mission | `ctx::Mission` | Library | `occurrence def Mission :> ArcadiaElement`, used as `occurrence x : Mission` | A major goal to which the system is expected to contribute | P3: no native SysML v2 behavioral or interaction concept captures a goal that is independent of the system of interest |
+| <a id="mis-02"></a>MIS-02 | Exploited capabilities | `ctx::Mission.ownedCapabilityExploitations` (derived: `exploitedCapabilities`) | Library | `ref occurrence exploitedCapabilities: Capability[*]`, set with `ref occurrence :>> exploitedCapabilities = (...)` | The capabilities exploited to achieve the mission | P3: needed by Arcadia |
+| <a id="mis-03"></a>MIS-03 | Involved components | `ctx::Mission.ownedMissionInvolvements` (derived: `involvedSystemComponents`) | Library | `ref part involvedComponents: Component[*]`, set with `ref part :>> involvedComponents = (...)` | The components and actors involved in the mission | P3: needed by Arcadia |
 
 ## Example
 
-From `examples/concepts/capability.sysml`, validated with the SysML v2 pilot implementation.
+From [`examples/concepts/capability.sysml`](../../examples/concepts/capability.sysml), validated with the SysML v2 pilot implementation.
 
 ```
 			// MIS-01: a mission
@@ -36,8 +36,8 @@ From `examples/concepts/capability.sysml`, validated with the SysML v2 pilot imp
 
 ## Decisions
 
-- Missions are placed in the `Capabilities` package of the engineering perspective (see STRUCT-05).
-- In Capella, missions only exist in the System Analysis (see OP-MISSION).
+- Missions are placed in the `Capabilities` package of the engineering perspective (see [STRUCT-05](03-DefaultModelStructure.md#struct-05)).
+- In Capella, missions only exist in the System Analysis (see [OP-MISSION](../ArcadiaLibraryMapping.md#op-mission)).
 
 ## Tooling requirements
 
@@ -49,4 +49,4 @@ None.
 
 ## Open points
 
-OP-MISSION (see the open points register).
+[OP-MISSION](../ArcadiaLibraryMapping.md#op-mission) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
