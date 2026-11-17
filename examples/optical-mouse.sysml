@@ -232,7 +232,6 @@ occurrence def <SE> OpticalMouseModel {
 				// An interface between 2 components Ports
 				interface cable : ComponentExchange
 					connect 'Optical Sensor Unit'.'Cable Connector' to 'Mouse Controller'.'Cable Connector' {
-					flow system.'Optical Sensor Unit'.'Cable Connector' to system.'Mouse Controller'.'Cable Connector';
 			        ref item :>> allocatedExchangeItems = (rawOpticalDataX, rawOpticalDataY);
 	        		// A Functional Exchange allocated to this Component Exchange (Capella: ComponentExchangeFunctionalExchangeAllocation).
 	        		// The allocation is owned by the Component Exchange, which is designated by 'self'.
