@@ -1,0 +1,21 @@
+= Changelog
+
+== 2026.12.0
+
+=== Pitches
+
+=== Deprecation warning
+
+=== Breaking changes
+
+=== Bug fixes
+
+=== New Features
+
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/39[#39] ExchangeItem isAbstract mapping
+
+=== Improvements
+
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/57[#57] Restructure the mapping document
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/38[#38] Harmonize "not translated" concepts in the mapping document
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/36[#36] Clarify Capability Mappings
