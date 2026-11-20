@@ -13,6 +13,7 @@
 // The root functions and root components are created with the Realization allocations that Capella creates by default
 // between consecutive perspectives (see doc/ArcadiaLibraryMapping.md).
 occurrence def <My_Model_Short_Name> 'My Model Name' {
+    private doc /* Version 0.1.0 */
 	metadata ArcadiaPackage {
 		engineeringPerspective = ArcadiaEngineeringPerspective::SystemEngineering;
 	}
