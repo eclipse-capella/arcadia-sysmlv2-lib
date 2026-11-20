@@ -36,6 +36,8 @@ Arcadia is a model-based systems engineering (MBSE) method. It guides engineers 
 
 The Arcadia SysML v2 library provides an implementation of the Arcadia method in SysML v2. It captures the core Arcadia concepts, such as components, functions, exchanges and capabilities, in line with the SysML v2 language and its reuse mechanisms. Used with appropriate tooling, it brings to SysML v2 the abstraction, the simplification and the methodological guidance of Arcadia.
 
+This document is aligned with Arcadia SysML v2 library version 0.1.0.
+
 ## Purpose and audience
 
 This document is the reference for the Arcadia SysML v2 library. For each Arcadia concept, as implemented in Capella, it states how the concept is expressed in SysML v2 with the library, why, and what is deliberately left out or not decided yet.
