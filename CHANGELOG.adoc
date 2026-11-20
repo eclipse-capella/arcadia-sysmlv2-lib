@@ -17,6 +17,7 @@
 === Improvements
 
 - [releng] Update version to 0.1.0 according to semantic versioning
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/15[#15] Validate the library, the default structure and the examples with the SysML v2 pilot implementation in CI
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/3[#3] Add PR template, and CONTRIBUTING content
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/57[#57] Restructure the mapping document
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/38[#38] Harmonize "not translated" concepts in the mapping document

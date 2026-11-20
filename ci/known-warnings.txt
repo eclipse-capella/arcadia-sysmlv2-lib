@@ -1,0 +1,13 @@
+# Warnings of the SysML v2 pilot implementation that are accepted by the validation (see Validate.java).
+# One warning per line: "<metaclass of the element> | <message, or part of the message>". The metaclass makes the entry
+# precise: the same message reported on another kind of element is not accepted. Keep this list as short as possible: a warning is added here only when
+# it is understood and cannot be avoided, with a comment that says why.
+
+# "satisfy" of a requirement nested in another requirement, when the satisfy is owned by a part:
+#     part p { satisfy r1.sub; }
+# The satisfy usage inherits two redefinitions of "this", with different default values: one from
+# Object::ownedPerformances (it is owned by a part) and one from Performance::subperformances (it satisfies a nested
+# requirement). Both come from the Kernel Semantic Library, not from the Arcadia library: the same warning is reported
+# in a model that does not use it. There is no warning when the requirement is not nested, or when the satisfy is owned
+# by a package or by an action.
+SatisfyRequirementUsage | Duplicate of inherited member name 'this' from ownedPerformances, subperformances
