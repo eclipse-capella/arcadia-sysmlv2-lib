@@ -24,6 +24,12 @@ md files are to be edited using simple markdown compatible tools such as Visual 
 
 SysMLv2 files are to be edited using the [SysMLv2 pilot implementation](https://github.com/Systems-Modeling/SysML-v2-Release/releases).
 
+### SysMLv2 validation
+
+The SysMLv2 files of the `lib` and `examples` folders are validated with the SysMLv2 pilot implementation on every pull request, by the [validate workflow](.github/workflows/validate.yml).
+A file with an error or a warning fails the validation, except for the warnings listed in [ci/known-warnings.txt](ci/known-warnings.txt).
+The same validation can be run locally with [ci/Validate.java](ci/Validate.java): the commands are the ones of the workflow.
+
 ## Versioning rules
 
 This repository contains the definition for the SysMLv2 Arcadia library and its mapping with current Capella desktop (v7.1.0) implementation.

@@ -1,0 +1,49 @@
+name: Validate SysML files
+
+# Validates the library, the default structure and the examples with the SysML v2 pilot implementation.
+# The pilot implementation is taken from the Jupyter SysML kernel published on conda-forge. Its version and its
+# checksum are pinned below: moving to another version is a deliberate change of both values.
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  PILOT_VERSION: "0.63.1"
+  PILOT_ARCHIVE: jupyter-sysml-kernel-0.63.1-pyhd8ed1ab_0.conda
+  PILOT_SHA256: 8da665d2b2131dcfbde62d32926864d0d03a62393ffdf4598efa64e0bc4b2251
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Download the SysML v2 pilot implementation
+        run: |
+          mkdir -p "$RUNNER_TEMP/pilot"
+          cd "$RUNNER_TEMP/pilot"
+          curl -sSfL -o "$PILOT_ARCHIVE" "https://conda.anaconda.org/conda-forge/noarch/$PILOT_ARCHIVE"
+          echo "$PILOT_SHA256  $PILOT_ARCHIVE" | sha256sum --check
+          unzip -q "$PILOT_ARCHIVE" 'pkg-*.tar.zst'
+          tar --zstd -xf pkg-*.tar.zst
+
+      - name: Validate the SysML files
+        run: |
+          KERNEL="$RUNNER_TEMP/pilot/share/jupyter/kernels/sysml"
+          # The library first, then the other files: they are validated in one session.
+          FILES="lib/arcadia.sysml $(find lib examples -name '*.sysml' ! -path lib/arcadia.sysml | sort)"
+          java -cp "$KERNEL/jupyter-sysml-kernel-$PILOT_VERSION-all.jar" ci/Validate.java "$KERNEL/sysml.library" ci/known-warnings.txt $FILES
