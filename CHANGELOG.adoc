@@ -8,10 +8,13 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/63[#63] The `portDirection` attribute of `ComponentPort` is removed: the direction of a component port is given by its directed features (`in [0..*] : ExchangeItem;`, `out [0..*] : ExchangeItem;`). A port delegation is expressed by a binding connector, and the kind of a component exchange is not translated (https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/34[#34])
+
 === Bug fixes
 
 === New Features
 
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/63[#63] Interfaces: new `Interface` definition, and `providedInterfaces` and `requiredInterfaces` on `ComponentPort`
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/39[#39] ExchangeItem isAbstract mapping
 
 === Improvements
