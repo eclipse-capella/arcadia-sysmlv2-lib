@@ -37,7 +37,7 @@ From [`examples/concepts/capability.sysml`](../../examples/concepts/capability.s
 ## Decisions
 
 - Missions are placed in the `Capabilities` package of the engineering perspective (see [STRUCT-05](03-DefaultModelStructure.md#struct-05)).
-- In Capella, missions only exist in the System Analysis (see [OP-MISSION](../ArcadiaLibraryMapping.md#op-mission)).
+- A `Mission` can be used in every engineering perspective: Arcadia has operational missions in the Operational Analysis and system missions in the following perspectives. Capella only has missions in the System Analysis: a migration creates missions there only.
 
 ## Tooling requirements
 
@@ -49,4 +49,4 @@ None.
 
 ## Open points
 
-[OP-MISSION](../ArcadiaLibraryMapping.md#op-mission) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
+None.
