@@ -1,6 +1,6 @@
 # Views (Capella diagrams)
 
-[Contents](../ArcadiaLibraryMapping.md#contents) | Previous: [Property values](20-PropertyValues.md)
+[Contents](../ArcadiaLibraryMapping.md#contents) | Previous: [Property values](20-PropertyValues.md) | Next: [Interface](22-Interface.md)
 
 ## Library definition
 
