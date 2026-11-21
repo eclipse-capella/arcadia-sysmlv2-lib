@@ -54,6 +54,7 @@ From [`examples/concepts/node-behavior.sysml`](../../examples/concepts/node-beha
 - Migration from Capella is direct: nature NODE gives `NodeComponent`, nature BEHAVIOR gives `BehaviorComponent`, and the root component (nature UNSET) stays a `Component`. An actor of the Physical Architecture is a `NodeComponent` with `isActor = true`.
 - Hierarchies of Node Components and hierarchies of Behavior Components are both supported. It is a good practice in Arcadia to keep separate hierarchies for nodes and for behaviors.
 - Containment and deployment are two different relations, as in Capella. A component created inside another one is contained in it. A deployed component is related to the component that hosts it by a `Deployment` allocation (see the DEPL section). A Node Component can be contained in a Node Component or deployed on it. A Behavior Component can be contained in a Behavior Component, but not in a Node Component: it is deployed on it.
+- A Node Component can realize a component of the Logical Architecture, as a Behavior Component does (see the REAL section).
 
 ## Tooling requirements
 
@@ -61,7 +62,6 @@ The following rules are not enforced by the library. They are validation rules f
 
 - In the Physical Architecture, a component other than the root component is a Node Component or a Behavior Component.
 - A Node Component may have allocated functions (this is the case of the actors of the Physical Architecture).
-- Node Components have no realization relationship in Arcadia: tooling has to prevent it.
 - A Behavior Component is not contained in a Node Component: it is deployed on it.
 - A human component can deploy sub-components but cannot contain them.
 

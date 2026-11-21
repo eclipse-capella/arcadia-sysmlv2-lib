@@ -62,7 +62,7 @@ From [`examples/concepts/requirements.sysml`](../../examples/concepts/requiremen
 ## SysML v2 limitations
 
 - The satisfying element has to be a usage: a requirement cannot be satisfied by a package or by a definition.
-- The pilot implementation reports a warning on `satisfy` when it is owned by a part ("Duplicate of inherited member name 'this'"). It is known and has no effect on the model.
+- A `satisfy` owned by a component and designating a requirement nested in another requirement (`satisfy 'Movement Capture'.Optical;`) is reported by the pilot implementation with a warning ("Duplicate of inherited member name 'this' from ownedPerformances, subperformances"). The satisfy usage inherits two redefinitions of `this` from the Kernel Semantic Library: one because it is owned by a part, one because the requirement is nested. The model is valid. There is no warning when the requirement is not nested, or when the `satisfy` is owned by a package.
 
 ## Open points
 
