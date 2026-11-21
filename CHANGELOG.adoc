@@ -14,6 +14,7 @@
 
 === New Features
 
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/65[#65] Physical ports, physical links and physical paths: new `PhysicalPort`, `PhysicalLink`, `PhysicalPath` and `ComponentExchangeAllocation` definitions
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/63[#63] Interfaces: new `Interface` definition, and `providedInterfaces` and `requiredInterfaces` on `ComponentPort`
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/39[#39] ExchangeItem isAbstract mapping
 

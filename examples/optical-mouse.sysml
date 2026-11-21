@@ -321,13 +321,19 @@ occurrence def <SE> OpticalMouseModel {
 				    doc description /*Printed circuit board hosting the mouse electronics and software.*/
 				    allocation : Deployment allocate system.'Optical Sensor Module' to self;
 				    allocation : Deployment allocate system.'Mouse Firmware' to self;
+				    // A Physical Port: a point of connection of the node, not oriented
+				    port 'Board Connector' : PhysicalPort;
 				}
 
 				// Another Physical Node Component: the Node 'Mouse PCB' is deployed on it, instead of being contained in it.
 				part 'Mouse Casing' : NodeComponent {
 				    doc description /*Casing of the mouse, which hosts the printed circuit board.*/
 				    allocation : Deployment allocate system.'Mouse PCB' to self;
+				    port 'Cable Outlet' : PhysicalPort;
 				}
+
+				// A Physical Link between the Physical Ports of two Node Components
+				interface 'Internal Wiring' : PhysicalLink connect 'Mouse PCB'.'Board Connector' to 'Mouse Casing'.'Cable Outlet';
 	        }
 		}
 		package Requirements;

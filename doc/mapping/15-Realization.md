@@ -58,6 +58,7 @@ From [`examples/concepts/realization.sysml`](../../examples/concepts/realization
 - **Status and property values.** A Capella realization has no name, but it has a status and property values: they are kept, as the allocation is an `ArcadiaElement`.
 - **Realization between architectures.** Capella also creates realization links between the architectures themselves (`ctx::OperationalAnalysisRealization`, `la::SystemAnalysisRealization`, `pa::LogicalArchitectureRealization`, `epbs::PhysicalArchitectureRealization`). They are not translated: a `Realization` links Arcadia elements, not packages, and the order of the engineering perspectives already gives this information.
 - The allocation of function ports to component ports is not a `Realization`: it stays a reference (see [CP-04](13-ComponentPort.md#cp-04)).
+- **Ports.** A component port and a physical port are port usages, which cannot own an allocation: their realization is not covered yet (see [OP-PORT-REAL](../ArcadiaLibraryMapping.md#op-port-real)).
 - Nested allocations (the allocation of a parent function containing the allocations of its children) are accepted by the pilot implementation but are not used: their semantics has not been verified.
 
 ## Tooling requirements
@@ -73,4 +74,4 @@ From [`examples/concepts/realization.sysml`](../../examples/concepts/realization
 
 ## Open points
 
-None.
+[OP-PORT-REAL](../ArcadiaLibraryMapping.md#op-port-real) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

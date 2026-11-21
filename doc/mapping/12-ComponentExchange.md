@@ -72,7 +72,8 @@ From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sys
 - A delegation is not a `ComponentExchange`: it conveys no exchange items and no functional exchange is allocated to it. A migration creates a binding from a Capella component exchange of kind Delegation; its description, status and property values are not kept.
 - Not retained for [CE-08](#ce-08): a `kind` attribute on `ComponentExchange`, or a specialization of `ComponentExchange` for delegations (a connection between the two ports tells other tools that two different ports are linked, not that the port of the component is the port of its sub-component, and it adds to the library).
 - **Assembly and Flow.** These kinds come from UML and SysML v1, where they go with standard ports and flow ports ([CP-05](13-ComponentPort.md#cp-05)). They are not reproduced: a component exchange that is not a delegation is a `ComponentExchange`.
-- Node Components have physical links, not component exchanges (see [OP-PHYS](../ArcadiaLibraryMapping.md#op-phys)).
+- A component exchange is carried by a physical link or by a physical path: see [PHYS-04](23-PhysicalLinksAndPaths.md#phys-04).
+- Node Components have physical links, not component exchanges (see the [PHYS section](23-PhysicalLinksAndPaths.md)).
 
 ## Tooling requirements
 
@@ -86,4 +87,4 @@ From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sys
 
 ## Open points
 
-[OP-CATEGORIES](../ArcadiaLibraryMapping.md#op-categories), [OP-PHYS](../ArcadiaLibraryMapping.md#op-phys) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
+[OP-CATEGORIES](../ArcadiaLibraryMapping.md#op-categories) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

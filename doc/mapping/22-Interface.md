@@ -1,6 +1,6 @@
 # Interface
 
-[Contents](../ArcadiaLibraryMapping.md#contents) | Previous: [Views](21-Views.md)
+[Contents](../ArcadiaLibraryMapping.md#contents) | Previous: [Views](21-Views.md) | Next: [Physical Ports, Links and Paths](23-PhysicalLinksAndPaths.md)
 
 ## Library definition
 
@@ -68,7 +68,7 @@ From [`examples/concepts/interface.sysml`](../../examples/concepts/interface.sys
 - **Roles.** A port provides or requires an interface ([IF-03](#if-03)). A port can have several interfaces, provided and required. The role is not deduced from the direction of the port: it is stated by the modeler. The direction of each exchange item on a port is given by the directed features of the port ([CP-02](13-ComponentPort.md#cp-02), [CP-03](13-ComponentPort.md#cp-03)).
 - Not retained: an interface as a port definition, with the providing port typed by it and the requiring port typed by its conjugate (`~`). It is the usual SysML v2 pattern, but a port then has a single interface unless nested ports are used, modelers have to write definitions whereas the models built with the library are made of usages, and a definition cannot be realized with `Realization`, which links usages.
 - Interfaces are placed in the `Interfaces` package of the engineering perspective (see [STRUCT-06](03-DefaultModelStructure.md#struct-06)).
-- An interface is provided or required by a component port, as in Arcadia. Interfaces on physical ports, which would describe hardware interfaces, are not covered yet: they are recorded with the open point on physical ports (see [OP-PHYS](../ArcadiaLibraryMapping.md#op-phys)).
+- An interface is provided or required by a component port, as in Arcadia. Interfaces on physical ports, which would describe hardware interfaces, are not covered yet (see [PHYS-14](23-PhysicalLinksAndPaths.md#phys-14) and [OP-HW-INTERFACE](../ArcadiaLibraryMapping.md#op-hw-interface)).
 
 ## Tooling requirements
 
@@ -82,4 +82,4 @@ None.
 
 ## Open points
 
-[OP-PHYS](../ArcadiaLibraryMapping.md#op-phys) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
+[OP-HW-INTERFACE](../ArcadiaLibraryMapping.md#op-hw-interface) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

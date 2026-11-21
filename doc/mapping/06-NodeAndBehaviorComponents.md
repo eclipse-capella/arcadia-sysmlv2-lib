@@ -53,6 +53,7 @@ From [`examples/concepts/node-behavior.sysml`](../../examples/concepts/node-beha
 - The two specializations are used only in the Physical Architecture, where every component is either a Node Component or a Behavior Component, except the root component ([NODE-03](#node-03)). The other engineering perspectives keep using `Component`.
 - Migration from Capella is direct: nature NODE gives `NodeComponent`, nature BEHAVIOR gives `BehaviorComponent`, and the root component (nature UNSET) stays a `Component`. An actor of the Physical Architecture is a `NodeComponent` with `isActor = true`.
 - Hierarchies of Node Components and hierarchies of Behavior Components are both supported. It is a good practice in Arcadia to keep separate hierarchies for nodes and for behaviors.
+- The physical ports of Node Components, the physical links between them and the physical paths are described in the [PHYS section](23-PhysicalLinksAndPaths.md).
 - Containment and deployment are two different relations, as in Capella. A component created inside another one is contained in it. A deployed component is related to the component that hosts it by a `Deployment` allocation (see the DEPL section). A Node Component can be contained in a Node Component or deployed on it. A Behavior Component can be contained in a Behavior Component, but not in a Node Component: it is deployed on it.
 
 ## Tooling requirements
@@ -71,4 +72,4 @@ The following rules are not enforced by the library. They are validation rules f
 
 ## Open points
 
-[OP-PHYS](../ArcadiaLibraryMapping.md#op-phys) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
+None.

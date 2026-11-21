@@ -74,8 +74,9 @@ From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sys
 - `allocatedFunctionPorts` is a reference declared in the library, not an allocation element. Its name is the one of Capella: a component port references the function ports allocated to it. It is typed by `ExchangeItem` because a function port is a parameter typed by `ExchangeItem` ([FPORT-01](09-FunctionPort.md#fport-01)): a reference to function ports has the type of these parameters. It cannot be derived from the allocations of functional exchanges to component exchanges, because a port can be allocated before any exchange exists.
 - Not retained for [CP-04](#cp-04): an allocation element owned by the port, as for exchanges and realizations (a port usage cannot own an allocation, see limitations; it would have to be owned by the component, there is no official precedent for allocating an action parameter to a port, and the description and status of these allocations are assumed to be rarely used); and a `bind` between the parameter and an item of the port (it equates values, it is not an allocation).
 - The provided and required interfaces of a port ([CP-06](#cp-06)) are described in the [IF section](22-Interface.md), with an example.
+- A component port of a hosted component is made accessible through a physical port of its hosting component: see [PHYS-02](23-PhysicalLinksAndPaths.md#phys-02).
 - There are no component ports in Operational Analysis.
-- Node Components have physical ports, not component ports (see [OP-PHYS](../ArcadiaLibraryMapping.md#op-phys)).
+- Node Components have physical ports, not component ports (see the [PHYS section](23-PhysicalLinksAndPaths.md)).
 
 ## Tooling requirements
 
@@ -89,4 +90,4 @@ From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sys
 
 ## Open points
 
-[OP-PHYS](../ArcadiaLibraryMapping.md#op-phys) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
+None.
