@@ -13,6 +13,7 @@
 === New Features
 
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/39[#39] ExchangeItem isAbstract mapping
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/35[#35] Capabilities: new `includedCapabilities` reference on `Capability`; a `Mission` can contain sub-missions
 
 === Improvements
 

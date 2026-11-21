@@ -128,6 +128,7 @@ library package Arcadia {
 		ref action involvedFunctions: Function[*];
 		ref action involvedFunctionalChains: FunctionalChain[*];
 		ref part involvedComponents: Component[*];
+		ref occurrence includedCapabilities: Capability[*];
 	}
 
  	occurrence def Mission :> ArcadiaElement {

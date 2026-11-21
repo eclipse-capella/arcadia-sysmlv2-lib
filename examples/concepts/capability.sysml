@@ -32,6 +32,7 @@ occurrence def <MOUSE> 'Optical Mouse' {
 		package Capabilities {
 			private import Functions::*;
 			private import Structure::*;
+			occurrence 'Detect Movement' : Capability;
 			// CAP-01: a capability
 			occurrence 'Move Cursor on Screen' : Capability {
 				// CAP-02: involved functions
@@ -46,6 +47,8 @@ occurrence def <MOUSE> 'Optical Mouse' {
 				}
 				// CAP-03: a chain owned elsewhere is referenced
 				ref action :>> involvedFunctionalChains = ('Root Function'.'diagnostic chain');
+				// CAP-07: included capabilities
+				ref occurrence :>> includedCapabilities = ('Detect Movement');
 			}
 			// MIS-01: a mission
 			occurrence 'Provide Interface to User' : Mission {
@@ -53,6 +56,8 @@ occurrence def <MOUSE> 'Optical Mouse' {
 				ref occurrence :>> exploitedCapabilities = ('Move Cursor on Screen');
 				// MIS-03: involved components
 				ref part :>> involvedComponents = (computerUser);
+				// MIS-04: a sub-mission
+				occurrence 'Provide Pointing Interface' : Mission;
 			}
 		}
 	}
