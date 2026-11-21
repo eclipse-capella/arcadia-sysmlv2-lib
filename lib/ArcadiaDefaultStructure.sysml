@@ -19,7 +19,6 @@ occurrence def <My_Model_Short_Name> 'My Model Name' {
 	}
 	private import Arcadia::*;
 	private import ModelingMetadata::*;
-	private import KerML::FeatureDirectionKind;
 	
 	package <OA> 'Operational Analysis' {
 		metadata ArcadiaPackage {

@@ -19,7 +19,6 @@ occurrence def <SE> OpticalMouseModel {
 	private import SI::W;
 	private import ModelingMetadata::*;
 	private import RequirementDerivation::*;
-	private import KerML::FeatureDirectionKind;
 
 	package <OA> 'Operational Analysis' {
 		metadata ArcadiaPackage {engineeringPerspective = ArcadiaEngineeringPerspective::OperationalAnalysis;}
@@ -181,7 +180,12 @@ occurrence def <SE> OpticalMouseModel {
 		}
 		// A Capella Interface Package
 		package Interfaces {
+			private import Data::*;
 			package 'User Interfaces';
+			// An Interface: a set of Exchange Items that Component Ports provide or require
+			item 'Optical Data' : Interface {
+				ref item :>> exchangeItems = (rawOpticalDataX, rawOpticalDataY);
+			}
 		}
 		package Data {
    	    	item rawOpticalDataX: ExchangeItem;
@@ -216,8 +220,8 @@ occurrence def <SE> OpticalMouseModel {
 	                perform 'Root Function'.'Capture Movement';
 	                port 'Cable Connector' : ComponentPort  {
 		               	out [0..*] : ExchangeItem = (rawOpticalDataX, rawOpticalDataY);
-		               	:>> portDirection = FeatureDirectionKind::'out';
 		               	ref item :>> allocatedFunctionPorts = ('Root Function'.'Capture Movement'.FOP1);
+		               	ref item :>> providedInterfaces = (Interfaces::'Optical Data');
 	                }
 			 	}
 
@@ -232,8 +236,8 @@ occurrence def <SE> OpticalMouseModel {
 	                perform 'Root Function'.'Transform Raw Optical Data';
 	                port 'Cable Connector' : ComponentPort {
 		               	in [0..*] : ExchangeItem = (rawOpticalDataX, rawOpticalDataY);
-		               	:>> portDirection = FeatureDirectionKind::'in';
 		               	ref item :>> allocatedFunctionPorts = ('Root Function'.'Transform Raw Optical Data'.FIP2);
+		               	ref item :>> requiredInterfaces = (Interfaces::'Optical Data');
 	                }
 			 	}
 
