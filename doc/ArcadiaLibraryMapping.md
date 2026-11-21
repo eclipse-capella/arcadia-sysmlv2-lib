@@ -7,6 +7,7 @@
 - [How to read this document](#how-to-read-this-document)
 - [Design principles](#design-principles)
 - [Open points register](#open-points-register)
+- [Candidates for an evolution of the method](#candidates-for-an-evolution-of-the-method)
 - Concepts and mappings, with the prefix of their row identifiers
   1. [ArcadiaElement](mapping/01-ArcadiaElement.md) (`ELEM`) – example: [arcadia-element.sysml](../examples/concepts/arcadia-element.sysml)
   2. [ArcadiaPackage](mapping/02-ArcadiaPackage.md) (`PKGM`) – example: [arcadia-package.sysml](../examples/concepts/arcadia-package.sysml)
@@ -35,6 +36,8 @@
 Arcadia is a model-based systems engineering (MBSE) method. It guides engineers through the analysis, the design and the validation of complex systems, with a structured approach based on engineering perspectives. Capella is the open-source desktop modeling workbench that implements Arcadia: it provides dedicated diagrams, automation and methodological guidance to build consistent system architectures.
 
 The Arcadia SysML v2 library provides an implementation of the Arcadia method in SysML v2. It captures the core Arcadia concepts, such as components, functions, exchanges and capabilities, in line with the SysML v2 language and its reuse mechanisms. Used with appropriate tooling, it brings to SysML v2 the abstraction, the simplification and the methodological guidance of Arcadia.
+
+The definitions of the Arcadia concepts are those of the [Arcadia reference documents](https://mbse-capella.org/arcadia-reference.html) published on mbse-capella.org. When Capella differs from the method, the section of the concept says so.
 
 This document is aligned with Arcadia SysML v2 library version 0.1.0.
 
@@ -128,7 +131,6 @@ All the points that are not decided or not covered yet are listed here, and only
 | <a id="op-phys"></a>[OP-PHYS](mapping/06-NodeAndBehaviorComponents.md#open-points) | Physical Links and Physical Ports of Node Components, Physical Paths | [Node and Behavior Components](mapping/06-NodeAndBehaviorComponents.md#open-points) | SLA | — |
 | <a id="op-scenarios"></a>[OP-SCENARIOS](mapping/08-Function.md#open-points) | Scenarios, and their relationship with Functional Chains (keep separate, merge or unify?) | [Function](mapping/08-Function.md#open-points) | SLA | — |
 | <a id="op-routing"></a>[OP-ROUTING](mapping/08-Function.md#open-points) | Routing functions (Duplicate, Split, Gather, Route, Select) translated to control nodes: the syntax is accepted by the pilot implementation, but (1) the ends of a `FunctionalExchange` are typed `Function` and a control node is not a `Function`, and (2) there is no obvious place for the condition of a Route or Select function when the node only routes data flows. Alternative: keep them as ordinary functions | [Function](mapping/08-Function.md#open-points) | SLA | — |
-| <a id="op-inout"></a>[OP-INOUT](mapping/09-FunctionPort.md#open-points) | Should `inout` parameters be allowed on functions? | [Function Port](mapping/09-FunctionPort.md#open-points) | SLA | — |
 | <a id="op-fc-junction"></a>[OP-FC-JUNCTION](mapping/10-FunctionalChain.md#open-points) | A link between two involvements of the same Function gives no succession: to be validated | [Functional Chain](mapping/10-FunctionalChain.md#open-points) | SLA, with TWE | — |
 | <a id="op-fc-repeat"></a>[OP-FC-REPEAT](mapping/10-FunctionalChain.md#open-points) | A chain that references the same chain several times is not handled | [Functional Chain](mapping/10-FunctionalChain.md#open-points) | SLA | — |
 | <a id="op-fc-trace"></a>[OP-FC-TRACE](mapping/10-FunctionalChain.md#open-points) | Capella trace objects of Functional Chains (control flow): is the solution based on successions sufficient? | [Functional Chain](mapping/10-FunctionalChain.md#open-points) | SLA | — |
@@ -142,5 +144,12 @@ All the points that are not decided or not covered yet are listed here, and only
 | <a id="op-interfaces"></a>[OP-INTERFACES](mapping/13-ComponentPort.md#open-points) | Interfaces, provided and required interfaces, and their impact on Component Ports | [Component Port](mapping/13-ComponentPort.md#open-points) | SLA | — |
 | <a id="op-data"></a>[OP-DATA](mapping/16-ExchangeItem.md#open-points) | Data modeling and the fields of Exchange Items (exchange mechanism, exchange item elements), and the "Predefined Types" package created by default in Data | [Exchange Item](mapping/16-ExchangeItem.md#open-points) | SLA | — |
 | <a id="op-cap"></a>[OP-CAP](mapping/18-Capability.md#open-points) | Capabilities: pre and post conditions, inheritance, extends and includes | [Capability](mapping/18-Capability.md#open-points) | SLA | [#35](https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/35) |
-| <a id="op-mission"></a>[OP-MISSION](mapping/19-Mission.md#open-points) | Missions: only in System Analysis? | [Mission](mapping/19-Mission.md#open-points) | SLA | — |
 | <a id="op-modes"></a>OP-MODES | Modes and States | (no section yet) | SLA | — |
+
+## Candidates for an evolution of the method
+
+SysML v2 sometimes allows more than Arcadia does. The library follows Arcadia strictly. The cases below are recorded for a future discussion on the evolution of the method; until then, the Arcadia rule applies.
+
+| ID | Subject | In Arcadia | In SysML v2 | Section | Owner |
+| --- | --- | --- | --- | --- | --- |
+| <a id="me-inout"></a>[ME-INOUT](mapping/09-FunctionPort.md#decisions) | `inout` parameters on functions | A function port is either an input port or an output port | A parameter of an action can be `in`, `out` or `inout` | [Function Port](mapping/09-FunctionPort.md#decisions) | SLA |

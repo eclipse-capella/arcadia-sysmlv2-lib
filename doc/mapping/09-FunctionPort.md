@@ -29,17 +29,17 @@ From [`examples/concepts/function.sysml`](../../examples/concepts/function.sysml
 			}
 ```
 
-`FOP1` is the name of the port in Capella. `[0..*]` means that the port can carry several exchange items. `= (rawOpticalData)` binds the exchange items, defined in the data package, to the port.
+`FOP1` is the name of the port in Capella. `[0..*]` means that the port can carry several exchange items. `= (rawOpticalData)` lists the exchange items that the port carries. An exchange item is declared once, in the data package, and referenced by the ports and the exchanges that carry it, as in Arcadia.
 
 ## Decisions
 
 - Function ports are not recreated as objects of the library: they are the `in` and `out` parameters of the action.
-- SysML v2 allows `in`, `out` and `inout` parameters. Arcadia only has input ports and output ports: only `in` and `out` are used (see [OP-INOUT](../ArcadiaLibraryMapping.md#op-inout)).
+- SysML v2 allows `in`, `out` and `inout` parameters. In Arcadia, a function port is either an input port or an output port: only `in` and `out` are used. `inout` parameters are recorded as a candidate for an evolution of the method (see [ME-INOUT](../ArcadiaLibraryMapping.md#me-inout)).
 
 ## Tooling requirements
 
 - Parameters are displayed as oriented ports on the functions.
-- Tooling only proposes `in` and `out` parameters.
+- A function port is an `in` or an `out` parameter. Tooling does not create `inout` parameters on functions and reports them as errors.
 
 ## SysML v2 limitations
 
@@ -47,4 +47,4 @@ None.
 
 ## Open points
 
-[OP-INOUT](../ArcadiaLibraryMapping.md#op-inout) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
+None.

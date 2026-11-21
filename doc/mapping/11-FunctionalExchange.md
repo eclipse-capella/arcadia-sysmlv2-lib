@@ -39,8 +39,9 @@ From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sys
 ## Decisions
 
 - The flow usage connects the `out` and `in` parameters of the functions, which correspond to the function ports of Capella. The flow definition connects the functions, as in standard SysML v2.
-- The payload is the set of exchange items allocated to the functional exchange in Capella. It is set with `of :>> payload = (...)` after the name of the flow, or in its body with `:>> payload = (...);`.
+- The payload is the set of exchange items allocated to the functional exchange in Capella. It is set with `of :>> payload = (...)` after the name of the flow, or in its body with `:>> payload = (...);`. `= (...)` lists the exchange items that the exchange carries. An exchange item is declared once and referenced by the ports and the exchanges that carry it, as in Arcadia.
 - `payload` is redefined (`:>>`), not subset: with a plain subsetting it would stay typed by `Anything`.
+- In the Operational Analysis, an Arcadia interaction links two activities directly, without ports. In SysML v2 a flow links an output to an input: the two parameters exist in the model, and tooling may hide them in the Operational Analysis.
 
 ## Tooling requirements
 
