@@ -12,7 +12,6 @@
  */
 package ExchangesConceptExample {
 	private import Arcadia::*;
-	private import KerML::FeatureDirectionKind;
 
 	package Data {
 		item rawOpticalDataX : ExchangeItem;
@@ -40,23 +39,37 @@ package ExchangesConceptExample {
 		private import Data::*;
 		part system : Component {
 			part 'Optical Sensor Unit' : Component {
-				perform 'Root Function'.'Capture Movement';
 				// CP-01: a component port
 				port 'Cable Connector' : ComponentPort {
-					// CP-03: the exchange items that go through the port
+					// CP-02: an output port; CP-03: the exchange items that go through the port
 					out [0..*] : ExchangeItem = (rawOpticalDataX, rawOpticalDataY);
-					// CP-02: direction of the port
-					:>> portDirection = FeatureDirectionKind::'out';
-					// CP-04: function ports allocated to the component port
-					ref item :>> allocatedFunctionPorts = ('Root Function'.'Capture Movement'.FOP1);
 				}
+				part 'Image Sensor' : Component {
+					perform 'Root Function'.'Capture Movement';
+					port 'Sensor Output' : ComponentPort {
+						out [0..*] : ExchangeItem = (rawOpticalDataX, rawOpticalDataY);
+						// CP-04: function ports allocated to the component port
+						ref item :>> allocatedFunctionPorts = ('Root Function'.'Capture Movement'.FOP1);
+					}
+				}
+				// CE-08: the port of the component is delegated to a port of its sub-component
+				bind 'Cable Connector' = 'Image Sensor'.'Sensor Output';
 			}
 			part 'Mouse Controller' : Component {
 				perform 'Root Function'.'Transform Raw Optical Data';
+				// CP-02: an input port
 				port 'Cable Connector' : ComponentPort {
 					in [0..*] : ExchangeItem = (rawOpticalDataX, rawOpticalDataY);
-					:>> portDirection = FeatureDirectionKind::'in';
 					ref item :>> allocatedFunctionPorts = ('Root Function'.'Transform Raw Optical Data'.FIP2);
+				}
+				// CP-02: an output port that carries no exchange item yet
+				port 'Status Output' : ComponentPort {
+					out [0..*] : ExchangeItem;
+				}
+				// CP-02: a bidirectional port
+				port 'Debug Link' : ComponentPort {
+					in [0..*] : ExchangeItem;
+					out [0..*] : ExchangeItem;
 				}
 			}
 			// CE-01: a component exchange between two component ports (CE-02, CE-03)
