@@ -153,8 +153,12 @@ occurrence def <SE> OpticalMouseModel {
 		package Capabilities {
 			private import Functions::*;
 			private import Structure::*;
+			occurrence 'Detect Movement' : Capability;
+
 			occurrence 'Move Cursor on Screen' : Capability  {
 				ref action :>> involvedFunctions = ('Root Function'.'Capture Movement', 'Root Function'.'Transform Raw Optical Data');
+				// A Capability can include other Capabilities
+				ref occurrence :>> includedCapabilities = ('Detect Movement');
 				ref part :>> involvedComponents = (system.'Optical Sensor Unit', system.'Mouse Controller');
 
 				// A Functional Chain owned by the Capability (as in Capella, where a Functional Chain can be owned
