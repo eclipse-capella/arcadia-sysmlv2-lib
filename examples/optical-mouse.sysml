@@ -123,16 +123,12 @@ occurrence def <SE> OpticalMouseModel {
 	   	    		action 'Filter Noise' : Function;
 				}
 				
-	   	    	// A composite Functional Chain: it references the chain 'read movement' owned by the Capability 'Move Cursor on Screen' as a step of its sequence, and is assembled with
+	   	    	// A composite Functional Chain: it references the chain 'read movement' owned by the Capability 'Move Cursor on Screen', and is assembled with
 	   	    	// 'Update Pointer Position' by the exchange 'Motion Data', which starts from a function inside the referenced chain
 	   	    	action 'move pointer' : FunctionalChain {
-	   	    		ref :>> involvedFunctionalExchanges = ('Motion Data');
-	   	    		perform Capabilities::'Move Cursor on Screen'.'read movement' :> referencedFunctionalChains;
-	   	    		perform 'Root Function'.'Update Pointer Position' :> involvedFunctions;
-
-	   	    		succession first start then Capabilities::'Move Cursor on Screen'.'read movement';
-	   	    		succession first Capabilities::'Move Cursor on Screen'.'read movement'.'Transform Raw Optical Data' then 'Root Function'.'Update Pointer Position';
-	   	    		succession first 'Root Function'.'Update Pointer Position' then done;
+	   	    		perform action 'read movement' references Capabilities::'Move Cursor on Screen'.'read movement' :> referencedFunctionalChains;
+	   	    		perform action 'Update Pointer Position' references 'Root Function'.'Update Pointer Position' :> involvedFunctions;
+	   	    		flow :> 'Motion Data', involvedFunctionalExchanges from 'read movement'.'Transform Raw Optical Data'.FOP3 to 'Update Pointer Position'.FIP4;
 	   	    	}
 
 	   	    	// A Capella Logical Data Flow Blank diagram: a view usage typed by the Arcadia view definition LDFB (short name of
@@ -161,13 +157,9 @@ occurrence def <SE> OpticalMouseModel {
 				// by a Function or by a Capability). A chain owned by the Capability is involved by construction:
 				// involvedFunctionalChains only lists the chains owned elsewhere.
 				action 'read movement' : FunctionalChain {
-					ref :>> involvedFunctionalExchanges = ('Root Function'.'Optical Data');
-					perform 'Root Function'.'Capture Movement' :> involvedFunctions;
-					perform 'Root Function'.'Transform Raw Optical Data' :> involvedFunctions;
-
-					succession first start then 'Root Function'.'Capture Movement';
-					succession first 'Root Function'.'Capture Movement' then 'Root Function'.'Transform Raw Optical Data';
-					succession first 'Root Function'.'Transform Raw Optical Data' then done;
+					perform action 'Capture Movement' references 'Root Function'.'Capture Movement' :> involvedFunctions;
+					perform action 'Transform Raw Optical Data' references 'Root Function'.'Transform Raw Optical Data' :> involvedFunctions;
+					flow :> 'Root Function'.'Optical Data', involvedFunctionalExchanges from 'Capture Movement'.FOP1 to 'Transform Raw Optical Data'.FIP2;
 				}
 			}
 
