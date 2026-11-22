@@ -33,6 +33,8 @@ package ExchangesConceptExample {
 			flow 'Optical Data' : FunctionalExchange of :>> payload = (rawOpticalDataX, rawOpticalDataY)
 				from 'Capture Movement'.FOP1 to 'Transform Raw Optical Data'.FIP2;
 		}
+		// FE-05: an exchange category is a named annotation that lists the functional exchanges it groups
+		metadata 'Optical Data Flows' : ExchangeCategory about 'Root Function'::'Optical Data';
 	}
 
 	package Structure {
@@ -68,5 +70,7 @@ package ExchangesConceptExample {
 				allocation : ExchangeAllocation allocate 'Root Function'.'Optical Data' to self;
 			}
 		}
+		// CE-07: the same definition groups component exchanges
+		metadata 'Cables' : ExchangeCategory about system::cable;
 	}
 }

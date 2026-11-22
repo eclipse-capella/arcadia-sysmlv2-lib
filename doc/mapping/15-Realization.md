@@ -73,4 +73,4 @@ From [`examples/concepts/realization.sysml`](../../examples/concepts/realization
 
 ## Open points
 
-None.
+[OP-TRANSITION-TRACES](../ArcadiaLibraryMapping.md#op-transition-traces) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

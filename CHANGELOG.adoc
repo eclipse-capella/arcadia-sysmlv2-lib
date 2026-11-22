@@ -13,6 +13,7 @@
 === New Features
 
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/39[#39] ExchangeItem isAbstract mapping
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/33[#33] Exchange categories: new library definition `ExchangeCategory`, a metadata definition used as a named annotation that lists its exchanges (functional exchanges, component exchanges and physical links)
 
 === Improvements
 
