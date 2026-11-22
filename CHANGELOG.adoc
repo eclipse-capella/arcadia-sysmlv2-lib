@@ -8,6 +8,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/70[#70] Routing functions, change of mapping rule: a Capella function of kind Duplicate, Split, Route, Gather or Select is a function typed by a new library definition (`DuplicateFunction`, `SplitFunction`, `RouteFunction`, `GatherFunction`, `SelectFunction`, all specializing `Function`) instead of a control node (fork, join, decision, merge). No existing library element is changed
+
 === Bug fixes
 
 === New Features

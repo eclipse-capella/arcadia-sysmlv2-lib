@@ -30,6 +30,12 @@ package FunctionConceptExample {
 				// FPORT-01: an input port named FIP1
 				in FIP1 [0..*] : ExchangeItem = (rawOpticalData);
 			}
+			// FUNC-03: a routing function is a function typed by one of the five routing definitions
+			action 'Duplicate Raw Optical Data' : DuplicateFunction {
+				in FIP1 [0..*] : ExchangeItem = (rawOpticalData);
+				out FOP1 [0..*] : ExchangeItem = (rawOpticalData);
+				out FOP2 [0..*] : ExchangeItem = (rawOpticalData);
+			}
 		}
 	}
 }
