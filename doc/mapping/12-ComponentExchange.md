@@ -25,7 +25,7 @@
 | <a id="ce-04"></a>CE-04 | Conveyed exchange items | `modellingcore::AbstractInformationFlow.convoyedInformations` | Library | `ref item allocatedExchangeItems: ExchangeItem[*]`, set with `ref item :>> allocatedExchangeItems = (...)` | The exchange items conveyed by the component exchange | P3: needed by Arcadia, no native equivalent that fits (see Decisions) |
 | <a id="ce-05"></a>CE-05 | Allocated functional exchanges | derived `fa::ComponentExchange.allocatedFunctionalExchanges` | Derived | the `ExchangeAllocation` usages owned by the component exchange (see the EA section) | The functional exchanges allocated to the component exchange | The link is stored once, as an allocation, as in Capella |
 | <a id="ce-06"></a>CE-06 | Kind (Assembly, Delegation, Flow) | `fa::ComponentExchange.kind` | Deferred – [OP-CE-KIND](../ArcadiaLibraryMapping.md#op-ce-kind) | none | Kind of the component exchange | Not decided yet |
-| <a id="ce-07"></a>CE-07 | Component exchange categories | `fa::ComponentExchangeCategory` (derived: `fa::ComponentExchange.categories`) | Deferred – [OP-CATEGORIES](../ArcadiaLibraryMapping.md#op-categories) | none | A named group of component exchanges, used to simplify diagrams | Not decided yet |
+| <a id="ce-07"></a>CE-07 | Component exchange categories | `fa::ComponentExchangeCategory` (derived: `fa::ComponentExchange.categories`) | Library | `ExchangeCategory`, the definition used for functional exchanges ([FE-05](11-FunctionalExchange.md#fe-05)): `metadata x : ExchangeCategory about <exchange>, <exchange>;`, owned by the `Structure` package of the engineering perspective | A named group of component exchanges, shown as a single link in synthetic views | P3: one definition for all the categories |
 
 ## Example
 
@@ -40,6 +40,9 @@ From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sys
 				// EA-01: the functional exchange allocated to the component exchange
 				allocation : ExchangeAllocation allocate 'Root Function'.'Optical Data' to self;
 			}
+		}
+		// CE-07: the same definition groups component exchanges
+		metadata 'Cables' : ExchangeCategory about system::cable;
 ```
 
 ## Decisions
@@ -53,6 +56,7 @@ From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sys
 
 - [CE-04](#ce-04): tooling can propose the exchange items of the allocated functional exchanges, and report the differences.
 - [CE-05](#ce-05): the allocated functional exchanges of a component exchange are computed from the allocations.
+- [CE-07](#ce-07): category links between components follow the rules given for functions ([FE-05](11-FunctionalExchange.md#fe-05)).
 
 ## SysML v2 limitations
 
@@ -60,4 +64,4 @@ From [`examples/concepts/exchanges.sysml`](../../examples/concepts/exchanges.sys
 
 ## Open points
 
-[OP-CE-KIND](../ArcadiaLibraryMapping.md#op-ce-kind), [OP-CATEGORIES](../ArcadiaLibraryMapping.md#op-categories), [OP-PHYS](../ArcadiaLibraryMapping.md#op-phys) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
+[OP-CE-KIND](../ArcadiaLibraryMapping.md#op-ce-kind), [OP-PHYS](../ArcadiaLibraryMapping.md#op-phys) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).

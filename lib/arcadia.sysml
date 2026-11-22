@@ -101,6 +101,14 @@ library package Arcadia {
 		end target : Function;
 	}
 
+	metadata def ExchangeCategory {
+		private doc /* A named group of exchanges (functional exchanges, component exchanges or physical links), used to show them
+		 * as a single link in synthetic views. A category is written as a named annotation that lists its exchanges:
+		 * 'metadata <name> : ExchangeCategory about <exchange>, <exchange>;'. */
+		:> annotatedElement : SysML::FlowUsage;
+		:> annotatedElement : SysML::InterfaceUsage;
+	}
+
     allocation def ExchangeAllocation :> ArcadiaElement {
 	    private doc /* A generic Arcadia Exchange Allocation, used across all Arcadia engineering perspectives.
 	     * An Exchange Allocation is owned by the Component Exchange it allocates to, and is written
