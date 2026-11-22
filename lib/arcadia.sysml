@@ -87,6 +87,29 @@ library package Arcadia {
 	    private doc /* A  generic Arcadia Function, used across all Arcadia engineering perspectives. */
     }
 
+	// Dataflow control functions: functions whose only role is to govern how exchange items are routed between
+	// source functions and destination functions. A function that processes or modifies exchange items is a plain Function.
+
+	action def DuplicateFunction :> Function {
+		private doc /* Sends the exchange items received from one source to all its destinations, at the same time. */
+	}
+
+	action def SplitFunction :> Function {
+		private doc /* Sends a different part of the exchange items received from one source to each of its destinations, at the same time. */
+	}
+
+	action def RouteFunction :> Function {
+		private doc /* Sends the exchange items received from one source, or a part of them, to one destination chosen among several, usually according to a condition. */
+	}
+
+	action def GatherFunction :> Function {
+		private doc /* Combines the exchange items received from several sources into a single exchange item, sent to its destination. */
+	}
+
+	action def SelectFunction :> Function {
+		private doc /* Forwards to its destination the exchange items of one source chosen among several, usually according to a condition. */
+	}
+
     action def FunctionalChain :> ArcadiaElement  {
         private doc /*  A  generic Arcadia Functional Chain, used across all Arcadia engineering perspectives. */
         ref involvedFunctionalExchanges: FunctionalExchange[*];
