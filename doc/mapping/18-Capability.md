@@ -40,9 +40,9 @@ From [`examples/concepts/capability.sysml`](../../examples/concepts/capability.s
 				ref part :>> involvedComponents = (system.'Optical Sensor Unit', system.'Mouse Controller');
 				// CAP-03: a chain owned by the capability is involved by construction
 				action 'read movement' : FunctionalChain {
-					ref :>> involvedFunctionalExchanges = ('Root Function'.'Optical Data');
-					perform 'Root Function'.'Capture Movement' :> involvedFunctions;
-					perform 'Root Function'.'Transform Raw Optical Data' :> involvedFunctions;
+					perform action 'Capture Movement' references 'Root Function'.'Capture Movement' :> involvedFunctions;
+					perform action 'Transform Raw Optical Data' references 'Root Function'.'Transform Raw Optical Data' :> involvedFunctions;
+					flow :> 'Root Function'.'Optical Data', involvedFunctionalExchanges from 'Capture Movement'.FOP1 to 'Transform Raw Optical Data'.FIP2;
 				}
 				// CAP-03: a chain owned elsewhere is referenced
 				ref action :>> involvedFunctionalChains = ('Root Function'.'diagnostic chain');

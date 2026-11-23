@@ -8,6 +8,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/68[#68] Functional Chains, change of mapping rules (the library is not changed): a functional exchange involved in a chain is a flow usage that specializes the exchange between two named references (`flow :> <exchange>, involvedFunctionalExchanges from <reference>.<port> to <reference>.<port>;`) instead of an entry of `ref :>> involvedFunctionalExchanges = (...)`; each involved function or referenced chain is a named reference (`perform action <name> references <function> :> involvedFunctions;`); successions are only written for sequence links, no longer for the links that carry a functional exchange
+
 === Bug fixes
 
 === New Features
