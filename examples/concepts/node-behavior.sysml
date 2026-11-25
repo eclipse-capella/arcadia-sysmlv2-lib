@@ -22,6 +22,10 @@ package NodeBehaviorConceptExample {
 		// NODE-02: a Behavior Component, with an allocated function
 		part 'Mouse Firmware' : BehaviorComponent {
 			perform 'Root Function'.'Filter Noise';
+			// NODE-02: an actor created in a Behavior Component is a Behavior Component
+			part 'Firmware Updater' : BehaviorComponent {
+				:>> isActor = true;
+			}
 		}
 		// NODE-01: a Node Component
 		part 'Mouse PCB' : NodeComponent {
@@ -30,7 +34,7 @@ package NodeBehaviorConceptExample {
 		}
 	}
 
-	// NODE-01: an actor of the Physical Architecture is a Node Component
+	// NODE-01: an actor created at the root level is a Node Component
 	part computer : NodeComponent {
 		:>> isActor = true;
 	}

@@ -50,12 +50,12 @@ library package Arcadia {
 
 	part def NodeComponent :> Component {
 		private doc /* A Physical Architecture component of Node nature: a physical platform that hosts deployed components,
-		 * Behavior Components or Node Components (see Deployment). The actors of the Physical Architecture are Node Components. */
+		 * Behavior Components or Node Components (see Deployment). An actor of the Physical Architecture is a Node Component or a Behavior Component. */
 	}
 
 	part def BehaviorComponent :> Component {
 		private doc /* A Physical Architecture component of Behavior nature: it carries allocated functions and component exchanges,
-		 * and is deployed on a Node Component, not contained in it (see Deployment). */
+		 * and is deployed on a Node Component, not contained in it (see Deployment). This also applies to the actors of the Physical Architecture that are Behavior Components. */
 	}
 
 	allocation def Deployment :> ArcadiaElement {
