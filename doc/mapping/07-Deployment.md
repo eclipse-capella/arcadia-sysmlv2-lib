@@ -24,6 +24,7 @@
 | <a id="depl-02"></a>DEPL-02 | Deployed element | `cs::AbstractDeploymentLink.deployedElement` | Library | `end deployedElement : Component` (source of the allocation) | The deployed component | Named as in Capella |
 | <a id="depl-03"></a>DEPL-03 | Location | `cs::AbstractDeploymentLink.location` | Library | `end location : Component` (target of the allocation) | The component on which it is deployed | Named as in Capella |
 | <a id="depl-04"></a>DEPL-04 | Deployed components / deploying components | derived `pa::PhysicalComponent.deployedPhysicalComponents`, `deployingPhysicalComponents` (and `cs::Part.deployedParts`, `deployingParts`) | Derived | computed from the `Deployment` allocations | The components deployed on a component, and the component on which a component is deployed | The link is stored once, as in Capella |
+| <a id="depl-05"></a>DEPL-05 | Deployment aspects, deployment configurations, instances and their deployment links | `pa::deployment::DeploymentAspect`, `DeploymentConfiguration`, `ComponentInstance`, `ConnectionInstance`, `PortInstance`, `InstanceDeploymentLink`, `TypeDeploymentLink` | Not translated – legacy | none | Instances of components, ports and connections, deployed in named configurations | P4: no diagram tool and no help page in Capella. A deployment aspect can only be created in another deployment aspect or in a Generic Pkg ([PKG-10](04-Packages.md#pkg-10)), and the configurations and instances only inside it. Not used in the Capella sample models, where only the deployment of a component on another one ([DEPL-01](#depl-01)) appears. No link with the EPBS: a configuration item realizes physical components, links and ports, not instances |
 
 ## Example
 
@@ -61,4 +62,4 @@ From [`examples/concepts/node-behavior.sysml`](../../examples/concepts/node-beha
 
 ## Open points
 
-[OP-DEPLOY-OTHER](../ArcadiaLibraryMapping.md#op-deploy-other) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
+None.

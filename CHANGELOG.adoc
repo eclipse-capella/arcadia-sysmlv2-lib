@@ -21,3 +21,4 @@
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/57[#57] Restructure the mapping document
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/38[#38] Harmonize "not translated" concepts in the mapping document
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/36[#36] Clarify Capability Mappings
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/75[#75] Close mapping open points about little-used Capella concepts: kind of Physical Components, other deployment classes, enumeration property values, fields of packages, interface, data and capability packages owned by a component, restriction of `subparts` to components
