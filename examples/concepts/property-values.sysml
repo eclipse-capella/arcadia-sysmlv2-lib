@@ -26,5 +26,16 @@ package PropertyValuesConceptExample {
 		attribute 'Budget' {
 			attribute 'Power' = 2.5 [W];
 		}
+		// PV-05: an enumeration property value, typed by an enumeration definition
+		attribute 'Criticality' : 'Property Types'::'Criticality Level' = 'Property Types'::'Criticality Level'::high;
+	}
+
+	package 'Property Types' {
+		// PV-05: the enumeration type
+		enum def 'Criticality Level' {
+			enum low;
+			enum medium;
+			enum high;
+		}
 	}
 }

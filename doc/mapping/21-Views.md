@@ -161,4 +161,4 @@ The same constructs appear in `examples/optical-mouse.sysml` (`'Optical Data Flo
 
 ## Open points
 
-[OP-SUBPARTS](../ArcadiaLibraryMapping.md#op-subparts) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
+None.

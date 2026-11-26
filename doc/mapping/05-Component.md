@@ -22,7 +22,7 @@
 | <a id="comp-02"></a>COMP-02 | Is Actor | `cs::Component.actor` | Library | `attribute isActor : Boolean default false` | The component is external to the system of interest | P3: property needed by Arcadia, no native equivalent |
 | <a id="comp-03"></a>COMP-03 | Is Human | `cs::Component.human` | Library | `attribute isHuman : Boolean default false` | The component is a human | P3 |
 | <a id="comp-04"></a>COMP-04 | Nature (Node / Behavior) | `pa::PhysicalComponent.nature` | Typing | type `NodeComponent` or `BehaviorComponent` (see [NODE-01](06-NodeAndBehaviorComponents.md#node-01), [NODE-02](06-NodeAndBehaviorComponents.md#node-02)) | Distinguishes a Physical Node from a Physical Behavior | P1: expressed by the type, not by an attribute |
-| <a id="comp-05"></a>COMP-05 | Kind (hardware, software, person…) | `pa::PhysicalComponent.kind` (enum `PhysicalComponentKind`, 14 literals) | Deferred – [OP-KIND](../ArcadiaLibraryMapping.md#op-kind) | none | Category of a Physical Component, from a fixed list | Not decided yet |
+| <a id="comp-05"></a>COMP-05 | Kind (hardware, software, person…) | `pa::PhysicalComponent.kind` (enum `PhysicalComponentKind`, 14 literals) | Not translated – replaced by property values | none | Category of a Physical Component, from a fixed list | P4: in Capella, a hard-coded list that only fills a field of the properties of the component; it is not used by diagrams, validation rules or transitions. Projects that need such a classification define their own property values (see the PV section) |
 | <a id="comp-06"></a>COMP-06 | Abstract | `capellacore::GeneralizableElement.abstract` | Deferred – [OP-REC](../ArcadiaLibraryMapping.md#op-rec) | none | Abstract actor meant to be specialized (used with Generalizations) | Depends on how reuse (REC/RPL, definitions and usages) is handled |
 | <a id="comp-07"></a>COMP-07 | Generalized Components | `capellacore::GeneralizableElement.ownedGeneralizations` (derived: `super`, `sub`) | Deferred – [OP-REC](../ArcadiaLibraryMapping.md#op-rec) | none | A component specializes another one (mostly actors) | Same as [COMP-06](#comp-06) |
 | <a id="comp-08"></a>COMP-08 | Allocated Functions | `fa::AbstractFunctionalBlock.ownedFunctionalAllocation` (derived: `allocatedFunctions`, and per perspective `allocatedOperationalActivities`, `allocatedSystemFunctions`, `allocatedLogicalFunctions`, `allocatedPhysicalFunctions`) | Library | `perform <function>`; `alias allocatedFunctions for performedActions` | The functions allocated to the component: its behavior | P1: native `perform`; alias kept because it is a key Arcadia relationship |
@@ -54,6 +54,7 @@ From [`examples/concepts/component.sysml`](../../examples/concepts/component.sys
 
 - One single type represents the components of all engineering perspectives (P6). Whether a component is Operational, System, Logical or Physical follows from the closest enclosing package annotated with `ArcadiaPackage`.
 - The sub-components of a component are the parts it owns directly plus those owned by its nested packages (see the PKG section). The alias `subComponents` (the native `subparts`) only gives the parts owned directly: the parts of a nested package are not features of the component, so the complete list is computed by tooling.
+- `subparts` is not restricted to components. The alias also gives the parts that are not components, such as the views owned by the component (see [VIEW-05](21-Views.md#view-05)): tooling leaves them out when it computes the sub-components. A redefinition that restricts `subparts` to `Component` was considered and not retained: the pilot implementation does not enforce it, and it would question the views nested in components. No computed feature is added to the library for this either: derived information is computed by tooling.
 
 ## Tooling requirements
 
@@ -67,4 +68,4 @@ None.
 
 ## Open points
 
-[OP-KIND](../ArcadiaLibraryMapping.md#op-kind), [OP-REC](../ArcadiaLibraryMapping.md#op-rec), [OP-SUBPARTS](../ArcadiaLibraryMapping.md#op-subparts) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
+[OP-REC](../ArcadiaLibraryMapping.md#op-rec) (see the [open points register](../ArcadiaLibraryMapping.md#open-points-register)).
