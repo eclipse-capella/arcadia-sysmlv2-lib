@@ -21,3 +21,4 @@
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/57[#57] Restructure the mapping document
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/38[#38] Harmonize "not translated" concepts in the mapping document
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/36[#36] Clarify Capability Mappings
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/73[#73] The nature of an actor of the Physical Architecture is set from the component that contains it when the actor is created: an actor created in a Behavior Component is a `BehaviorComponent` (NODE-01, NODE-02)
