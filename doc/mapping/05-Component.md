@@ -57,7 +57,11 @@ From [`examples/concepts/component.sysml`](../../examples/concepts/component.sys
 
 ## Tooling requirements
 
-- [COMP-02](#comp-02), [COMP-03](#comp-03): editable as booleans; they drive the icon and the color of the component.
+- [COMP-02](#comp-02), [COMP-03](#comp-03): editable as booleans; they drive the icon and the color of the component. The two flags are edited independently of each other. Changing `isActor` changes only the flag: the component keeps its container, its nature (see [COMP-04](#comp-04)), its sub-components, ports, allocated functions and exchanges. A component can be turned into an actor and back again, for example when a component of the system is reused as an external actor.
+- [COMP-03](#comp-03): a human component contains no component, no actor, no part and no package of components, in every perspective. In the Physical Architecture it can still host deployed Behavior Components (see the [Deployment](07-Deployment.md) section). Tooling refuses to set `isHuman` to `true` on a component that has sub-components, and offers no way to create a sub-component in a human component.
+- [COMP-02](#comp-02), [COMP-09](#comp-09): in the Operational Analysis, a component is an Operational Entity when `isActor` is `false` and an Operational Actor when `isActor` is `true`; an Operational Actor is normally human and contains no component. In the other perspectives an actor can contain components and actors, and a component can contain actors.
+- [COMP-09](#comp-09): the root component of the System Analysis (the System) contains no component.
+- A Capella model that breaks one of the rules above is migrated as it is, and validation reports it; tooling does not create these situations.
 - [COMP-08](#comp-08): allocated functions are shown inside the component in architecture diagrams, and listed in its properties.
 - [COMP-09](#comp-09): the list of sub-components is computed, not entered by the user.
 
