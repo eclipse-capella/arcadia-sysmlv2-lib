@@ -15,7 +15,6 @@ library package Arcadia {
     private doc /* Version 0.1.0 */
     private import ScalarValues::Boolean;
     private import ScalarValues::String;
-	private import KerML::FeatureDirectionKind;
 	private import StandardViewDefinitions::*;
 
 	abstract occurrence def ArcadiaElement {
@@ -69,9 +68,12 @@ library package Arcadia {
 	}
 
     port def ComponentPort :> ArcadiaElement {
-		private doc /* A generic Arcadia Component Port, used across all Arcadia engineering perspectives. */
-        attribute portDirection : FeatureDirectionKind;
+		private doc /* A generic Arcadia Component Port, used across all Arcadia engineering perspectives.
+		 * The direction of the port is given by its directed features: 'out [0..*] : ExchangeItem;' for an output port,
+		 * 'in [0..*] : ExchangeItem;' for an input port, both for a bidirectional port. */
 		ref item allocatedFunctionPorts: ExchangeItem [*];
+		ref item providedInterfaces: Interface [*];
+		ref item requiredInterfaces: Interface [*];
     }
 
     interface def ComponentExchange :> ArcadiaElement {
@@ -121,6 +123,12 @@ library package Arcadia {
 
 	item def ExchangeItem :> ArcadiaElement{
 		private doc /* A generic Arcadia ExchangeItem, used across all Arcadia engineering perspectives. */
+	}
+
+	item def Interface :> ArcadiaElement {
+		private doc /* A generic Arcadia Interface, used across all Arcadia engineering perspectives: a set of Exchange Items
+		 * that Component Ports provide or require (see providedInterfaces and requiredInterfaces of ComponentPort). */
+		ref item exchangeItems: ExchangeItem [*];
 	}
 
 	occurrence def Capability :> ArcadiaElement {
