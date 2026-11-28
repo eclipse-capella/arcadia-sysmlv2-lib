@@ -21,3 +21,4 @@
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/57[#57] Restructure the mapping document
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/38[#38] Harmonize "not translated" concepts in the mapping document
 - https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/36[#36] Clarify Capability Mappings
+- https://github.com/eclipse-capella/arcadia-sysmlv2-lib/issues/79[#79] Mapping of the Capella transition traces (not translated) and of the element identifiers (kept in `aliasIds` by a migration; `sid` not translated); the open point OP-ID is closed

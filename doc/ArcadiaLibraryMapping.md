@@ -115,7 +115,6 @@ All the points that are not decided or not covered yet are listed here, and only
 | ID | Subject | Section | Owner | Issue |
 | --- | --- | --- | --- | --- |
 | <a id="op-epbs"></a>[OP-EPBS](mapping/03-DefaultModelStructure.md#open-points) | EPBS perspective: only its place in the default model structure exists | [Default model structure](mapping/03-DefaultModelStructure.md#open-points) | SLA | — |
-| <a id="op-id"></a>[OP-ID](mapping/01-ArcadiaElement.md#open-points) | Identifiers of Capella elements (`id`, `sid`): kept, for example for the traceability of a migration, or not translated? | [ArcadiaElement](mapping/01-ArcadiaElement.md#open-points) | SLA | — |
 | <a id="op-constraints"></a>[OP-CONSTRAINTS](mapping/01-ArcadiaElement.md#open-points) | Constraints attached to elements (free text, guards of transitions, scenarios) | [ArcadiaElement](mapping/01-ArcadiaElement.md#open-points) | SLA | — |
 | <a id="op-pkg-fields"></a>[OP-PKG-FIELDS](mapping/04-Packages.md#open-points) | Are the description and status fields of Capella packages really used? | [Packages](mapping/04-Packages.md#open-points) | SLA, with TGS | — |
 | <a id="op-pkg-in-component"></a>[OP-PKG-IN-COMPONENT](mapping/04-Packages.md#open-points) | Interface, data and capability packages owned by a component: allowed by the Capella metamodel, not described here. What tells such a package from a component package, and what can it contain? | [Packages](mapping/04-Packages.md#open-points) | SLA | — |
