@@ -15,7 +15,6 @@ library package Arcadia {
     private doc /* Version 0.1.0 */
     private import ScalarValues::Boolean;
     private import ScalarValues::String;
-	private import KerML::FeatureDirectionKind;
 	private import StandardViewDefinitions::*;
 
 	abstract occurrence def ArcadiaElement {
@@ -68,10 +67,46 @@ library package Arcadia {
 		end location : Component;
 	}
 
+	port def PhysicalPort :> ArcadiaElement {
+		private doc /* A generic Arcadia Physical Port: a point of connection of a hosting component (a Node Component, or the system
+		 * and the actors before the Physical Architecture) with its environment. A Physical Port is not oriented.
+		 * It references the Component Ports of the hosted components that are accessible through it. */
+		ref port allocatedComponentPorts: ComponentPort [*];
+	}
+
+	interface def PhysicalLink :> ArcadiaElement {
+		private doc /* A generic Arcadia Physical Link: a means of communication, transport or routing between two hosting components,
+		 * used as a support for Component Exchanges. It connects two Physical Ports.
+		 * Component Exchanges are allocated to a Physical Link with ComponentExchangeAllocation usages. */
+		end pp1 : PhysicalPort;
+		end pp2 : PhysicalPort;
+	}
+
+	item def PhysicalPath :> ArcadiaElement {
+		private doc /* A generic Arcadia Physical Path: an ordered set of references to Physical Links, defining a continuous path
+		 * that routes Component Exchanges between components that are not linked by a single Physical Link.
+		 * A Physical Path can reuse other Physical Paths: involvedLinksAndPaths references Physical Links and Physical
+		 * Paths, in the order of the path.
+		 * Component Exchanges are allocated to a Physical Path with ComponentExchangeAllocation usages. */
+		ref involvedLinksAndPaths: ArcadiaElement [*] ordered;
+	}
+
+	allocation def ComponentExchangeAllocation :> ArcadiaElement {
+		private doc /* A generic Arcadia Component Exchange Allocation: a Component Exchange is carried by a Physical Link or by a
+		 * Physical Path (physicalSupport).
+		 * It is owned by the Physical Link or the Physical Path, and is written
+		 * 'allocation : ComponentExchangeAllocation allocate <component exchange> to self;'. */
+		end componentExchange : ComponentExchange;
+		end physicalSupport : ArcadiaElement;
+	}
+
     port def ComponentPort :> ArcadiaElement {
-		private doc /* A generic Arcadia Component Port, used across all Arcadia engineering perspectives. */
-        attribute portDirection : FeatureDirectionKind;
+		private doc /* A generic Arcadia Component Port, used across all Arcadia engineering perspectives.
+		 * The direction of the port is given by its directed features: 'out [0..*] : ExchangeItem;' for an output port,
+		 * 'in [0..*] : ExchangeItem;' for an input port, both for a bidirectional port. */
 		ref item allocatedFunctionPorts: ExchangeItem [*];
+		ref item providedInterfaces: Interface [*];
+		ref item requiredInterfaces: Interface [*];
     }
 
     interface def ComponentExchange :> ArcadiaElement {
@@ -121,6 +156,12 @@ library package Arcadia {
 
 	item def ExchangeItem :> ArcadiaElement{
 		private doc /* A generic Arcadia ExchangeItem, used across all Arcadia engineering perspectives. */
+	}
+
+	item def Interface :> ArcadiaElement {
+		private doc /* A generic Arcadia Interface, used across all Arcadia engineering perspectives: a set of Exchange Items
+		 * that Component Ports provide or require (see providedInterfaces and requiredInterfaces of ComponentPort). */
+		ref item exchangeItems: ExchangeItem [*];
 	}
 
 	occurrence def Capability :> ArcadiaElement {
